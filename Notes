@@ -1,1 +1,89 @@
-Kubernetes  is a Open -Source system for Automating the deployment, scalin and management of containerized application.
+Kubernetes  is a Open-Source system for Automating the deployment, scaling and management of containerized application.
+fEATURES 
+  - Conatiner Orchestration:
+      Manages Conatines  accross a cluster of maschine.
+  - Self-healing:
+      Resatrts failed containers, repolace them., Kills unresponsive ones.
+  - Sacling:
+      Automatically increase/descrease resources based on load
+  - Load Balancing :
+      Distrub straffic to keep the system responsive.
+  - Service Discovery: 
+      Makes it easy for services to find and talk each other.
+  - Configuration Management: 
+      Store and  manages secret and application settings.
+_____________________________________________________________________________________
+
+CORE CONCEPT:
+  1) Container: 
+      Container is the basic unit of software in Kubernetes, packaging applications with their necessary code, libraries, and dependencies.
+  2) POD:
+      The smalles  deployment unit;
+      wraps one or more containers.
+  3) Node (server):
+      A Single maschine (Physical or virtual) in the cluster.
+  4) Cluster:
+      A group of nodes managede by Kubernetes.
+  5) Deployment:
+      Tells Kubernetes how to create and manage Pods.
+  6) Service:
+      Exposes Pod to the network and handels traffioc routing.
+_____________________________________________________________________________________
+Typical Use Case:
+- Bild your app in Dockers container. Then you use Kubernetes to:
+
+1 Deploy the containers across fleet to server.
+2 Ensure they stay running.
+3 Scale them up during traffic spikes.
+4 Roll out new versions without downtime.
+_____________________________________________________________________________________
+KUBERNETS HAS TWO MAIN PARTS 
+  1) MASTER(CONTROL PLANE)
+  2) WORKER NODES
+_____________________________________________________________________________________
+
+COMPONENETS OF MASTER:
+
+- API Server:
+    It Provide the interface (Command line Interface) also known as qubecontrol.
+- Schedular:
+    Assign node to newlc created Pods. ((Pod is a small Unit where the container run it. We have multiple nodes and like to run a new container.
+    Which node will be assigned this work has been done by the schedular.)
+- ETCD:
+    Key value, store having all cluster Data.
+    we have all the cluster, Different Nodes, Applications , containers and Pods that store the information ETCD
+-  Control Manager
+    control Manager is responsible for managing the state of the cluster (When something is damage or kaputt then Control manager repair )
+_____________________________________________________________________________________
+WORKER NODES
+
+- KUBLET: 
+    Agent,make sure that containers are running in Pods.
+    (It checks wheather the conatianers are working Properly in the Pods yes or NO)
+
+- POD: 
+    the Containers are running in the Pod.
+    (Checks that all the conatainers are working Properly  with in the POD)
+    A single Instance of a running process in a cluster. It can rum one or more conatiners and share the same resources.
+
+- Kube-Proxy:
+    Maintain the Network rules for communication with POds.
+    eg. we have a cluster, we have inside Network, we have Outside Network, There are many Pods running in the NOde(to run/Maintain all the Things we use Kube-Proxy. 
+
+- Container-runtime:
+    A tool is responsible for running containers er. Dockers 
+    
+_____________________________________________________________________________________
+Difference between Docker and the ConatinerD
+
+
+
+_____________________________________________________________________________________
+ETCD:
+
+
+
+
+
+      
+
