@@ -84,19 +84,26 @@ ETCD:
 
 _____________________________________________________________________________________
 
+
 F: How to create the Pods?
     kubectl run ngnix --image=ngnix
 F: 
 
 
-F:  How to delet the pod?
+F:  How to delete the pod?
       kubectl delete pod webapp
+      kubectl delete pods --all 
+F: 
 F: How to Create a new Pod with the name of the rednis and with the image rednis123?
    Note: Use the POD-Defination YaAML file. And yes the image name is wrong
     kubectl run rednis --image=rednis123 --dry-run -o yaml
     kubectl run rednis --image=rednis123 --dry-run=client -o yaml
     kubectl run rednis --image=rednis123 --dry-run=client -o yaml > rednis.yaml
     cat rednis.yaml
+
+--dry-run: It is only used to check th command wheather it is right or wrong and this is the 
+  clint side command. The request will not go to the server 
+
 
 Note: Use the POD-Defination YaAML file. And yes the image name is wrong
 a) how to create a yaml file 
@@ -111,15 +118,36 @@ F: How to change the image on this pod to rednis. Once done, the pod should be i
     kubectl applay -f rednis..yaml
     kubectl get pods
 
+F: How to show the labels 
+    kubectl describe pod rednis
+    kubectl describe pod --show-labels 
 
+--dry-run: It is only used to check th command wheather it is right or wrong and this is the 
+  clint side command. The request will not go to the server 
 
-_____________________________________________________________________________________
+F: 
+
+____________________________________________________________________
 Kubernetes controller are the brain behind the kubernetes
 they are the processes that monitor Kubernetes objects and respond accordingly.
 
 
 -REPlication Controller:(what and Why we need this)
-  
+    - Replication controller helps us to run multiple instances of a single pod in the kubernetes cluster,
+      thus providing high availability.
+    - Replication controller can help by automatically bringing up a new pod when existing one fails
+      thus the replication controller ensure that the specified numbers of pods are running all the times
+      even it 1 or 100
+
+NOTE: we can also use the replication controller when we use the one pod not only multiple pods 
+There are two similar terms(same perpouse but not same)
+1) Repelation Controller: is the older technology that is replaced by Replica Set 
+
+2) Replica Set: is the new Recomended way to set up replication.
+
+- How to create a Replication Controller 
+    
+____________________________________________________________________
 
 
       
