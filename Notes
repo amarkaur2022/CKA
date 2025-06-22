@@ -82,7 +82,44 @@ ________________________________________________________________________________
 ETCD:
 
 
+_____________________________________________________________________________________
 
+F: How to create the Pods?
+    kubectl run ngnix --image=ngnix
+F: 
+
+
+F:  How to delet the pod?
+      kubectl delete pod webapp
+F: How to Create a new Pod with the name of the rednis and with the image rednis123?
+   Note: Use the POD-Defination YaAML file. And yes the image name is wrong
+    kubectl run rednis --image=rednis123 --dry-run -o yaml
+    kubectl run rednis --image=rednis123 --dry-run=client -o yaml
+    kubectl run rednis --image=rednis123 --dry-run=client -o yaml > rednis.yaml
+    cat rednis.yaml
+
+Note: Use the POD-Defination YaAML file. And yes the image name is wrong
+a) how to create a yaml file 
+    kubectl create -f rednis.yaml
+b) see weather thepod s file is created or not 
+    kubectl get pods
+
+
+F: How to change the image on this pod to rednis. Once done, the pod should be in a running state?
+    cat redis.yaml
+    vi redis.yaml
+    kubectl applay -f rednis..yaml
+    kubectl get pods
+
+
+
+_____________________________________________________________________________________
+Kubernetes controller are the brain behind the kubernetes
+they are the processes that monitor Kubernetes objects and respond accordingly.
+
+
+-REPlication Controller:(what and Why we need this)
+  
 
 
       
