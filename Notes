@@ -146,7 +146,16 @@ There are two similar terms(same perpouse but not same)
 2) Replica Set: is the new Recomended way to set up replication.
 
 - How to create a Replication Controller 
-    
+    rc-defination.yml
+- As we any kubernets file we have 4 section
+  1)  API version 
+  2)  Kind
+  3)  Metadata 
+  4)  Spec
+
+1) API version: is specific to what we are creating 
+2) 
+  
 ____________________________________________________________________
 
 
