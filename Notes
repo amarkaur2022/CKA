@@ -145,19 +145,47 @@ There are two similar terms(same perpouse but not same)
 
 2) Replica Set: is the new Recomended way to set up replication.
 
-- How to create a Replication Controller 
+- How to create a Replication Controller defination file 
     rc-defination.yml
-- As we any kubernets file we have 4 section
+- As we any kubernets defination file we have 4 section
   1)  API version 
   2)  Kind
   3)  Metadata 
-  4)  Spec
+  4)  Specification  but written as spec NOTE we cn tested the two defination file together 
 
 1) API version: is specific to what we are creating 
-2) 
-  
+2) Kind : As we know oit is Replacation Controller.
+3) Meta Data: Add Name, Labels, app type and assign values to them 
+4) spec. What is inside the object we are creating.
+NOTE: we can copy from the pod -defination file the data into/under the spec template  
 ____________________________________________________________________
+                          LAB 2 Replication controller
 
+F: How to create the Replication  Controller
+    kubectl create -f rc-defination.yml 
+F: How to see the Replication Controller list 
+    kubectl get replicationcontroler 
+F: How many Pods are created by the replication Controller
+    kubectl get pods
+____________________________________________________________________
+REPLICA_SET
+
+there is only one differencence between replication controller and Replica set 
+- Replica Set requires a selector defination the selector section helps the Replica Set 
+  identify what pods fall under it.
+F: Why we have to identify the pods under the selector we already write the code itself?
+    because Replica Set can also manage pods that were not created as part of the Replica Set creation 
+
+____________________________________________________________________
+                            LAB Replica Set 
+
+F: How to create the Replica Set
+    kubectl create -f replicaset-defination.yml 
+F: How to see the Replic set list 
+    kubectl get replicaset 
+F: How many Pods are created by the replication Controller
+    kubectl get pods
+______________________
 
       
 
