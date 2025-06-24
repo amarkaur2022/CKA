@@ -183,9 +183,11 @@ F: How to create the Replica Set
     kubectl create -f replicaset-defination.yml 
 F: How to see the Replic set list 
     kubectl get replicaset 
-F: How many Pods are created by the replication Controller
+F: How many Pods are created by the replicaset
     kubectl get pods
-______________________
+____________________________________________________________________
+
+
 
       
 
