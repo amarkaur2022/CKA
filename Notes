@@ -84,11 +84,21 @@ ETCD:
 
 _____________________________________________________________________________________
 
+F: How to get the help for the commands 
+    kubectl run --help
+F: On which image used to create the new Pods?
+    kubectl describe pod newpodname 
+    kubectl  get pods-o wide 
+F: How many containers are in the pod 
+    kubectl describe pod 
+F: Why do you think the computer agenty in pod webapp is in error
 
+F: What does the READY column in the output of the kubectl get Pods commans indicate 
+    1/2  Running container in PODS/Total container in POD 
+F: 
 F: How to create the Pods?
     kubectl run ngnix --image=ngnix
-F: 
-
+   
 
 F:  How to delete the pod?
       kubectl delete pod webapp
