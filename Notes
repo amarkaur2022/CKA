@@ -138,9 +138,13 @@ F: How to show the labels
 F: 
 
 ____________________________________________________________________
-Kubernetes controller are the brain behind the kubernetes
-they are the processes that monitor Kubernetes objects and respond accordingly.
 
+A ReplicationController is a legacy Kubernetes controller that ensures a specified number of pod replicas are running at any given time.
+
+--Function of replicaController
+    Automatically replaces failed pods
+    Ensures the desired number of pods are always running  
+    Used in earlier versions of Kubernetes
 
 -REPlication Controller:(what and Why we need this)
     - Replication controller helps us to run multiple instances of a single pod in the kubernetes cluster,
@@ -179,17 +183,26 @@ F: How many Pods are created by the replication Controller
     kubectl get pods
 ____________________________________________________________________
 REPLICA_SET
+    A ReplicaSet is the newer version of ReplicationController that 
+    also ensures a specified number of pod replicas are running continuously, 
+    
+    but with more powerful and flexible label selectors.
 
 there is only one differencence between replication controller and Replica set 
 - Replica Set requires a selector defination the selector section helps the Replica Set 
   identify what pods fall under it.
-F: Why we have to identify the pods under the selector we already write the code itself?
-    because Replica Set can also manage pods that were not created as part of the Replica Set creation 
+
+Festures of the Replica Set 
+    Same purpose as RC: maintain a stable number of pods
+    Supports set-based label selectors
+    Commonly used as part of a Deployment
 
 - In Replica set there are three sections 
     1) Template 
     2) replicas 
     3) Selector 
+
+_____________________________________________________________________
 
 
 ____________________________________________________________________
@@ -227,5 +240,64 @@ F: How to overright the label
 F: How to delete the Label
       kubectl label pod ngnix env-
 
-      
+____________________________________________________________________
+                    DEPLOYMENT
+
+Deployment is used to manage the automatic life cycle of the pods. 
+It create updates scaling and rollback of the Instances when any eroor occur
+NOTE: Deployment create an Replicaset automaticall. When we run
+      kubectl get replicaset
+      You will see the replicaset file.
+
+
+Features of the Deployment
+1. Manages Replica Pods
+    It makes sure that a specified number of Pods are always running.
+2. Self Healing
+    If a pod crashes or gets deleted, the Deployment will automatically create a new one to replace it.
+3. Rolling Updates
+      You can update your application image or configuration, and the Deployment will roll out changes gradually with zero downtime.
+4. Rollback support 
+      If something goes wrong during an update, you can easily rollback to a previous stable version.
+
+_____________________________________________________________________
+              How to create a Deployment file 
+- The Deployment file is same like a Replicaset 
+    only in Kind: DEPLOYMENT
+- Contents of the File
+    API Version:
+    Metadata: 
+      name 
+      labels
+    spec:
+        template:
+          metadata:
+          
+    replica: 
+    selector:
+_____________________________________________________________________
+              LAB deployment
+
+F: How many pos are created
+      kubectl get POD 
+F: HOw many replica set are created 
+      kubectl get rs
+F: HOw many deployments are created 
+      kubectl get deployments
+F: How many deployments exists on the system. We just creaed a one Deployment 
+      kubectl get deployments 
+F: How many rs are created
+      kubectl get rs
+F: How many PODS are crested 
+      kubectl get Pod
+F: Out of all the PODs how many are READY
+      kubectl get deployments 
+F: What is the image used to create the POD in the new deployments 
+      kubectl describe deployments 
+
+
+
+
+
+
 
