@@ -293,9 +293,20 @@ F: How many PODS are crested
 F: Out of all the PODs how many are READY
       kubectl get deployments 
 F: What is the image used to create the POD in the new deployments 
-      kubectl describe deployments 
+      kubectl describe pod frontend-deployment-7fd8cdb696-stmbx  
+F: Create a new Deployment using the deployment-definition-1.yaml file located at /root/.
+      pwd
+      ls
+      kubectl create -f deployment-defination-1.yaml
+      vi deployment-defination-1.yaml
 
 
+      kubectl describe pods <pod-name>
+
+F: Create a new Deployment with the bwlow attributes using your own deployment defination file 
+    NAME : http-frontend:
+    replica: 3 
+  image:httpd:2.4-alpine
 
 
 
