@@ -288,25 +288,30 @@ F: How many deployments exists on the system. We just creaed a one Deployment
       kubectl get deployments 
 F: How many rs are created
       kubectl get rs
-F: How many PODS are crested 
+F: How many PODS are created 
       kubectl get Pod
 F: Out of all the PODs how many are READY
       kubectl get deployments 
 F: What is the image used to create the POD in the new deployments 
       kubectl describe pod frontend-deployment-7fd8cdb696-stmbx  
 F: Create a new Deployment using the deployment-definition-1.yaml file located at /root/.
-      pwd
-      ls
-      kubectl create -f deployment-defination-1.yaml
-      vi deployment-defination-1.yaml
+A:    pwd (to go to the root)
+      ls (see the list of the deployments files)
+      kubectl create -f deployment-defination-1.yaml (to create a yaml file on the root)
+      vi deployment-defination-1.yaml ( to make the changes on the yaml file)
+      kubectl create -f deployment-definition-1.yaml (to create a .yaml file on the root)
 
-
-      kubectl describe pods <pod-name>
-
+ 
 F: Create a new Deployment with the bwlow attributes using your own deployment defination file 
     NAME : http-frontend:
     replica: 3 
-  image:httpd:2.4-alpine
+    image:httpd:2.4-alpine
+A:  kubectl create  deployment --help ( to get the help of the deployments commands)
+    kubectl create deployment httpd-frontend --image=httpd:2.4-alpine --replica=3
+
+NOTE: If u forget to create a replica then use 
+      kubectl scale deployment httpd-frontend --replicas=3
+
 
 
 
