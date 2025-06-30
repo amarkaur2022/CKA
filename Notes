@@ -103,7 +103,8 @@ F: How to create the Pods?
 F:  How to delete the pod?
       kubectl delete pod webapp
       kubectl delete pods --all 
-F: 
+F: How to make the change in the pod?
+      kubectl edit pod podname
 F: How to Create a new Pod with the name of the rednis and with the image rednis123?
    Note: Use the POD-Defination YaAML file. And yes the image name is wrong
     kubectl run rednis --image=rednis123 --dry-run -o yaml
@@ -239,6 +240,9 @@ F: How to overright the label
       kubectl label --overwrite pod ngnix env=prod
 F: How to delete the Label
       kubectl label pod ngnix env-
+F: How to see/display the Labels 
+      kubectl get pods --show-labels 
+
 
 ____________________________________________________________________
                     DEPLOYMENT
@@ -276,7 +280,7 @@ _____________________________________________________________________
     replica: 
     selector:
 _____________________________________________________________________
-              LAB deployment
+              LAB 3 deployment
 
 F: How many pos are created
       kubectl get POD 
@@ -313,6 +317,7 @@ NOTE: If u forget to create a replica then use
       kubectl scale deployment httpd-frontend --replicas=3
 
 
+_____________________________________________________________________
 
 
 
