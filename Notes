@@ -135,7 +135,7 @@ F: How to show the labels
 --dry-run: It is only used to check th command wheather it is right or wrong and this is the 
   clint side command. The request will not go to the server 
 
-F: 
+ 
 
 ____________________________________________________________________
 
