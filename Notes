@@ -320,5 +320,13 @@ NOTE: If u forget to create a replica then use
 _____________________________________________________________________
 
 
+            Kubernetes services
+Kubernetes services enable the communication betwen the various components and with in the outside the application 
+it helps us to connect applications together 
 
+Types of services
+
+  1) NodePort
+  2) ClusterIP
+  3) LoadBalancer 
 
