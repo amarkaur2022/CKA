@@ -330,3 +330,7 @@ Types of services
   2) ClusterIP
   3) LoadBalancer 
 
+Curl: Curl is used to talk with the AIP server (u can send or get the data from the networl
+curl is a command-line tool for transferring data to or from a server using protocols like HTTP, HTTPS, etc.
+
+In Kubernetes, it is commonly used to:
