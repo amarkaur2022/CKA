@@ -334,3 +334,48 @@ Curl: Curl is used to talk with the AIP server (u can send or get the data from 
 curl is a command-line tool for transferring data to or from a server using protocols like HTTP, HTTPS, etc.
 
 In Kubernetes, it is commonly used to:
+_____________________________________________________________________
+What is a Namespace in Kubernetes?
+A Namespace in Kubernetes is a virtual cluster inside a real cluster.
+It helps you organize and isolate resources (like pods, services, etc.) within the same physical cluster.
+
+F: Why use Namespaces?
+    To separate environments (e.g., dev, test, prod)
+
+    To manage multiple teams or projects in one cluster
+
+    To apply resource limits and access control per group
+
+⚙️ Examples:
+default – for general use
+
+kube-system – for system processes
+
+dev, prod – custom namespaces
+
+🔑 In short:
+Namespace = A way to divide a Kubernetes cluster into separate, logical parts.
+______________________________________________
+
+    LAB 4 Namespaces 
+F: How many Namespaces exist on the system?
+    kubectl get namespaces 
+    kubectl get ns
+
+F: How many pods exist in the research namespace?
+    kubectl get pods --namespace=research
+    kubectl get pods --n=research
+
+F: Create a POD in the finance namepsace. Use the spec given below
+    kubectl run redis --image=redis -n=finance
+F: To see wheather the pod is created in the finance
+    kubectl get pod -n=finance
+
+F: Which namespace has the blue POD in it?
+    kubectl get ns 
+    kubectl get pods  --all-namespaces (this is used to display the namespaces AND all the pods
+    kubectl get pods -A
+
+
+
+
