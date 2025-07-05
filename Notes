@@ -367,26 +367,31 @@ NOTE: If an application wants to connect to a Redis database, it doesn’t need 
       It just connects to redis-service:6379, and the Service routes traffic to the correct Pod(s).
 _____________________________________________________________________
 What is a Namespace in Kubernetes?
-A Namespace in Kubernetes is a virtual cluster inside a real cluster.
-It helps you organize and isolate resources (like pods, services, etc.) within the same physical cluster.
+    A namespace is a way to divide a Kubernetes cluster into multiple virtual environments,(separate, logical parts)
+    like creating separate compartments for different teams, projects, or applications.
 
 F: Why use Namespaces?
-    To separate environments (e.g., dev, test, prod)
+   - To separate environments (e.g., dev, test, prod)
+   - To manage multiple teams or projects in one cluster
+   - To apply resource limits and access control per group
 
-    To manage multiple teams or projects in one cluster
+1) Isolation:(विभाजन और अलगाव)
+    - Namespaces provide logical isolation between groups of resources (like Pods, Services, Deployments).
+    - For example, two teams can each have a web-app running in separate namespaces (team-a and team-b) without interfering with each other.
 
-    To apply resource limits and access control per group
+2) Resource Scoping:
+    - Most Kubernetes resources (like Pods, Services, ConfigMaps) live within a namespace.
+    - Some resources (like Nodes, PersistentVolumes) are not namespaced.
 
-⚙️ Examples:
-default – for general use
+3) Access Control:
+    - Role-Based Access Control (RBAC) rules can be applied per namespace, giving fine-grained permissions.
 
-kube-system – for system processes
+4) Resource Quotas:
+    - Namespaces can have quotas (CPU, memory, number of objects) to prevent one team from using up all cluster resources.
 
-dev, prod – custom namespaces
-
-🔑 In short:
-Namespace = A way to divide a Kubernetes cluster into separate, logical parts.
-______________________________________________
+5) Default Namespace:
+    - If you don’t specify a namespace, Kubernetes uses the default namespace.
+______________________________________________________________________
 
     LAB 4 Namespaces 
 F: How many Namespaces exist on the system?
