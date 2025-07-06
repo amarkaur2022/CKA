@@ -27,7 +27,7 @@ CORE CONCEPT:
   5) Deployment:
       Tells Kubernetes how to create and manage Pods.
   6) Service:
-      Exposes Pod to the network and handels traffioc routing.
+      Exposes Pod to the network and handels traffic routing.
 _____________________________________________________________________________________
 Typical Use Case:
 - Bild your app in Dockers container. Then you use Kubernetes to:
@@ -47,7 +47,7 @@ COMPONENETS OF MASTER:
 - API Server:
     It Provide the interface (Command line Interface) also known as qubecontrol.
 - Schedular:
-    Assign node to newlc created Pods. ((Pod is a small Unit where the container run it. We have multiple nodes and like to run a new container.
+    Assign node to newly created Pods. ((Pod is a small Unit where the container run it. We have multiple nodes and like to run a new container.
     Which node will be assigned this work has been done by the schedular.)
 - ETCD:
     Key value, store having all cluster Data.
