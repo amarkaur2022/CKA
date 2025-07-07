@@ -412,6 +412,8 @@ F: Which namespace has the blue POD in it?
     kubectl get pods  --all-namespaces (this is used to display the namespaces AND all the pods
     kubectl get pods -A
 
+__________________________________________________________
 
+Imperative und Declarative 
 
 
