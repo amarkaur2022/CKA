@@ -365,6 +365,13 @@ curl is a command-line tool for transferring data to or from a server using prot
 
 NOTE: If an application wants to connect to a Redis database, it doesn’t need to know the IP of the Redis Pod.
       It just connects to redis-service:6379, and the Service routes traffic to the correct Pod(s).
+
+________________________________________________________________
+                LAB 3 Services
+
+
+
+
 _____________________________________________________________________
 What is a Namespace in Kubernetes?
     A namespace is a way to divide a Kubernetes cluster into multiple virtual environments,(separate, logical parts)
