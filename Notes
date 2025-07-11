@@ -367,12 +367,48 @@ NOTE: If an application wants to connect to a Redis database, it doesn’t need 
       It just connects to redis-service:6379, and the Service routes traffic to the correct Pod(s).
 
 ________________________________________________________________
-                LAB 3 Services
+                LAB 4 Services
+
+F: How many Services exist on the system?
+   In the current(default) namespace
+A:   Kubectl get service
+     kubectl get svc
+
+F: What is the type of the default kubernetes service?
+      kubectl get svc
+
+F: What is the targetport configured on the kubernetes service?
+      kubectl describe svc kubernetes
+
+F: How many labels are configured on the kubernetes service?
+     kubectl describe svc kubernetes
+
+F: How many Endpoints are attached on the kubernetes service?
+    kubectl describe svc kubernetes
+
+F: How many Deployments exist on the system now?
+   In the current(default) namespace
+    kubectl get deploy
+
+F: What is the image used to create the pods in the deployment?
+      kubectl describe deploy simple-webapp-deployment
 
 
+Create a new service to access the web application using the service-definition-1.yaml file.
+Name: webapp-service
+Type:       NodePort
+targetPort: 8080
+port:       8080
+nodePort:   30080
+selector:
+ name:      simple-webapp
 
-
-_____________________________________________________________________
+A:  ls
+    cat service-defination-1.yaml
+    vi  service-defination-1.yaml'(update the file) 
+    kubectl create -f service-defination-1.yaml
+    
+   _____________________________________________________________________
 What is a Namespace in Kubernetes?
     A namespace is a way to divide a Kubernetes cluster into multiple virtual environments,(separate, logical parts)
     like creating separate compartments for different teams, projects, or applications.
@@ -399,25 +435,37 @@ F: Why use Namespaces?
 5) Default Namespace:
     - If you don’t specify a namespace, Kubernetes uses the default namespace.
 ______________________________________________________________________
+              LAB 5 Namespaces 
 
-    LAB 4 Namespaces 
 F: How many Namespaces exist on the system?
-    kubectl get namespaces 
-    kubectl get ns
+      kubectl get namespaces 
+      kubectl get ns
 
 F: How many pods exist in the research namespace?
-    kubectl get pods --namespace=research
-    kubectl get pods --n=research
+      kubectl get pods --namespace=research
+      kubectl get pods --n=research
 
 F: Create a POD in the finance namepsace. Use the spec given below
-    kubectl run redis --image=redis -n=finance
+      kubectl run redis --image=redis -n=finance
+    
+
 F: To see wheather the pod is created in the finance
-    kubectl get pod -n=finance
+      kubectl get pod -n=finance
 
 F: Which namespace has the blue POD in it?
-    kubectl get ns 
-    kubectl get pods  --all-namespaces (this is used to display the namespaces AND all the pods
-    kubectl get pods -A
+      kubectl get ns 
+      kubectl get pods  --all-namespaces (this is used to display the namespaces AND all the pods
+      kubectl get pods -A
+
+F: What DNS Name should the Blue application use to access the database db-service in its own namespace-marketing
+   You can try it in the web application UUUI. USe port 6379
+      kubectl get pods -n=marketing
+      kubectl get svc -n=marketing
+
+F: What DNS Name should the Blue application use to access the database 'db-service' in the devnamespace
+   You can try it in the web application UUUI. USe port 6379
+      kubectl get svc -n=dev
+      
 
 __________________________________________________________
 
