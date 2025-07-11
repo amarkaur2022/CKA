@@ -472,3 +472,33 @@ __________________________________________________________
 Imperative und Declarative 
 
 
+
+__________________________________________________________
+                LAB 6 (Impariative Commands)
+F: Deploy a pod named nginx-pod using the nginx:alpine image.
+      kubectl run nginx-pod --image=nginx:alpine
+
+F: Deploy a redis pod using the redis:alpine image with the labels set to tier=db.
+      kubectl run redis --image=redis:alpine --labels="tier=db"
+
+F: Create a service named redis-service to expose the existing redis pod within the cluster on port 6379.
+      kubectl expose pod redis --port 6379 --name redis-service
+      kubectl get svc
+
+F: Create a deployment named webapp using the image kodekloud/webapp-color with 3 replicas.
+       kubectl create deployment webapp --image=kodekloud/webapp-color --replicas=3
+       kubectl get deploy
+
+F: Create a new pod called custom-nginx using the nginx image and run it on container port 8080.
+       kubectl run custom-nginx --image=nginx --port=8080
+
+F: Create a new namespace called dev-ns.
+        kubectl create namespace dev-ns
+
+F: Create a new deployment called redis-deploy in the dev-ns namespace with the redis image. It should have 2 replicas.
+        kubectl create deployment redis-deploy --image=redis --replicas=2 -n  dev-ns
+        kubectl get deployment -n dev-ns
+
+F: Create a pod named httpd using the image httpd:alpine in the default namespace.
+Then, create a service of type ClusterIP with the same name (httpd) that exposes the pod on port 80.
+      kubectl run httpd --image=http:alpine --port 80 --expose=true 
