@@ -83,6 +83,9 @@ ETCD:
 
 
 _____________________________________________________________________________________
+NOTE: if we not move a one pod from one node to another node.
+      we can only delete the pod and create a new pod on anothe node where u want 
+
 
 F: How to get the help for the commands 
     kubectl run --help
@@ -98,7 +101,6 @@ F: What does the READY column in the output of the kubectl get Pods commans indi
 F: 
 F: How to create the Pods?
     kubectl run ngnix --image=ngnix
-   
 
 F:  How to delete the pod?
       kubectl delete pod webapp
@@ -282,7 +284,7 @@ _____________________________________________________________________
 _____________________________________________________________________
               LAB 3 deployment
 
-F: How many pos are created
+F: How many pods are created
       kubectl get POD 
 F: HOw many replica set are created 
       kubectl get rs
@@ -502,3 +504,41 @@ F: Create a new deployment called redis-deploy in the dev-ns namespace with the 
 F: Create a pod named httpd using the image httpd:alpine in the default namespace.
 Then, create a service of type ClusterIP with the same name (httpd) that exposes the pod on port 80.
       kubectl run httpd --image=http:alpine --port 80 --expose=true 
+__________________________________________________________________
+
+Chapter 2 Schudeling 
+
+LAB 
+
+F: A pod definition file nginx.yaml is given. Create a pod using the file.
+   Only create the POD for now. We will inspect its status next.
+      kubectl get pods
+      ls (to see the files)
+      cat nginx.yaml (display all the data from the file)
+      kubectl create -f nginx.yaml (to create a pod though the file)
+      kubectl get pods
+
+F: What is the status of the created POD?
+      kubectl get pods 
+
+F: Why the pod is the pending state?
+   Inspect the environment for various kubernetes control plane components.
+A:    kubectl describe pod nginx
+      kubectl get pods -n kube-system
+
+F: Manually schedule the pod on node01.
+   Delete and recreate the POD if necessary.
+      ls
+      vi nginx.yaml (make changes nodeName: node01)
+      kubectl get pods 
+      kubectl  get pods --watch (to watch the pods wheather it make any changes )
+      kubectl replace --force -f n
+F: Now schedule the same pos on the controlplane node
+   Delete and recreae the pod if necessary
+      kubectl get pods 
+      vi nginx.yaml(make the changes) 
+      kubectl replace --force -f nginx.yaml
+      kubectl get pods
+      kubectl get pods -o wide 
+
+      
