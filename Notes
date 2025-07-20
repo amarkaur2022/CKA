@@ -583,8 +583,42 @@ F: A ReplicaSet definition file is given replicaset-definition-1.yaml. Attempt t
         kubectl get rs
 
 ___________________________________________________________________
-tant and tolaration 
+tant and tolaration:
 
-how to see wheather the tent are attached there 
-    kubectl describe nodes worker01 | less
+tant and tolerations areused to set the restrictions.
+On which Node the pod can be scheduled
+
+Tains and toleration doesnot tell the pod to go to a particuler Node,
+instead tell the node to accept only pods with certain tolerations
+NOTE: 
+the tanits are set on Nodes.
+the toleration are set on the Pods
+Now the 
+
+Syntax:   kubectl taint nodes name key=value:taint-effect
+eg.       kubectl taint nodes node1 app=blue:Noschedule
+
+1) taint-effect: 
+    defines what would be happend to the pods, if they do not tolerates the taint there are three taint effects.
+    - NoSchedule:
+      Which means that the pod will not be scheduled on the node.
+    - PreferNOSchedule:
+      Which means the system willl try to avoid placing a pod on the nodes and that is no gauranted.
+    - NoExectute:
+      Which menas that the new pod will not be scheduled on the node and existing pods on the node. if any will be evicted
+      means they do not tolerate the taints 
+
+Toleration :
+      Tolaration are added to pods. To add the toleration to pods first pull the defination file and change the tolerations: under spec:
+      How to write in the file:
+      toleration: 
+      key:"app"
+      operator: "Equal"
+      value:"blue"
+      effect: "NoSchedule"
+
+F:   how to see wheather the tent are attached there 
+     kubectl describe nodes worker01 | less 
+
+ 
 
