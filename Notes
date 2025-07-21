@@ -619,6 +619,87 @@ Toleration :
 
 F:   how to see wheather the tent are attached there 
      kubectl describe nodes worker01 | less 
+__________________________________________________________________
+      Lab 8 Taint and toleration 
 
- 
+ F: How many nodes exist on the system?
+    Including the controlplane node.
+ A:    kubectl get nodes
+
+ F: Do any taints exist on node01 node?
+ A:     kubectl describe node node01
+
+F: Create a taint on node01 with key of spray, value of mortein and effect of NoSchedule
+A:      kubectl taint node node01 spray=mortein:NoSchedule
+        kubectl describe node node01  (to check wheather the taints are created are not)
+
+F:  Create a new pod with the nginx image and pod name as mosquito.
+A:      kubectl run mosquito --image=nginx
+
+F: What is the state of the POD?
+A:      kubectl get pods
+
+F:  Why do you think the pod is in a pending state?
+A:      kubectl describe pod mosquito
+
+F: Create another pod named bee with the nginx image, which has a toleration set to the taint mortein.
+   Image name: nginx
+   Key: spray
+   Value: mortein
+   Effect: NoSchedule
+   Status: Running
+
+A:      kubectl run bee --image=nginx --dry-run=client -o yaml
+        kubectl run bee --image=nginx --drs-run=client -o yaml > bee.yaml (recreate a file)
+        vi bee.yaml
+              tolerations:  
+               - key: spray
+               value: mortein
+               effect: NoSchedule
+               operator: Equal
+        kubectl create -f bee.yaml
+
+F: Observe that the bee pod has been scheduled on node node01 due to the toleration that has been configured for the pod.
+        kubectl get pods 
+        kubectl get pods --watch
+
+F: Do you see any taints on controlplane node?
+A:       kubectl describe pod controlplane
+
+F: Remove the taint on controlplane, which currently has the taint effect of NoSchedule.
+A:       kubectl taint node controlplane node-role.kubernetes.io/control-plane:NoSchedule-
+
+F: What is the state of the pod mosquito now?
+         kubectl get pods 
+
+F: Which node is the POD mosquito on now?
+          kubectl get pods -o wide
+
+
+__________________________________________________________
+Node Selector 
+  A node selector is a simple way to tell a Pod which nodes it can run on based on labels.
+      Nodes have labels (e.g., disktype=ssd).
+      Node selector in a Pod specifies these labels.
+      Kubernetes will schedule the Pod only on nodes matching those labels.
+
+We can select the pods that the pod run only on the specific nodes: there are two ways to doe that
+1) Using the node selector (Simple and eiser method)
+    - open the pod defination yaml file 
+    -  to limt this pod we add a new propertie as a     nodeSelector  under spec: section
+    -  you have to write nodeSelector: Large (where the large comes from)
+    -  you have to declare the large as a label and selector 
+    -  to specify the labels on the Nodes 
+
+Syntax:      Kubectl label nodes <node-name> <label-key> = <label-value>
+eg:          lubectl label nodes node-1 size=Large
+
+    - this is very simple example What is when we want to put the pod on the not small and not on the large Node
+      In this case we have to use NODE AFFINITY
+------------------------------------------------------
+NODE AFFINITY:
+
+
+2)
+
 
