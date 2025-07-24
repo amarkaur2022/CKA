@@ -699,7 +699,46 @@ eg:          lubectl label nodes node-1 size=Large
 ------------------------------------------------------
 NODE AFFINITY:
 
+Node Affinity is used to control which nodes a Pod can be scheduled on--- based on the labels assigned on the nodes.
+This is the best to tell the Kubernetes Scheduler.
+eg i want this pod run on the nodes that  matches the things(location , speicher, hardware.......)
 
-2)
+🔸 How is it Different from nodeSelector?
 
+Feature	            nodeSelector	            nodeAffinity
+Type	              Simple key-value match	  Advanced expressions supported
+Flexibility	        Limited	                  More flexible (AND, OR, ranges)
+Priority Support	  No	                      Supports soft rules (preferred)
+
+
+🔸 Types of Node Affinity
+1) requiredDuringSchedulingIgnoredDuringExecution(Hard rule)
+        Pod will not be scheduled if node doesn't match
+        Once running, the rule is ignored
+
+-------   DuringScheduling: is the state where a pod does not exist and created for the first time.
+
+F: What happend what if the nodes  with matching labels are not available or forgot it ?
+A: now i have to use the node Affinity. If i used 
+    1) requiredDuringSchedulingIgnoredDuringExecution  (Hard rule)
+        the Scheduler will mandate that the pod be placed on a node with the given affinity rules 
+        if it cannot find one, the pod will not be scheduled.
+NOTE: this type is ued when the placement of pod is crucial. if the maching nodes does not exists the pod will not be scheduled.
+
+
+---- if the placement of Pod is less important than running the workload itself in the t case we used
+    2)  preferredDuringSchedulingIgnoredDuringExecution   (Soft rule)
+          where the matching node is not found. the Scheduler will not simply ignore node affinity rules and place the pod of any node.
+NOTE: this is the way to tell the scheduler 
+
+---------- DuringExecution:  is a state where the pod has been running and a chane is mede in the Environment that affects on the node affinity 
+          Such as change in the label of the node.
+eg. Some one remove the label, but we are not able to change the labels on the Node.
+
+---- if you want to change any Pod that are running on Nodes 
+
+        Kubernetes tries to schedule to a matching node, but can skip if none match
+
+3)  requiredDuringSchedulingRequiredDuringExecution (not stable)
+        Rule is enforced both at scheduling and runtime
 
