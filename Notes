@@ -741,4 +741,69 @@ eg. Some one remove the label, but we are not able to change the labels on the N
 
 3)  requiredDuringSchedulingRequiredDuringExecution (not stable)
         Rule is enforced both at scheduling and runtime
+___________________________________________________
+
+____________________________________________________
+LAB 9 
+_____________________________________________________
+Daemon Set 
+  -  Daemon sets are like the replica sets
+  -  It helps you to deploy multiple instances of pods.
+  -  But it runs one copy of pod on each node in your cluster.
+  -  Whenever the new  node is added to the cluster a replica of the pod is automatically added to that node.
+  -  And when a node is removed then the pod is automatocally removed.
+  -  It ensure that the one copy of the  pods is always present in all nodes in the cluster 
+
+NOTE: runs one copy of pod---- What is in the pod --- What it do 
+🔍 What is inside that Pod?  
+      The Pod contains whatever you define in the DaemonSet YAML configuration.
+      Typically, DaemonSets are used to run background or system-level tasks on every node.
+
+🔧 Common examples of what's inside:
+      -  Log collectors (e.g., Fluentd, Filebeat)
+      -  Monitoring agents (e.g., Prometheus Node Exporter)
+      -  Security agents or antivirus
+      -  Network plugins or storage daemons
+Good example is
+  (Kube-proxy) for every workerNode 
+  (Weave-net) for Networking Solution agent on each Node in a Cluster 
+____________________________________________________________
+F:  How many DaemonSets are created in the cluster in all namespaces?
+    Check all namespaces
+A:   kubectl get Daemonsets -A
+
+F: Which namespace is the kube-proxy Daemonset created in?
+A:   kubectl get Daemonsets -A
+
+F: Which of the below is a DaemonSet?
+A:   kubectl get all --all-namespaces
+     kubectl describe Daemonsets kube-proxy -n kube-system
+
+F: On how many nodes are the pods scheduled by the DaemonSet kube-proxy?
+A:   kubectl describe daemonset kube-proxy --namespace=kube-system
+
+F: What is the image used by the POD deployed by the kube-flannel-ds DaemonSet?
+A:   kubectl describe daemonset kube-flannel-ds --namespace=kube-flannel 
+
+F: Deploy a DaemonSet for FluentD Logging.
+   Use the given specifications.
+   Name: elasticsearch
+   Namespace: kube-system
+   Image: registry.k8s.io/fluentd-elasticsearch:1.20
+A: - kubectl create deployment elasticsearch -n kube-system --image=k8s.gcr.io/fluentd-elasticsearch:1.20 --dry-run=client -o yaml 
+   - kubectl create deployment elasticsearch -n kube-system --image=k8s.gcr.io/fluentd-elasticsearch:1.20 -o yaml > fluent.yaml
+        MAKE CHANDES IN THE FILE #
+        kind: Daemonset 
+        delete the replica/delete line 13(strategy {})/ lat line status:{}
+    -  kubectl create -f fluentd.yaml
+    -  kubectl get ds -n kube-system
+
+
+
+    
+    kubectl create -f fluentd.yam
+
+
+
+
 
