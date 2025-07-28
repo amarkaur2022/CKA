@@ -801,9 +801,58 @@ A: - kubectl create deployment elasticsearch -n kube-system --image=k8s.gcr.io/f
 
 
     
-    kubectl create -f fluentd.yam
+______________________________________________
+  Static pod (Chapter 76)
+
+Static pods are directly managed by the kubectl on a specific node, rather than the kubernetes API server/scheduler
+All the master Nodes are the Components of the static pod 
+- Kube/API-server
+- Kube Scheduler
+- Kube-controller-manager
+- ETCD
+- Cloud Controll Manager(Optional)
+
+F: What happend when all the above Components  in the cluster  are not there. How kubelet(Worker Node) create the Pods USW.....
+A:  -  The Kubectl can manage the Node Independently
+    -  we Installec the Kubelet and docker(Containers) Installed 
+    -  There is no kubernetes cluster and all the Components of the Master Nodes
+    -  To create a Pod we need the detail of the Pod in a Pod defination file.
+    -  Now we have to configure the Kubelet to read Directory on the server 
+    -  Place the defination file in htis directorsy
+    -  It checks and read the file and create the Pods on the host.
+    - If the application crasch the kubectl restart it.
+    -  If changes are made the kubelet recreate the pod 
+    - If remove the file, the pod will be deleted 
+    - THESE PODS ARE KNOWN AS STATIC PODS
+NOTE : we cannot create the pods with the help of relicas, deployments usw----
+
+IMPortant 
+    1) View and Config theis option
+    2) use Methods to set the cluster 
+        -  Check the pod-manifest-path in the kubelet services file 
+        -  When not find look at the config file 
+        -  Within the Configfile find StaticPodPath
+        -  We Cannot use the Kubectl command because it is used with the Api-server 
+        -  
 
 
+_________
+F: How many static pods exist in this cluster in all namespaces?
+A: kubectl get pods -A
+      To know that these are the static PODs
+      The Pod name is extened/append with the node name.
+F: How to see the static pod in detail 
+    kubectl get pod coredns-77456fff-brwnd -n kube-system -o yaml 
 
+F: Which of the below components is NOT deployed as a static pod?
+A:    kubectl get pods -A
 
+F: Which of the below components is NOT deployed as a static POD?
+A:   kubectl get pods -A
+ 
+F: On which nodes are the static pods created currently?
+A: kubectl get pods -A
+
+F: How to see where is the config file is srtored (I think it is falsch )
+AAAA: kubectl get configmap -n kube-system kubeadm-config -o yaml
 
