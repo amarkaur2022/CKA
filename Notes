@@ -768,6 +768,7 @@ Good example is
   (Kube-proxy) for every workerNode 
   (Weave-net) for Networking Solution agent on each Node in a Cluster 
 ____________________________________________________________
+      LAB 10
 F:  How many DaemonSets are created in the cluster in all namespaces?
     Check all namespaces
 A:   kubectl get Daemonsets -A
@@ -837,6 +838,8 @@ IMPortant
 
 
 _________
+
+LAB 11
 F: How many static pods exist in this cluster in all namespaces?
 A: kubectl get pods -A
       To know that these are the static PODs
@@ -861,7 +864,8 @@ __________________________________
 Priority
 
 
-
+_______
+LAB 12
 ______
 Multiple schedular 
 
@@ -879,9 +883,56 @@ Note:  If the scheduler was not configureed correctl, then the pod will continue
        pending state(look Pods logs under Kubectl describe command)
        an if good is it will in the running state.
 
-F: In Multiple schedudler u have to do teo things 
-    - create a Schedular yaml file 
 
-    - 
+F: How to look that which schedular is picked up 
+    kubectl get events -o wide(Source)
+F: If we have the running issues how to see the logs ?
+    kubectl logs my-custom-schedular --name-space=kube-system
+_______________________________________________________________________________________
+          LAB 13
+F: What is the name of the POD that deploys the default kubernetes scheduler in this environment?
+A:    Kubectl get pos -A
+
+F: What is the image used to deploy the kubernetes scheduler?
+   Inspect the kubernetes scheduler pod and identify the image
+A:    kubectl describe pod kube-schedular-controlplane -n kube-system
 
 
+F: We have already created the ServiceAccount and ClusterRoleBinding that our custom scheduler will make use of.
+   Checkout the following Kubernetes objects:
+      ServiceAccount: my-scheduler (kube-system namespace)
+      ClusterRoleBinding: my-scheduler-as-kube-scheduler
+      ClusterRoleBinding: my-scheduler-as-volume-scheduler
+Run the command: kubectl get serviceaccount -n kube-system and kubectl get clusterrolebinding
+A:   kubectl get sa my-scheduler -n kube-system    ( to check the service account)
+
+F: Please create a ConfigMap that the new scheduler will utilize, implementing the concept of ConfigMap as a volume.
+   A ConfigMap definition file named my-scheduler-configmap.yaml has
+   been provided at the /root/ path. This file will be used to create a
+   ConfigMap with the name my-scheduler-config, utilizing the content
+   from the file located at /root/my-scheduler-config.yaml.
+A:     kubectl create configmap my-scheduler-configmap --from-file=/root/my-scheduler-config.yaml -n kube-system
+       kubectl get configmap my-scheduler-configmap -n kube-system
+
+
+F: Deploy an additional scheduler to the cluster following the given specification.
+    Utilize the manifest file located at /root/my-scheduler.yaml. Ensure that you are using the same image as that of the default Kubernetes scheduler.  
+    To verify the image used by the default Kubernetes scheduler, execute the following command:
+    kubectl describe pod kube-scheduler-controlplane --namespace=kube-system
+Note : Deploying the new scheduler may take a few seconds to reach a running state.
+A.     kubectl get pods -A
+       kubectl describe pods my-scheduler-controlplane -n kube-system | grep Image  (to see only imagename)(copy the image name)
+       vi my-scheduler.yaml (change the image name)
+       kubectl create -f my-scheduler.yaml( to create the pod as yaml file) 
+        kubectl get pods  -n kube-system( to see the yaml file wheather the file is created or not) 
+
+F:   Please modify the provided Pod manifest file located at /root/nginx-pod.yaml 
+     to specify that the Pod should be scheduled by your custom scheduler, which is named my-scheduler.
+     After updating, create the Pod in the default namespace and verify it is scheduled by your custom scheduler.
+Note : The pod may take a few seconds to reach a running state.
+
+A: ls
+   vi nginx-pod.yaml( add the schedular name under spec:)
+   kubectl create -f nginx-pod.yaml
+  (u have to create the command because the yaml file is always saved in the local and pods are on the cluster thats why u have to upadate the cluste through this command)
+    kubectl get pods (check wheather the pods is running or not) 
