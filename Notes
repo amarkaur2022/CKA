@@ -856,3 +856,18 @@ A: kubectl get pods -A
 F: How to see where is the config file is srtored (I think it is falsch )
 AAAA: kubectl get configmap -n kube-system kubeadm-config -o yaml
 
+__________________________________
+
+Priority
+
+
+
+______
+Multiple schedular 
+
+We use more than one Schedular in a Cluster.
+Every Schedular uses a seprate Configuration file and each file having its own Schedular name(my-schedular-2.service)
+F: How its work if u deploy the schedular as a pod?
+A: We create a pod defination file and specifiy the kubeconfig property
+
+
