@@ -936,3 +936,70 @@ A: ls
    kubectl create -f nginx-pod.yaml
   (u have to create the command because the yaml file is always saved in the local and pods are on the cluster thats why u have to upadate the cluste through this command)
     kubectl get pods (check wheather the pods is running or not) 
+_________________________________________
+      Admission Controllers      (Securing kubernetes)
+
+-  We are running the commands from the command lines.
+-  Kubectl utility to perform various kind of Operations on our kubernetes cluster.
+1) we send a request to create a pod ---> the request goes to API server ---> then the pod is created ---> ths information is saved in the Etcd database
+2)  when request hit the API server ---> goes through an anthentication process ---> create a pod 
+    (authentication process is responsible identify the user who send the request and making sure the user is valid 
+3) kubectl ---> Authentication ---> Authorization ---> create a pod 
+    request goes to Authorization process check if the user has permission performed that operation this is done throught th e role-based access controls.
+F: What is role-based control:
+    we can place different kind of restrictions such as allow or deny with particular role like create list or delete depüloyments or services.
+F: Why we use the Admission Controllers
+    - Security
+    - Policy Enforcement
+    - Automatic Modification
+    - Consistency
+4) kubectl ---> Authentication ---> Authorization ---> Admission Controllers ---> create pod 
+
+-  Admission controllers has additional operations before the pod is created 
+      -- Always pullimages (when the pod is created it will pull the images)
+
+      -- DefaultStorageClass ( observe the creation of the PVC automatically add default storage class to them)
+
+      -- EventRateLimit
+
+      --NAmespaceExists
+
+    -- NamespaceAutoProvision (create automatically the namespace if it doesnot exists)
+
+eg..  We craete a pod with name nginx and image name is also nginx and in the namespace blue 
+      the namespace will not be find in the it will be rejected 
+       kubectl ---> Authentication ---> Authorization ---> Admission Controllers checks wheather the namspace is find when yes it created a pod otherwise it will be rejected
+
+
+F: How to see the enable Admission Controller bydefault 
+    kube-apiserver-h | grep enable-admission-plugins
+
+_________________
+LAB  14
+
+F:  Which admission controller is not enabled by default?
+A:    kubectl get pods -n kube-system
+      kubectl exec -it kube-apiserver-controlplane -n kube-system --kube-apiserver -h | grep 'enable-admission-plugins'
+
+F: Which admission controller is enabled in this cluster which is normally disabled?
+      vi /etc/kubernetes/manifests/kube-apiserver.yaml
+      grep enable-admission-plugins /etc/kubernetes/manifests/kube-apiserver.yaml
+
+F: Create an nginx pod in the blue namespace. Please note that the blue namespace does not currently exist. Do not create the blue namespace at this time.
+   Execute the following command to deploy a pod using the nginx image within the blue namespace:
+
+F: 
+      vi /etc/kubernetes/manifests/kube-apiserver.yaml 
+      kubectl get ns
+
+F:  Delete the existing PVC named myclaim:
+      kubectl delete pvc myclaim
+
+F: Reapply the same manifest:
+      kubectl apply -f myclaim.yaml
+F: Check the status of the PVC:
+    kubectl get pvc myclaim
+
+F:   Since the kube-apiserver is running as pod you can check the process to see enabled and disabled plugins.
+A:   ps -ef | grep kube-apiserver | grep admission-plugins
+
