@@ -868,6 +868,20 @@ Multiple schedular
 We use more than one Schedular in a Cluster.
 Every Schedular uses a seprate Configuration file and each file having its own Schedular name(my-schedular-2.service)
 F: How its work if u deploy the schedular as a pod?
-A: We create a pod defination file and specifiy the kubeconfig property
+A:  -  We create a pod defination file and specifiy the kubeconfig property
+    -  Under Sspec: Conatiner:  Command: write the path of the config file.
+    -  that has the authentication information to connect to the kubernetes API server.
+    -  create a each Scheduler as  yaml file and write the (LleaderElection) 
+    -  leader erection is used when u have multiple copies of the scheduler running on the different master node.
+    -  If multiple copies of the same Scheduler are running on different nodes, only one can be activ at a time 
+       and thats why the leaderElection help who will lead the scheduling activities.
+Note:  If the scheduler was not configureed correctl, then the pod will continue to remain in a 
+       pending state(look Pods logs under Kubectl describe command)
+       an if good is it will in the running state.
+
+F: In Multiple schedudler u have to do teo things 
+    - create a Schedular yaml file 
+
+    - 
 
 
