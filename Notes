@@ -1002,4 +1002,26 @@ F: Check the status of the PVC:
 
 F:   Since the kube-apiserver is running as pod you can check the process to see enabled and disabled plugins.
 A:   ps -ef | grep kube-apiserver | grep admission-plugins
+______________________________________________
+Validating Controller (how we can controll our Admission Controller)
+example Namespace:
+It can  help valdate if a namespace already exists, and reject the request when it doesnot exists
 
+There are two type of bildin Admission Controller 
+1) Mutating Admission Controller 
+      are those that can change the request 
+      generally, mutating admission Controller are invoked first followed by valadating admission Controllers.if it was run th eother way then it will always be rejected.
+
+2) Valaditing Admission Controller
+      are those that can validate the request and allow or deny it and 
+      there may be Admission controller that can both that can mutate a request as well as Validate the request
+
+We can also create our own Admission Controller. 
+there are two special external admission Controller availabe
+
+1) MutatingAdmissionWebhook
+2) ValidatingAdmissionWebhook
+
+
+
+-
