@@ -1022,6 +1022,12 @@ there are two special external admission Controller availabe
 1) MutatingAdmissionWebhook
 2) ValidatingAdmissionWebhook
 
-
+F: What is a webhook
+    it is a service on the server to create our own code own logic for Admission Controll
+    we can configure the webhook to point andit hosted ob in the kubernetes cluster or outside our server
+    When i send the request it always hit the webhook ---> make admission webhook server ---> by passing Admission Review object ---> json format
+    it the request is allowed it will be TRUE and if it rejected it will be FAULT
+F: How do we set this up 
+A:   depoly the webhook server with own logic and configure the webhook on the kubernetes by creating the webhook configuration 
 
 -
