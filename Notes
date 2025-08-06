@@ -1031,3 +1031,54 @@ F: How do we set this up
 A:   depoly the webhook server with own logic and configure the webhook on the kubernetes by creating the webhook configuration 
 
 -
+____________________________
+
+
+____________________________
+
+Application Logs
+Various loggin mechansims in Kubernetes
+we create a pod with the same Docker image using the pod defination file 
+
+F: How to loggin Docker?
+    docker run kodekloud/event-simulator
+
+F: If i run the docker container in the background in a detechmode using -d option, I would see the logs,
+    docker -d kodekloud/event - simulator 
+
+F: If i wolud like see the log in the 
+      docker logs -f ecf   (-f display the live log trail)
+
+NOTE: we create a pod with the same Docker image using the pod defination file once the pod is running, we can view the logs 
+    -  kubectl create -f event-simulation.yaml (create a podd)
+
+    -  kubectl logs -f event-sim ( see the log files)
+       
+
+If the multiple conatiners in the pod you must specify the name of the conatiner to see the log file 
+    -    kubectl logs -f event-simulator-pod  event-simulator 
+          - event-simulator-pod: this is the name of the pod 
+          - event-simulator: this is the name of the first container in the pod 
+
+________________________________________
+LAB 
+
+F:  To see the logs?
+A:      kubectl logs webapp-1
+
+F:   We have deployed a new POD - webapp-2 - hosting an application. Inspect it. Wait for it to start.
+A:      kubectl logs webapp-2 event-simulator ( it there are two container are running on the pod then write the name of the container to see the logs)
+
+_______________________________________________
+Rolling Updates and Rollbacks in a Deployment
+
+F:  What is rollout and versioning in Deployment?
+A:    -  When u first create a deployment, It triggers a rollout
+      -  A new Rollout create a new deployment revision,
+      -  In future the container is updated to a new one, a new rollout is triggered and 
+      -  new deployment revision is ceated 
+
+
+
+
+
