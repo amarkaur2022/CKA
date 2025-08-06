@@ -1074,9 +1074,9 @@ Rolling Updates and Rollbacks in a Deployment
 
 F:  What is rollout and versioning in Deployment?
 A:    -  When u first create a deployment, It triggers a rollout
-      -  A new Rollout create a new deployment revision,
+      -  A new Rollout create a new deployment revision, (revision 1)
       -  In future the container is updated to a new one, a new rollout is triggered and 
-      -  new deployment revision is ceated 
+      -  new deployment revision is ceated  (_Revision 2) 
 
 
 
