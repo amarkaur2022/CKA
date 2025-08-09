@@ -1135,6 +1135,7 @@ F:     Run the script curl-test.sh again. Notice the failures. Wait for the new 
 A:               ./curl-test.sh
 _____________________________________________________________
 Commands and Arguments in Dockers
+BYDEFAULT it sleep s for 5 seconds
 
 To run a docker containers 
       - docker run ubuntu( to run the instance and image immediadely)
@@ -1149,4 +1150,27 @@ F: What we run the conatiners
       - when it completed its wtask it exists 
 Note   the Container only lives as long as the process inside it is alive,
       if the website inside the conatiner is stopped or crashes, the container exits 
+
+F: We can also do it automattically that when th container run the sleep command will run/invoke  automaticallly 
+     -  We have to save in the startup.
+     -  TRNTRYPOINT is the command thet is run at startup 
+     -  CMD  is the default parameter passed to the command 
+     -  the entry point instruction is a command instruction thet you can specify the programm that will run when the containers starts
+     -  ARGS option in the pod defination file we override the cms instruction in the docker file 
+    
+____________________________________________________________
+  Commands and Arguments in Kubernetes 
+
+      -  CMD  is the default parameter passed to the command 
+      -  the entry point instruction is a command instruction thet you can specify the programm that will run when the containers starts
+      -  ARGS option in the pod defination file we override the cms instruction in the docker file 
+F: What you do if u would like to override the Entry point 
+      -  under spec: --> containers: ---> name: --> Image : 
+      -  command: [ "sleep2.0" ]   ----------    Entrypoint
+      -  args: [ "10" ]  ----- CMD
+- You have to create apod yaml file so that u can change the Manual sleep time 
+-  
+______________________________________________________
+        LAb 
+
 
