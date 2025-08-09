@@ -1134,5 +1134,19 @@ F:     Run the script curl-test.sh again. Notice the failures. Wait for the new 
       Execute the script at /root/curl-test.sh.
 A:               ./curl-test.sh
 _____________________________________________________________
-Application Commands 
+Commands and Arguments in Dockers
+
+To run a docker containers 
+      - docker run ubuntu( to run the instance and image immediadely)
+      - docker PS (list to see the running containers)
+      -  docker ps -a (list all the conatiners including stopped containers)
+
+F: What we run the conatiners 
+      - Containers have a specific task/ process 
+      -  to run a host an instance of a web server 
+      -   application server or a database 
+      -  or simpoly to carry out some computation or analysis.
+      - when it completed its wtask it exists 
+Note   the Container only lives as long as the process inside it is alive,
+      if the website inside the conatiner is stopped or crashes, the container exits 
 
