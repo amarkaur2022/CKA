@@ -1173,4 +1173,39 @@ F: What you do if u would like to override the Entry point
 ______________________________________________________
         LAb 
 
+F:  How many PODs exist on the system?
+    In the current(default) namespace
+A:        kubectl get pods 
 
+F:  What is the command used to run the pod ubuntu-sleeper?
+A:        kubectl describe pod ubuntu-sleeper
+          cat ubuntu-sleeper (look at under container)
+
+F:   
+A:        cat ubuntu-sleeper-2.yaml
+          vi  ubuntu-sleeper-2.yaml (make the changes under spec write command: [ "sleep","5000" ]
+          kubectl create -f  ubuntu-sleeper-2.yaml
+         kubectl describe pod ubuntu-sleeper-2
+
+F:   Create a pod using the file named ubuntu-sleeper-3.yaml. There is something wrong with it. Try to fix it!
+     Note: Only make the necessary changes. Do not modify the name.
+A:         cat ubuntu-sleeper-3.yaml
+           vi ubuntu-sleeper-3.yaml (make the changes "1200")
+           kubectl create -f ubuntu-sleeper-3.yaml
+           kubectl describe pod ubuntu-sleeper-3 (only to check wheather all the things are right )
+
+F:  Update pod ubuntu-sleeper-3 to sleep for 2000 seconds.
+    Note: Only make the necessary changes. Do not modify the name of the pod. Delete and recreate the pod if necessary.
+A:         kubectl edit pod ubuntu-sleeper-3 (change the data but it gives error u copy the path)
+           cat  /tmp/kubectl-edit-180931990.yaml (write the path) it make the changes
+          kubectl replace --force -f /tmp/kubectl-edit-180931990.yaml (now receate the pod)
+
+F: Inspect the file Dockerfile given at /root/webapp-color directory. What command is run at container startup?
+A:         cat /root/webapp-color/Dockerfile
+
+F: Inspect the file Dockerfile2 given at /root/webapp-color directory. What command is run at container startup
+A:          cat /root/webapp-color/Dockerfile2
+
+F: 
+
+              
