@@ -1167,7 +1167,7 @@ ____________________________________________________________
 F: What you do if u would like to override the Entry point 
       -  under spec: --> containers: ---> name: --> Image : 
       -  command: [ "sleep2.0" ]   ----------    Entrypoint
-      -  args: [ "10" ]  ----- CMD
+      -  args: [ "10" ]            ----------    CMD
 - You have to create apod yaml file so that u can change the Manual sleep time 
 -  
 ______________________________________________________
@@ -1208,11 +1208,74 @@ A:          cat /root/webapp-color/Dockerfile2
 
 F:   Inspect the two files under directory webapp-color-2. What command is run at container startup?
      Assume the image was created from the Dockerfile in this directory.
-A:           ls webapp-color-2
-              cat webapp-color-2
+A:         ls web-color-2
+             cat web-color-2/Docketfile          (First we create an image and then we use this in the yaml file)
+             cat web-color-2/webapp-color-pod.yaml
+             (The command will alwyas override the Entrypoint)
+              Entrypoint Overwrite the ---> command
+              CMD  overwrite the  args
+
+
+F:  Inspect the two files under directory webapp-color-3. What command is run at container startup?
+    Assume the image was created from the Dockerfile in this directory.
+A:           ls web-color-3
+             cat web-color-3/Docketfile          (First we create an image and then we use this in the yaml file)
+             cat web-color-3/webapp-color-pod.yaml
+             (The command will alwyas override the Entrypoint)
+
+F:  Create a pod with the given specifications. By default it displays a blue background. Set the given command line arguments to change it to green.
+A:          kubectl run webapp-green --image=kodekloud/webapp-color --dry-run=client -o yaml
+            kubectl run webapp-green  --image=kodekloud/webapp-color --  --color green
+            kubectl describe pod webapp-green
+_________________________________________________
+ENV Variables in Kubernetes 
+
+To set an variable Environment variable, use ENV property.
+    -  env: is an Arry and every property starts - dash indicating an item in the array .
+    -  each item hase a name and a value of properties 
+    -   the naem is the ENV variable (avilable in a container) and value is its value 
+
+There are three ways to setting the Environment variables 
+    -  plain key Value     
+          eg  env: 
+                -   name: APP_COLOR
+                    value: pink
+    -  ConfigMap
+          eg env: 
+                -   name: APP_COLOR
+                    valueFrom: 
+                        configMapKeyRef:
+    -  Secrets
+          eg  env: 
+                -   name: APP_COLOR
+                    valueFrom: 
+                        secretKeyRef:
+
+__________________________________________
+create ConfigMaps:
+
+F: How to Configur the data in kubernetes? 
+   when u have a lot of pod definations file it will be difficult to manage the environment data stored within the queries file
+
+  In Kubernetes, a ConfigMap is an object used to store configuration data as key-value pairs.
+  In Configmaps we can change the settings without rebuilding the conatiner image.
+     
+  There are two phases in Configmap
+      - create the config map
+      - inject them into pod 
+  
+  There are two ways to create an 
+      -  kubectl create configmap\  (Imperative)
+              sitConfigname --from-literals=APP_COLOR=blue
+                            --from-literals=PASSWORD=&Harekam0003
+        another way is to input the configuration data is through a file 
+              from file option to specify a path  to the file that contains the request data.
+      -  kubectl create -f configmap  (Declarative)
 
 
 
-F: 
+      
 
-              
+
+
+    
