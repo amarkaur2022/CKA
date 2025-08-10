@@ -1203,8 +1203,15 @@ A:         kubectl edit pod ubuntu-sleeper-3 (change the data but it gives error
 F: Inspect the file Dockerfile given at /root/webapp-color directory. What command is run at container startup?
 A:         cat /root/webapp-color/Dockerfile
 
-F: Inspect the file Dockerfile2 given at /root/webapp-color directory. What command is run at container startup
+F:   Inspect the file Dockerfile2 given at /root/webapp-color directory. What command is run at container startup
 A:          cat /root/webapp-color/Dockerfile2
+
+F:   Inspect the two files under directory webapp-color-2. What command is run at container startup?
+     Assume the image was created from the Dockerfile in this directory.
+A:           ls webapp-color-2
+              cat webapp-color-2
+
+
 
 F: 
 
