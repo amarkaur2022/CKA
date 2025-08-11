@@ -1357,7 +1357,16 @@ F: How can we encode the data from plain text?
       echo -n 'paswrd' | base64
       o/p   cGFzd3JK
  
+F: how to view secrets?
+      kubectl get secrets 
+F: How to see/view the more information?
+      kubectl describe secrets
+      It shows the attributs in the secret but hides the value themselves
+F: How to views the values now u can see the encoded values ?
+      kubectl get secret app-secret -o yaml
 
+
+F: 
 
 
 
