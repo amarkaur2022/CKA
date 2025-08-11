@@ -1292,6 +1292,73 @@ F: NOw how to combine/inject pod and the configmap file?
               name:
         
         
+F: 
+
+______________________________________
+F:  What is the environment variable name set on the container in the pod?
+        kubectl describe pod webapp-color
+F:  What is the value set on the environment variable APP_COLOR on the container in the pod?
+        kubectl describe pod webapp-color (under Environment : pink
+F:  Update the environment variable on the POD to display a green background.
+    Note: Delete and recreate the POD. Only make the necessary changes. Do not modify the name of the Pod.
+A:     kubectl edit pod  webapp-color ( used to edit the pod and give the error)
+       cat /tmp/kubectl-edit-1695555210.yaml (now make the changes but it did not save it)
+       kubectl replace --force -f /tmp/kubectl-edit-1695555210.yaml (für changes we have to create the replace and delete the pod)
+F:  How many config maps are there?
+A:     kubectl get ms
+
+F:  Identify the database host from the config map db-config
+A:     kubectl describe cm db-config 
+
+f:  Create a new ConfigMap for the webapp-color POD. Use the spec given below.
+A:     kubectl create configmap webapp-config-map --from-literal=APP_COLOR=darkblue --from-literal=APP_OTHER=disregard
+
+F:   Update the environment variable on the POD to use only the APP_COLOR key from the newly created ConfigMap.
+    Note: Delete and recreate the POD. Only make the necessary changes. Do not modify the name of the Pod.
+A:         kubectl edit pod webapp-color 
+
+        kubectl replace --force -f /tmp/kubectl-edit-2160797237.yaml
+
+______________________________________
+            Secrets
+In conig maps stores configuration data in plain text format.its ok for host name and user name but it is not good for the password 
+Secrets: 
+      -  are used to store the sensative information like password and keys. 
+      -  It stores the data in entcoded form 
+      -  First, create the secret and 
+      -  second, inject it into pod 
+
+There are two ways to create a secrets 
+      1) The imperative way, Without using secret defination file.
+      2) the Declarative way, by using a declarative file.
+
+1)  The imperative way, First way Without using secret defination file.
+          you can directy specify the key value pair in the commands line itself
+          eg. kubectzl create secret generic  <secret name> --from-literal=<key>=<value>
+
+Second way with using secret defination file where the path is stored 
+          eg. kubectzl create secret generic  <secret name> --from-file=<path-to-file>
+
+2) the Declarative way, by using a declarative file.
+        kind: secret
+        data:
+            DB_HOst: mysql
+            DB_User: root
+            DB_PAssword: paswrd
+Note in secret we have to store the in encoded form not in plain text
+When we enter the data in the secret file we have to enter in the encoded form
+
+F: How can we encode the data from plain text?
+     On Linux just run the 
+      echo -n 'mysql' | base64
+      o/p    bXlzcWw=
+      echo -n 'root' | base64
+      o/p    cm9vdA==
+      echo -n 'paswrd' | base64
+      o/p   cGFzd3JK
+ 
+
+
 
 
       
