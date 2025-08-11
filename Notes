@@ -1265,13 +1265,33 @@ F: How to Configur the data in kubernetes?
       - inject them into pod 
   
   There are two ways to create an 
-      -  kubectl create configmap\  (Imperative)
+      1)  kubectl create configmap\  (Imperative)
               sitConfigname --from-literals=APP_COLOR=blue
                             --from-literals=PASSWORD=&Harekam0003
-        another way is to input the configuration data is through a file 
-              from file option to specify a path  to the file that contains the request data.
-      -  kubectl create -f configmap  (Declarative)
+  NOTE:  It will be complicated when u have too many configuration thats why we can also use the file 
+         When u want to use the file u have to specify the path 
 
+      2)  kubectl create -f configmap.yaml  (Declarative)
+            we have to create a yaml file 
+                    kind: configdata 
+                    metadata:
+                        name: app-config
+                    data: 
+                        APP_COLOR: blue
+                        PASSWORD: &Harekam0003
+
+F: How to view the Config map
+        kubectl get configmap
+
+F: How to see in the detail?
+        kubectl describe configmaps
+F: NOw how to combine/inject pod and the configmap file?
+   add new property in the pod yaml file
+        envFrom:
+          - configMapRef:
+              name:
+        
+        
 
 
       
