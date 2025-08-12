@@ -1365,8 +1365,49 @@ F: How to see/view the more information?
 F: How to views the values now u can see the encoded values ?
       kubectl get secret app-secret -o yaml
 
+NOTE now u have to create a two files one is for po-defination.yaml and second is secret-data.yaml 
 
-F: 
+NOW step two 
+F: HOw to inject N ENVIRONMENT VARIABLE and anew property to the container 
+1) we can inject a single environment 
+2) the whole secretes as a file in a volume
+spec:
+  containers  
+    envFrom:
+      -  secretRef:
+            name: there is the name under metadata from secret-data.yaml
+
+F: If u want to mount the secret as a volume in pod Secrets in pods as Volumes
+A: we have to create a file with each attribute as a secret of the contents 
+        ls /opt/app-secret-volumes
+        cat /opt/app-secret-volumes/DB_Password
+if there are three attributes in our secret that means three files are created.
+
+Important on Secrets:
+    - Secrets are not Encrypted. Only encoded.
+          -    Do not check-in secret objects to SCM along with code.
+    - Secrets are not encrypted in ETCD
+    - 
+    
+_________________
+      LAB
+F:  How many Secrets exist on the system?
+    In the current(default) namespace.
+A:       kubectl get secrets
+
+F: How many secrets (data keys) are defined in the dashboard-token secret?
+A:     kubectl describe secret default-token-cr4sr
+
+F: What is the type of the dashboard-token secret?
+A:    kubectl describe secret default-token-cr4sr
+
+F: Which of the following is not a secret data defined in dashboard-token secret?
+A:      kubectl describe secret default-token-cr4sr
+
+F:  The reason the application is failed is because we have not created the secrets yet. Create a new secret named db-secret with the data given below.
+    You may follow any one of the methods discussed in lecture to create the secret.
+A:        kubectl create secret generic db-secret  --from-literal=DB_Host=sql01 --from-literal=DB_User=root 
+          --from-literal=DB_Password=password123
 
 
 
