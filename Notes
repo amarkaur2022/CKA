@@ -1411,8 +1411,34 @@ A:        kubectl create secret generic db-secret  --from-literal=DB_Host=sql01 
 
 
 
-      
+_______________________________________________
+Multi container Pods 
+    means to run more than one conatianers ina pod simuntencely 
 
+MULTICONTAINER AND ITS  DESIGN PATTERN 
+There are different patteren for Multi-container pods 
+    1)  Co-located Containers 
+    2)  Init Containers
+    3)  Sidecar Container 
 
+  1) Co-located Containers: 
+        -  these are used, when two services are depnded on each other.
+        -  This is the original form of mullticontainers means that two Containers are running in a pod.
+        -  the conatiners are running till the pod lifecycle. theses are used  when two services are depended to each other 
+        -  
+   2)  Init Containers:
+        -   are used when the initilization steps to be performed when a pod starts before the mian application itself.
+        -   Init Conatiners starts and ends its job and then the main application starts  
 
-    
+   3)  Sidecar Container: 
+        -  A small helper container that runs alongside the main application inside the same pod
+        -  It is set up like the init Container 
+        -  The side car starts first, 
+        -  does its job,
+        -  instead of ending, It continues to run throughtout the lifecycle of the podand ends afetre the main app ends.
+        -  The main application starts after the sidecar starts.
+        -  Both containers start, stop, and share the same network and storage, working closely together.
+NOTE: Sidecar = helper container running alongside the main app, like a log shipper.
+
+The First and the last containes are same what is the difference between them.
+      -  
