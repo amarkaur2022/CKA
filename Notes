@@ -1442,3 +1442,45 @@ NOTE: Sidecar = helper container running alongside the main app, like a log ship
 
 The First and the last containes are same what is the difference between them.
       -  
+_____________________________________________________
+                                  INIT LAB
+
+F: Identify the pod that has an initContainer configured
+A:       kubectl  describe pods
+
+F: What is the image used by the initContainer on the blue pod?
+A:    kubectl  describe pod 
+      kubectl describe pod green
+      kubectl describe pods blue  | grep Image
+
+F:  What is the state of the initContainer on pod blue?
+      kubectl describe pod  blue
+
+F:   Why is the initContainer terminated? What is the reason?
+       kubectl describe pod blue 
+
+F:   We just created a new pod named purple. How many initContainers does it have?
+        kubectl describe  pod purple 
+
+F:   What is the status of the purple POD?
+        kubectl describe pod purple 
+
+F:  Update the pod red to use an initContainer that uses the busybox image and sleeps for 20 seconds
+    Delete and re-create the pod if necessary. But make sure no other configurations change.
+A:      kubectl esit pod red 
+        kubectl replace --force -f  /tmp/kubectl-edit-847706811.yaml
+
+F:  Update the pod red to use an initContainer that uses the busybox image and sleeps for 20 seconds
+    Delete and re-create the pod if necessary. But make sure no other configurations change.
+A:      kubectl get pod orange 
+        kubectl describe pod orange 
+        kubectl logs orange -c  init-myservice
+Explain it: kubectl → The Kubernetes command-line tool.
+        logs → The command to view output (stdout/stderr) from a container.
+        orange → The name of the pod you want to inspect.
+        -c init-myservice → Specifies which container inside the pod you want logs from. This is necessary because pods can have multiple containers (including init containers).
+        In this case, init-myservice sounds like an init container, which runs before the main app containers in the pod, often to set up configs, load data, or check dependencies.
+        If you don’t include -c ..., kubectl will default to the first container in the pod—but for init containers, you must specify them explicitly.
+
+  F: 
+
