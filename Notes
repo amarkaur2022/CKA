@@ -1482,5 +1482,9 @@ Explain it: kubectl → The Kubernetes command-line tool.
         In this case, init-myservice sounds like an init container, which runs before the main app containers in the pod, often to set up configs, load data, or check dependencies.
         If you don’t include -c ..., kubectl will default to the first container in the pod—but for init containers, you must specify them explicitly.
 
-  F: 
+  ______________________________________________________________
+Atuto Scaling in CKA
+Scaling means:
+      scaling means changing the number of running pod replicas for a workload — either up (more pods) or down (fewer pods).
+
 
