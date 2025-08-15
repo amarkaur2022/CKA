@@ -1484,6 +1484,7 @@ Explain it: kubectl → The Kubernetes command-line tool.
 
   ______________________________________________________________
 Atuto Scaling in CKA
+ 
 Scaling means:
       scaling means changing the number of running pod replicas for a workload — either up (more pods) or down (fewer pods).
 
