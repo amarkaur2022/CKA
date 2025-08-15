@@ -1505,6 +1505,7 @@ There are two types of Scaling in Kuberenets:
           There are two types of scaling 
             - Horizontal scaling: means creating more pods 
             - Verticaling: incresing more resources on exiciting pods
+          
 
     2) scaling cluster Infa:that adding nad removing more servers ot Infrastructure to our cluster.
             There rae two types of scaling 
@@ -1512,5 +1513,19 @@ There are two types of Scaling in Kuberenets:
             -  vertical scaling: increasing the resources on exiciting nodes in the cluster
 
  There are two ways of scaling (How we do the scaling)
-      1) Manual way 
-      2) Automated way
+      1) Manual way for Scaling Cluster Ifra;
+            Manual approach of horizontally scalling cluster infra would be to manually provision new nodes.(Vartically scaliing is not be prefered)
+            eg.  kubeadm join command    (to add the new nodes in the cluster.
+      1) Manual way of Scalin Workloads
+             Also two ways of Scaling(HOw we do the scaling)
+            - Horizontal scaling eg. kubectl scale command on the workload to scale up and down the nummber of Pods.
+            - Vertical scaling: eg. Kubectl edit command to go into that deployment or set the replica set and change the limits aand resources on the pods 
+      
+2) Automated way:
+    2) Cluster Autoscaler:
+
+    2) Horizontal Pod Autoscaler (HPA)
+    2) Vertical Pod Autoscaler(VPA)
+
+
+ 
