@@ -1483,9 +1483,34 @@ Explain it: kubectl → The Kubernetes command-line tool.
         If you don’t include -c ..., kubectl will default to the first container in the pod—but for init containers, you must specify them explicitly.
 
   ______________________________________________________________
-Atuto Scaling in CKA
+Auto Scaling in CKA
  
-Scaling means:
-      scaling means changing the number of running pod replicas for a workload — either up (more pods) or down (fewer pods).
+Scaling means: (thji si sthe example of the of version when the have our own data center or servers)
+    When we used the physical server with a predefined  CPU memory capacity and what happend we load increases.
+    First we need to scale up the server 
+    so we took down the application and added more  CPU or more memeory resources to it and then powered it back up.
+
+Vertical scaling :
+    When we added more resources(more cpu and memory resources  etc... ) on our exisiting application is known as vertical scalling
+Horizontal scaling:
+    running more instances or more server to your server is known as horizontal scaling.
 
 
+________________________________________________
+There are two types of Scaling in Kuberenets:
+      1) Scaling Workloads: you can scale the work loads by adding and removing containers or pods onto the cluster
+      2) scaling cluster Infa:that adding nad removing more servers ot Infrastructure to our cluster
+
+    1) Scaling Workloads: you can scale the work loads by adding and removing containers or pods onto the cluster
+          There are two types of scaling 
+            - Horizontal scaling: means creating more pods 
+            - Verticaling: incresing more resources on exiciting pods
+
+    2) scaling cluster Infa:that adding nad removing more servers ot Infrastructure to our cluster.
+            There rae two types of scaling 
+            -  Horizontal scaling: the adding more nodes to the cluster.
+            -  vertical scaling: increasing the resources on exiciting nodes in the cluster
+
+ There are two ways of scaling (How we do the scaling)
+      1) Manual way 
+      2) Automated way
