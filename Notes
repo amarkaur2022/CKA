@@ -1412,8 +1412,10 @@ A:        kubectl create secret generic db-secret  --from-literal=DB_Host=sql01 
 
 
 _______________________________________________
+
+
 Multi container Pods 
-    means to run more than one conatianers ina pod simuntencely 
+    means to run more than one conatianers in a pod simuntencely 
 
 MULTICONTAINER AND ITS  DESIGN PATTERN 
 There are different patteren for Multi-container pods 
@@ -1435,7 +1437,7 @@ There are different patteren for Multi-container pods
         -  It is set up like the init Container 
         -  The side car starts first, 
         -  does its job,
-        -  instead of ending, It continues to run throughtout the lifecycle of the podand ends afetre the main app ends.
+        -  instead of ending, It continues to run throughtout the lifecycle of the pod and ends after the main app ends.
         -  The main application starts after the sidecar starts.
         -  Both containers start, stop, and share the same network and storage, working closely together.
 NOTE: Sidecar = helper container running alongside the main app, like a log shipper.
@@ -1503,9 +1505,8 @@ There are two types of Scaling in Kuberenets:
 
     1) Scaling Workloads: you can scale the work loads by adding and removing containers or pods onto the cluster
           There are two types of scaling 
-            - Horizontal scaling: means creating more pods 
-            - Verticaling: incresing more resources on exiciting pods
-          
+            - Horizontal scaling: means adding more pods
+            - Verticaling: increasing the resources allocated to existing pods          
 
     2) scaling cluster Infa:that adding nad removing more servers ot Infrastructure to our cluster.
             There rae two types of scaling 
@@ -1516,10 +1517,12 @@ There are two types of Scaling in Kuberenets:
       1) Manual way for Scaling Cluster Ifra;
             Manual approach of horizontally scalling cluster infra would be to manually provision new nodes.(Vartically scaliing is not be prefered)
             eg.  kubeadm join command    (to add the new nodes in the cluster.
-      1) Manual way of Scalin Workloads
+      1) Manual way of Scaling Workloads
              Also two ways of Scaling(HOw we do the scaling)
-            - Horizontal scaling eg. kubectl scale command on the workload to scale up and down the nummber of Pods.
-            - Vertical scaling: eg. Kubectl edit command to go into that deployment or set the replica set and change the limits aand resources on the pods 
+            - Horizontal scaling eg. 
+                kubectl scale command is used in the workload to scale up and down the nummber of Pods.
+            - Vertical scaling: eg. 
+                Kubectl edit command to go into that deployment or set the replica set and change the limits aand resources on the pods 
       
 2) Automated way:
     2) Cluster Autoscaler:
@@ -1528,4 +1531,8 @@ There are two types of Scaling in Kuberenets:
     2) Vertical Pod Autoscaler(VPA)
 
 
- 
+ ______________________________________________________________
+Scaling a workload the Manual way
+
+
+
