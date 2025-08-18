@@ -1569,5 +1569,34 @@ Metrics server :
 
 👉 In short:
 Metrics Server = resource usage collector for scaling and monitoring in Kubernetes.
+____________________________________________________________
+        LAB Manual Scaling 
 
+F:  Create a Deployment
+    Using the /root/deployment.yml manifest file provided , create a Kubernetes deployment for the Flask application.
+    Discovery
+        Use kubectl get deployments to observe the deployment status.
+        Use kubectl get pods to see the running pods.
+A: We use the apply command, if the the deployment is already written in yaml file it just appy on the cluster,
+    if it is not written in tha yaml nfile it will create a deployment and applay on the cluster 
+        kubectl apply -f /root/deployment.yml
+        kubectl get pods 
+        kubectl get deployments 
 
+F:  What is the primary purpose of the kubectl scale command?
+A:   to scale the number of replica and deployments 
+
+F:  Can the kubectl scale command be used to scale down a statefulset in Kubernetes?
+A:      The kubectl scale command can be used to scale both deployments and statefulsets.
+        When scaling a statefulset, Kubernetes ensures that the state and order of the pods are maintained, 
+        unlike in deployments where pods can be created and destroyed in any order.
+
+F:   How to see that how many replicas are created?
+A:       kubectl get deployments 
+
+F:   If you scale a deployment using kubectl scale to a higher number of replicas, 
+     but the cluster has insufficient resources to accommodate all new replicas, what will happen?
+A:      When you scale a deployment to a higher number of replicas than the cluster can support due to resource constraints,
+        Kubernetes will create as many replicas as possible within the available resources.
+        The remaining replicas will be in a pending state until sufficient resources are freed up or added to the cluster. 
+        This behavior allows Kubernetes to manage resources dynamically while maintaining the desired state as closely as possible.
