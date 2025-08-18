@@ -1672,4 +1672,35 @@ A:          To find out what the event FailedGetResourceMetric means in the HPA,
             kubectl events hpa nginx-deployment | grep -i "FailedGetResourceMetric"
 
 
-Is the deployment updated?
+___________________________________________________________________
+      Resize the pods 
+
+__________________________________________________________________
+VPA (Vertical pod Autoscaler)
+for vertically scalling always use EDIT command 
+      -  it Monitors the metrics server 
+      -  it automatically increases and decreases the resources assigned to the pod in a deployment 
+      -  Balance the workload
+
+We also see the three multiple Components deployed:
+      1)   Admission controller:
+            -  the Admission Controller intervenes the pod Creation process and uses the recommendation from the Recommender again.
+            -  To then mutate the pod spec to apply the recommended CPU and memory values at startup.
+            -  And this ensure that the newly created pod starts with the correct resources requests.
+
+  
+      2)   VPA Recommender: is responsible for continuously monitoring resources usage and collect history 
+           and live usage data for pods and provides recomendation on optimal CPU and Memory values.
+           -  It does not modify the Pod directly.
+           -  It only suggest changes.
+
+
+      3)  Updater Serivice:(Monitors  or get the information from the Recomender)
+          - Detect pods that are running with sub optimal resources and
+          -  Evicts them when an update is needed.
+          -  It gets the information from the Recommender and monitors the pod.
+          -  If the pod needs to be updated, It evicts(means terminates the pod) them
+
+
+
+
