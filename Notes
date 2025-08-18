@@ -1600,3 +1600,76 @@ A:      When you scale a deployment to a higher number of replicas than the clus
         Kubernetes will create as many replicas as possible within the available resources.
         The remaining replicas will be in a pending state until sufficient resources are freed up or added to the cluster. 
         This behavior allows Kubernetes to manage resources dynamically while maintaining the desired state as closely as possible.
+
+
+
+F:   Create a Deployment
+     Using the /root/deployment.yml manifest file provided , create a Kubernetes deployment for the nginx application.
+     Click on Skooner to access the monitoring tool and view the resources in the Kubernetes cluster.
+     Token for the Skooner can be found in /root/skooner-sa-token.txt
+     Is the nginx deployment running?
+A:       To deploy nginx application, run the below command.
+          kubectl apply -f /root/deployment.yml
+
+        To view the deployment and pods creation, use the below commands.
+          kubectl get deploy or kubectl get pods
+
+
+f: We have a manifest file to create autoscaling for the Nginx deployment located at /root/autoscale.yml. Review the manifest file and identify the current replicas and desired replicas?
+
+A. Current replicas= 7
+    Desired replicas= 3
+
+B. Current replicas= 3
+    Desired replicas= 7
+
+C. Current replicas= 7
+    Desired replicas= 1
+
+D. Current replicas= 0
+    Desired replicas= 0
+
+A: kubectl get hpa  (D)
+
+F: Create an autoscaler for the nginx-deployment with a maximum of 3 replicas and a CPU utilization target of 80%.
+A:   kubectl autoscale deployment nginx-deployment --max=3 --cpu-percent=80
+            OR
+      kubectl apply -f /root/autoscale.yml
+
+F:  What is the primary purpose of the Horizontal Pod Autoscaler (HPA) in Kubernetes?
+
+
+F:  What component in a Kubernetes cluster is responsible for providing metrics to the HPA?
+A:     metrics server
+
+F:  What is the current replica count of nginx-deployment after deploying the autoscaler?
+A:       kubectl get deploy nginx-deployment
+
+F:   What is the status of HPA target?
+A:       kubectl get hpa
+
+F:   The HPA status shows /80 for the CPU target. what could be a possible reason?
+A:       If the status of the Horizontal Pod Autoscaler (HPA) target is <UNKNOWN>/80,
+         it typically means that the HPA is unable to retrieve the current metrics for the specified target. 
+         Run kubectl describe hpa nginx-deployment 
+          to find more details.
+
+F:  Since the HPA was failing due to the resource field missing in the nginx-deployment,
+    the resource field has been updated in /root/deployment.yml. Update the nginx-deployment using this manifest.
+    Watch the changes made to the nginx-deployment by the HPA after upgrading by using the kubectl get hpa --watch command.
+A:      To update the nginx-deployment, run the below command:
+              kubectl apply -f /root/deployment.yml
+        To watch the changes made to the nginx-deployment by the HPA, use the below command:
+              kubectl get hpa --watch
+
+F:   What does the event ScalingReplicaSet in the nginx-deployment HPA indicate?
+A:       To find out what the event ScalingReplicaSet means in the HPA, run the command below:
+            kubectl events hpa nginx-deployment | grep -i "ScalingReplicaSet"
+              HPA increasing tghe numnber of pods
+
+F:   What is the cause of the FailedGetResourceMetric event in the nginx-deployment HPA?
+A:          To find out what the event FailedGetResourceMetric means in the HPA, run the command below:
+            kubectl events hpa nginx-deployment | grep -i "FailedGetResourceMetric"
+
+
+Is the deployment updated?
