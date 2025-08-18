@@ -1528,11 +1528,46 @@ There are two types of Scaling in Kuberenets:
     2) Cluster Autoscaler:
 
     2) Horizontal Pod Autoscaler (HPA)
+        
     2) Vertical Pod Autoscaler(VPA)
+
 
 
  ______________________________________________________________
 Scaling a workload the Manual way
 
+NOTE: In manual way we have to sit on my computer and continuously monitor resources usage and if there is a sudden traffic spike and want to break or add something
+      i m not able to react fast thats why we used (HPA)  HORIZONTAL POD AUTOSSCALER
+        kubectl top pod my-app-pod command:
+                is used to see the resources consumption of the pod, if u have to do it maually.NOTE( you must have the metrics server running on the cluster)
+        kubectl scale deployment my-app --replicas=3 : 
+                is used to add  the additional pods, so this is the manual way to scale a worklooad(nun i have to sit on my computer and continuously monitor resources usage.
+
+Automatacally run the HPA
+1)   Horizontal pod Autoscaler(HPA):
+          -  Observe metrics: HPA continuousaly monitors the matrics as we did manually with the top command.
+          -  Add Pods: It can Automatacally ioncreases and decreases the pod in a deployment statefull set or replica set based on the CPU memory.
+          -  Balances tresholds: If the memory or memory usage goes oo high, HPA creates more pods to handel that and if no needs it removes the extra pods 
+          -  Tracks multiple metrics: this balance the thresholds and it can also track the multiple different types of metrics which we refer to in a few minutes.
+      
+Imperative way
+          eg Kubectl autoscale deployment amy-app \ --cpu-percent-50 --min=1 --max=10
+                It creates a horizontal Pod Autoscaler  for this deployment first reads the limits on the pod  500 millicore, second it can use the monitor mmeory bis zu 50%
+                thirs, It can modify the numbers of the replica min1 and max 10
+          eg. Kubectl get hpa
+                to view/list the status of the current hpa.
+          eg kubectl delete hpa my-app
+                to delete the hpa
+
+Declarative way:( we can create an hpa With the API version:)
+        apiVersion :autoscaling/V2
+        kind: HorizontalPosAutoscaler
+
+Metrics server :
+      A Metrics Server in Kubernetes is a lightweight service that collects resource usage data (like CPU and memory) from nodes and pods.
+      It provides this data through the Kubernetes API, so tools like the Horizontal Pod Autoscaler (HPA) or the kubectl top command can use it.
+
+👉 In short:
+Metrics Server = resource usage collector for scaling and monitoring in Kubernetes.
 
 
