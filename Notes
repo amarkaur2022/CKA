@@ -1810,9 +1810,10 @@ A:       kubectl drain node01 --ignore-daemonset --force
 F:    hr-app is a critical app and we do not want it to be removed and we do not want to schedule any more pods on node01.
       Mark node01 as unschedulable so that no new pods are scheduled on this node.
       Make sure that hr-app is not affected.
-A:         kubectl cordon node01
-
-
+explain I donot wnat that any pod will be added on the node01
+A:        Kubectl get nodes
+          kubectl cordon node01
+          kubectl get pods -0 wide
 _______________________________________________
 1)  kubectl cordon <node>
     -  Marks the node as unschedulable.
