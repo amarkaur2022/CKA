@@ -1749,6 +1749,93 @@ ___________________________________________
 What is VPA CRDs — these are part of Kubernetes Vertical Pod Autoscaler (VPA).
 SEE Lab 135/136
 
+___________________________________________
+
+F:   Let us explore the environment first. How many nodes do you see in the cluster?
+     Including the controlplane and worker nodes.
+A:      kubectl get nodes 
+
+F:   How many applications/deployments do you see hosted on the cluster?
+     Check the number of deployments in the default namespace.
+A         kubectl get deployments 
+
+F:    Which nodes are the applications hosted on?
+A:        kubectl get pods -o wide
+Explain it in Detail
+is a Kubernetes CLI (kubectl) command that lists all the running Pods in the current namespace, but with extra details compared to the default kubectl get pods.
+Breakdown:
+kubectl → Command-line tool for interacting with the Kubernetes cluster.
+get pods → Lists all the pods in the current namespace.
+-o wide → Expands the output to show additional information beyond the default columns.
+
+F:   We need to take node01 out for maintenance.
+     Empty the node of all applications and mark it unschedulable.
+A:       kubectl drain node01
+            - This command gives error because some pods DaemonSet (networking proxy, monotring) 
+              find it all the pods aumatically thats why u are not able to delete the pods
+              you have ignor these DaemonSet pods
+          kubectl drain node01 --ignore-daemonsets
+
+F:   What nodes are the apps on now?
+A:       kubectl get pods -o wide
+
+F:   The maintenance tasks have been completed. Configure the node node01 to be schedulable again.
+A:      kubect uncordon nodes01
+
+F:   How many pods are on node01?
+A:       kubectl get pods 
+
+F:   Why are there no pods on node01?
+A:       Running the uncordon command on a node will not automatically schedule pods on the node.
+         When new pods are created, they will be placed on node01.
+
+F:   Why are the pods placed on the controlplane node?
+     Check the controlplane node details.
+A:        k describe node controlplane 
+                  OR
+          kubectl describe node controlplane | grep -i  taint
+
+F:  
+A:        kubectl drain node01 --ignore-daemonsets
+
+F:  Why did the drain command fail on node01? It worked the first time! 
+A:        k get pods 
+
+F: What is the name of the POD hosted on node01 that is not part of a replicaset?
+A:       k get pods -o wide 
+
+F: 
+A:       kubectl drain node01 --ignore-daemonset --force
+
+F:    hr-app is a critical app and we do not want it to be removed and we do not want to schedule any more pods on node01.
+      Mark node01 as unschedulable so that no new pods are scheduled on this node.
+      Make sure that hr-app is not affected.
+A:         kubectl cordon node01
+
+
+_______________________________________________
+1)  kubectl cordon <node>
+    -  Marks the node as unschedulable.
+    -  No new Pods will be scheduled on it.
+    -  Existing Pods keep running.
+👉 Think: “Stop putting new Pods here, but don’t touch the old ones.”
+
+2)  kubectl drain <node>
+      -  First cordons the node.
+      -  Then evicts (removes) all workload Pods (except DaemonSets & static Pods).
+      -  The evicted Pods get rescheduled on other healthy nodes.
+👉 Think: “Empty this node completely so I can maintain or remove it.”
+
+3)   kubectl uncordon <node>
+        -  Marks the node as schedulable again.
+        -  New Pods can now be placed on it.
+👉 Think: “Bring this node back to the pool.”
+
+In short:
+    cordon = stop new Pods
+    drain = stop new Pods + move old Pods away
+    uncordon = allow new Pods again
+____________________________________________
 
 
 
