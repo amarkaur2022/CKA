@@ -1837,6 +1837,58 @@ In short:
     drain = stop new Pods + move old Pods away
     uncordon = allow new Pods again
 ____________________________________________
+Kubernetes manages software Releases
 
+What we know about the API versions in kubernetes 
+When we install the a kubernetes cluster with specific version of kubernetes 
+We can see that when we run the command
+    kubectl get nodes 
+
+        Version is v1.33.0 in three parts
+V1 :   first is the major version followed by the minor version and 
+33 :   Minor version  (realease every few months with new features and functionalities)
+0  :   patch version   (realease more often  with critical bugs fixes)
+
+The download package, when extracted, has all the control plane componenets are on the same version 
+eg : 
+    kube-APIserver      :  v1-xx.y
+    controller-manager  :  v1-xx.y
+    kube-scheduler      :  v1-xx.y
+    kubelet             :  v1-xx.y
+    kube-proxy          :  v1-xx.y
+    kubectl             :  v1-xx.y
+
+There are two componenets that do not have the same version 
+    etcd Cluster        :  V3.2.18
+    coreDNS             :   V1.1.3
+
+________________________________________________
+
+Cluste upgrade process
+
+F:  Is is complusary for all of these to have the same version 
+A:  - NO the componenets can be at different release version.
+    - the kubeapi is the primary component in the control plane and that is the component that lal other components talk to 
+      none of the other components should ever be at a version higher than the kube-apiserver. X version 
+    - The conroller-manager and scheduler can be at one version lower  X-1
+    - kubelet  and  kube-proxy  can be 2 version lower    X-2 
+    - kubectl  has a one version higher than the API server
+Note: so it allow us to do the live upgade and  We can upgrade componenets by componenet if required
+
+F: When should u upgrade?
+A:   At any time the kubernetes supports only upto the recent three minor versions
+eg     first release  : v1.10
+       senond release : v1.11
+       third relase   : v1.12
+       fourth realse  : v1.13
+now the first realease is not be suported
+
+NOTE: BEFORE THE RELEASE OF V1.13 WOULD BE A GOOD TIME TO UPGRADE YOUR CLUSTER TO THE NEXT RELEASE
+
+f. How we upgrade should we upgrade v1.10 to direkt v1.13
+A: No. the best way to upgrade is one be one v1.10 to v1.11 to v1.12 denn v1.13... and sooo on 
+
+
+    
 
 
