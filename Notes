@@ -1875,6 +1875,7 @@ A:  - NO the componenets can be at different release version.
     - kubectl  has a one version higher than the API server
 Note: so it allow us to do the live upgade and  We can upgrade componenets by componenet if required
 
+
 F: When should u upgrade?
 A:   At any time the kubernetes supports only upto the recent three minor versions
 eg     first release  : v1.10
@@ -1885,8 +1886,45 @@ now the first realease is not be suported
 
 NOTE: BEFORE THE RELEASE OF V1.13 WOULD BE A GOOD TIME TO UPGRADE YOUR CLUSTER TO THE NEXT RELEASE
 
-f. How we upgrade should we upgrade v1.10 to direkt v1.13
+F: How we upgrade should we upgrade v1.10 to direkt v1.13
 A: No. the best way to upgrade is one be one v1.10 to v1.11 to v1.12 denn v1.13... and sooo on 
+
+You can deploy ur cluster in two ways with the help of kubeadm  and cluster from strach
+
+    1) if u deploy ur cluster using tool like kubeadm then the tool can help you plan and upgrade the cluster
+    2) u can deploy ur cluster from scratch then u manually ugrade the different components of the cluster yourself
+
+1) we have cluster with master and worker Node running in production, hosting nodes, services users.
+    the nodes and components are at version 1.10
+
+________________________________
+F: Upgrading a cluster involves two major steps.
+    - First upgade your master node 
+    -. Second upgrade ur worker Nodes
+UPGRADE MASTER NODE    
+1)  While the  master node is upgrading the control plane components, such as the API server, scheduler and controll-managers go down briefely.
+        -  when the master cluster going down does not mean your worker nodes and application on the cluster are impacted.
+        -  All workloads hosted on the worker Node continue to serve users as noemal.
+        -  since the master is down, all management functions are down.
+        -  you cannot access the cluster using kubctl or others kubctl-API
+        -  you cannot deploy new applications or delete or modify existing ones.
+        - If any pod will be fail a new pod won#t be automatically created.
+        -   But as long as the nodes and pods  are up, your application should be up and users will not be impacted.
+        -   Once the upgrade is complete and the cluster is back up, it fuctions normally and the master Node version is v1.11 and
+        -   worker nodes at version 1.10
+
+
+UPGRADE THE WORKER NODES
+    There are two types of strategie 
+        1) downtime strategy  (Upgrade  all of them at once)
+             - then your pods are down, and users are no longer able to access the applications
+             - Once the upgrade is complete the nodes are back up, new pods are scheduled and user can resume access.
+        2) upgrade one node at a time:
+             -   we upgrade the first node, where the workersloads move to the second and thirs node and the user are serves from there 
+             -   Once the first nodes is upgraded and backup.
+             -   we update the second node, where the workloads moves to the first and the third nodes and so.......
+
+          3)   
 
 
     
