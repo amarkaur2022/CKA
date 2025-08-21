@@ -1915,7 +1915,7 @@ UPGRADE MASTER NODE
 
 
 UPGRADE THE WORKER NODES
-    There are two types of strategie 
+    There are Three types of strategie 
         1) downtime strategy  (Upgrade  all of them at once)
              - then your pods are down, and users are no longer able to access the applications
              - Once the upgrade is complete the nodes are back up, new pods are scheduled and user can resume access.
@@ -1924,9 +1924,53 @@ UPGRADE THE WORKER NODES
              -   Once the first nodes is upgraded and backup.
              -   we update the second node, where the workloads moves to the first and the third nodes and so.......
 
-          3)   
+        3) 3 Strategy would be able to new nodes with newer software version to the cluster.
+             -  This is convienent when we are in Cloud environment where u easily add the new nodes and decommission/deleted old one.
+             -  Move the workload to new node and remove the old node
 
 
-    
+  Kubeadm---- upgarde
+    kubeadm has an upgrade command that helps the cluster to upgrade.
+F: Whih command gives u a lot of information about the cluster version and list all the components and its version 
+   and you must manually upgrade the kubelet version on each node.
+Â:      kubeadm upgrade plan 
+
+F: HOw to do this upgrade 
+    - upgrade the kubeadm tool itself to version 1.12
+          apt-get upgrade -y kubeadm=1.12.0-00
+    -  then upgrade the cluster componenets using the command
+          kubeadm upgrade apply v1.12.0
+    -  it display the version of the API server not the version of API itself it display the old version
+          kubectl get nodes
+    - upgrade the kubeletes on the master node
+NOTE : depending on ur setup u may or u may not have kubeletes running on your master node
+          apt-get upgrade -y kubelet=1.12.0-00
+    - once the package is updated then restart the kubelet
+          systemctl restart kubelet
+    - it display that the master nodes has been upgraded 10 1.12
+          kubectl get nodes
+_____________-_____
+    - Now upgrade the worker Nodes. 
+    - First moves the workloads from the first worker node to other nodes
+    - this commandsafely terminated all the pods from a node and reschedules them on the other nodes.
+    - it also cordons the nodes and marks it unschedulable(no new pods are scheduled/add on it)
+          kubectl drain node-1
+    -  upgrade the kubeadm and kubelet packages on the worker node as we did on the master node
+          apt-get upgrade -y kubeadm=1.12.0-00
+    - upgrade the kubdeadm tool
+          apt-get upgrade -y kubelet = 1.12.0-00
+    -  upgrade the node configuration for the new kubelet version
+          kubeadm upgrade node config --kubelet-version v1.12.0
+    - restart the kubelet service 
+          systemctl restart kubelet
+NOTE: now the node is up with the new software version 
+NOTE: When we drain the nodes means we mark it as a unscheduleable  node. 
+NOTE: so we need to unmark it by running the command
+NOTE: it is not necessary that the pods come back to this nodes.It is only marked as scheduled
+NOTE: only when the pods are delete from the other node or when new pods are scheduled do they really come back to this first node
+            kubectl uncoden node-1
+
+
+
 
 
