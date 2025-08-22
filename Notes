@@ -1971,6 +1971,8 @@ NOTE: only when the pods are delete from the other node or when new pods are sch
             kubectl uncoden node-1
 
 
-
+__________________________________________
+Documentation 
+kubernetes Documentation / tasks / administer a cluster / Administration with kubecdm /upgrading kubeadm cluster
 
 
