@@ -2053,6 +2053,36 @@ like a file withusers details or certificates or identity(LDAP) to manges these 
 
 
 
+1) Users Administrators and Developers
+  -  All the user access managed by the API server wheather u r accessing the cluster through  
+  -  Kubectl (Admins see the Figure on Page 2)  tool or the API (Developers) directly.
+  -  All of these request go through the kube API server.
+  -  The Kube API server authenticates the request (1)
+  -  before Processing it(2)
+
+F:  How doesthe KUBE API server authenticates?
+A:  There are different authentication mechanisums that can be configure(see figure on page 3)
+    1)  Static Password File 
+    2)  Static tocken File 
+    3)  Certificates 
+    4)  Identity
+
+Authentication  Mechanisums- Basics
+1)  Static Password File:Simplest form of Authentication
+    -  You can create a list of users and their passwords in a .csv file and use that as
+        the source for user Information.
+    -  The file has three colums, password, usernmae and Uer ID
+    -  Pass the file name as an option to the Kube API server 
+
+Kube-api Server Configuration
+    -  --basic-auth-file=user-details.csv
+    -  if we set the cluster using the Kubeadm tool then u must modify the Kube APi server
+       pod Defination file.
+    -  The Kubeadm tool will automatically resteart the kube API server once you update this file 
+
+Authenticate User 
+     
+
 
 
 
