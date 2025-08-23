@@ -2081,7 +2081,24 @@ Kube-api Server Configuration
     -  The Kubeadm tool will automatically resteart the kube API server once you update this file 
 
 Authenticate User 
-     
+     To authenticate using the basic credentials while accessing the API server, specify 
+     the user and password in a curl command like this:
+    eg. curl -v -k https://master-node-ip:6443/api/v1/pods -u "user1:password123"
+
+2)  Static tocken File :
+    this is also have a .csvfile. in theis file we have an token authentication file to the kube API server.
+    eg: --tocken-auth-file=user-tocken-details.csv
+F: HOw to request the tocken 
+    curl -v -k https://master-node-ip:6443/api/v1/pods --header"Authorization: bearer KpjCDNJ/LKCKIDNFKDkh1c4Uc4B"
+
+
+_________________________________________________
+              TLS Introductions
+Certificats: is used to guarantee trust betwen two parties duaring a transaction 
+eg: when a user tries to access a web server TLS certificates ensure that the communication 
+between the user and the server is encrypted and server is who it says it is.
+
+
 
 
 
