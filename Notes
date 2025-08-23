@@ -1975,4 +1975,84 @@ __________________________________________
 Documentation 
 kubernetes Documentation / tasks / administer a cluster / Administration with kubecdm /upgrading kubeadm cluster
 
+______________________________________________________
+
+              Security is  very Important topic 
+
+-  KubeApi is the center of all operations within Kubernetes.
+-  We intract with it through the kube control utility or by accessing the API directly
+-  and through that you can perform almost any operation on the cluster
+
+NOTE : So this is the first line of defense 
+-   Controlling access to the API server itself
+
+We need to make two types of decisions
+
+1) Who can access the cluster ?
+A:  Who can access the API server is defined by the authentification mechanisums.
+There are different ways that you can authenticate to the API server starting with 
+    -  User IDs  and Password 
+    -  stored in static file - Username and Tokens
+    -  certificates
+    -  External Authentification providers -LDAP
+    -  Service Accounts 
+
+Once they gain the access to the cluster What can they do?
+2) What can they do?
+A:  is defined by authorization mechanisums. It is implemented using roll based acces 
+control
+    where the single/ group of users have an specific permissions
+  There are different ways to give the 
+    -  RBAC Authorization 
+    -  ABAC Autherization 
+    -  Node Authorization 
+    -   Webhook Mode etc......
+Nun All the communications with 
+    API server 
+    kube Controll Manager 
+    Kube Scheduler
+    Kube Proxy
+    Kubelet
+    ETCD Cluster is secured using TLS encryption 
+    We learn later how to setup the certificates between the varionus components?
+  
+F:  What about the communication between applications within the cluster?
+A:  By default, all the Pods can access all other pods  within the cluster.
+    We can restrect then using network policioes How it will we do it we will see it
+    later.
+______________________________________________
+
+Authentication 
+
+-  Kubernetes cluster consists of multiple nodes, physical or virtual and various 
+   componenets that works together.
+-  We have the users like the administrators that access the cluster.
+-  the developer thata access to test or deploy applications.
+-  We have end users who access the applicationsdeployed on the cluster
+- We have third party who access the cluster for integration purposes
+Now we learnHow we secure our cluster which have the communication between internal
+components through authentication and authorization mechanisms.
+
+There are different user that may be accessing the cluster.
+1) Admin
+2) Developers
+3) Applicatoin End Users Security of end Users, who access the application
+   deployed on the cluster is managed  by th applications themselves, internally.
+4) Bots
+
+
+There are two types of uesers
+1) hummens/Users (Administrators and Developers)
+2) Robots ( such as processes or services or applications that require access to the cluster
+Kuberbets does not manage the accunts nativaly. It relies on the externak resources 
+like a file withusers details or certificates or identity(LDAP) to manges these users
+
+
+
+
+
+
+
+
+
 
