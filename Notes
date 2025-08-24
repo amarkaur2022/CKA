@@ -2093,13 +2093,35 @@ F: HOw to request the tocken
 
 
 _________________________________________________
-              TLS Introductions
+              TLS Introductions (for more information see 159)
 Certificats: is used to guarantee trust betwen two parties duaring a transaction 
 eg: when a user tries to access a web server TLS certificates ensure that the communication 
 between the user and the server is encrypted and server is who it says it is.
 
+You 
 
+Symmetric Encryption: When you have a single key to encrypt  the data is known as Symetric Encryption
 
+Asymmetric Encryption: When we use the private and public key/public lock to encrypt  the data is known as Symetric Encryption
+key :  is always private
+Lock: is always public
+if u lock ur data u will be able  to open only with the associated key
+u must not share the key with other but the lock can be shared with others(public)
+NOTE in this user name and passwords are too risky thats why u have decided to use the public and private lkey pair
+we can do this by running the SSH command 
 
+eg ssh-keygeb
+It creates two file private key and public lock 
+eg car +/.ssh/authorized_keys
+  to see the keys
+eg ssh -i id_rsa user1@server1
+
+F: if have more than one server in ur cluster u cand creatre many public locks but 
+    every is lock is opend with a single privte key
+F  what when the others user need to access the server
+    they can also do the same thing they also create private key and public lock
+
+nun we have aproblem with this we have to send the username and password (private key and public key )
+through the network this is very dangerous 
 
 
