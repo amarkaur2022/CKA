@@ -2144,6 +2144,59 @@ USE Opsen SSL Command:
 openssl genrsa -out my-bank.key 1024
 openssl rsa -in my-bank.key -pubot > mybank.pem
 
+When the user first accesses the web server using STTPS,
+he gets the public key from the server
+If the hacker get all the things. He will also get the public key
+nun
+The user in fact the users brower then encrypt the symettric key using the public key provided by the server.
+The symmetric key is now secure.
+send it to the server and the hacker also gets the copy
+server uses the private key to decrypt the message
+and retrieve the symmetry key from it.
+but the hacker does not have the private key to decrypot and retrieve the symmetric key fom the message.
+The hacker have only public key and not able to decrypt the messages 
+With asymmetric encryption, we have successfully transfered the symmetric keys from user to the server
+and we secure the all the future communication  with symmetric encryption
+NOTE :there is a only way to hack is he creates it own website same as the ur 
+
+
+F: What is certificate:
+  -  it looks like and original certificate but in digital format
+  -  information about: 
+  -  to whome the certifictae is issued 
+  -  the public key and location of the server
+  -  the cerificate and the website matches its information 
+  -  anybody can create a such type of certificate the Hacker can also do so
+F: How to known that the certificate is legal or illigel 
+  -  Who signed and issue the certificate 
+  -  When the certificate gehort zu die dann , u will be sign it.
+  -  If the certificate gehort to hacker he will sign it.
+F: How the browser that website is liggal or illigial
+  -  All the browers are builtin certificate validation mechanism
+  -  Where in the browser text the certificate received from the server 
+  -  and validates it and make sure it is legimated.
+  - If it is a fake website it warns you NOT SECURE 
+F: How we will create a legimated certificate that the browser will trust?
+
+CA (Certificates Authority)
+-  Certificates Authority signed the certificates they gives ur website authority.
+-  eg Symantec, DigiCert, Comodo,Global Sign etc.....
+-  we geenerate a certificate signing a request or CSR using the key you generate earilier
+-  and the domain name of ur website 
+-  singn it using SSL command
+eg. openssl req -new -key my-bank.key -out my-bank-csr -subj "/C=US/ST=CA/O=MYOrg,Inc./CN=mydomain.
+-This command generates the MY-Bank CSR file 
+-  Which is the certificate signing request
+-  that should be sebt to the CA for Signing
+- They verifies your details and sign the certificate and send it back
+- Now the browser will trust ur website.
+
+-  
+
+
+
+
+
 
 
 
