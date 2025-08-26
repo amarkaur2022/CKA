@@ -2094,6 +2094,7 @@ F: HOw to request the tocken
 
 _________________________________________________
               TLS Introductions (for more information see 159)
+  What is public and 
 Certificats: is used to guarantee trust betwen two parties duaring a transaction 
 eg: when a user tries to access a web server TLS certificates ensure that the communication 
 between the user and the server is encrypted and server is who it says it is.
@@ -2176,6 +2177,18 @@ F: How the browser that website is liggal or illigial
   -  Where in the browser text the certificate received from the server 
   -  and validates it and make sure it is legimated.
   - If it is a fake website it warns you NOT SECURE 
+
+__________________________________
+There are three types of certificates
+1)  Server Certificates
+2)  Client certificates
+3)  Root certificates
+
+1) Server Certificates: Configure on the servers.
+2) Root Certificates: configure on the CA servers.
+3) Client Certificates: configure on the clients. 
+
+
 F: How we will create a legimated certificate that the browser will trust?
 
 CA (Certificates Authority)
@@ -2185,17 +2198,77 @@ CA (Certificates Authority)
 -  and the domain name of ur website 
 -  singn it using SSL command
 eg. openssl req -new -key my-bank.key -out my-bank-csr -subj "/C=US/ST=CA/O=MYOrg,Inc./CN=mydomain.
--This command generates the MY-Bank CSR file 
+-  This command generates the MY-Bank CSR file 
 -  Which is the certificate signing request
 -  that should be sebt to the CA for Signing
-- They verifies your details and sign the certificate and send it back
-- Now the browser will trust ur website.
+-  They verifies your details and sign the certificate and send it back
+-  Now the browser will trust ur website.
+-   It will done by the Browser automatically.
+F: If the hacker will tried to get his certificate signed in the same way
+he will failsto get the certificatte
+F: How the browser knows that the certificates is illigibale?
+A: the certificate was signed by the Symantec
 
--  
+F: How the browser know that the Symantec is a valid CA and signed by the valid Symantec not by the someone Fake Symantec?
+A: the CAs themselves also have a public and private key Pairs
+-  the  CAs use their own private keys to sign the certificates.
+-  the public keys of all the CAs are buit in to the browers.
+-  the browers checks automatically wheather the website is sign by the orinal CAs or fake CAs
+NOTE It did no check the internal email applications for that we can host our own CAs
+
+F: Why we have to encrypt the messages?
+A: to encrypt the messages, we use asymetric encryption with the parir of public and private keys
+-  admin users a pir of Keys to secure SSH connectivity to the servers.
+- server uses pair of keys to secure a STPS traffic
+-  for this the server sends signing request sto the CA
+- the CA uses its private keys to sign the CSR.
+- All users have a copy of the CAs public keys.
+-  the signed certificate send back to the server 
+-  the sever configures the webapplication with the signed certificates
+- Whenevre a user want to acces the web application 
+- Ther server first send the certificate with its public key.
+-  the user or the user browser reads the certificates and uses the CAs public keys
+- to validate and retrieve the servers public keys
+- it then generate a symmetric keys for all the communication in the future 
+- the symetric key is encrypted using the servers public keys
+- and send back to the server 
+- the server uses the private key to decrypt the msg
+- and retrive the symmetric key
+- the adminstrator generates a key pair for securing SSH and the web server generates a key pair for securing the website with STTPS
+- The certificate sauthorities generates its own set of keypait to signed it
+- The end user only generates a single symmetric key.
+- now he can uses his username and password to authenticates to the webserver 
+
+F: Nun HOw the sever knwn that who are u are u hacker or the right person
+A: the server can send a request a certificates from the client 
+-  the client must generates a pair of keys
+-  and a signed from the valid  CAs
+- The clinet then sends the certificates to the server 
+- now think u have never generate the client certifictes to access ur website.
+- Because TLS client certificates are not generally implemet on web servers
+-  Its all implemet by the host 
+- A normal user do not have to mange the certificates manually 
+
+not tHIS WHOLE iNFRASTRUCTURE; INCLUDING THE CA THE SERVERS THE PEOPLES AND THE PROCESS
+OF GENERATING; DISTRIBUTING AND MAINTAINING DIGITAL CERTIFICATES IS KNOWN AS
+PUBLICKEY INFRASTRUCTURE    OR    PKI
+
+there is no public lock and private Keys
+-  you can encrypt data with any one of them only decrypt data with other 
+- you cannot encrypt data with one and decrypt with the same.
+
+F: We must be careful what you encrypt your data with.
+A. if u encrypt your data with your private key then
+- anyone will be able to decrypt and read your messages with public key
+- public key certificates extension is .crt / .pem
+- Private key with extension  .key  /  -key.pem
+- private kay extension and the name of the certificates haveing the word key in it either
+- when they did no have the word key then it is usally a public key or certificates 
 
 
 
-
+_____________________________________________________________________________________
+TLS certificates 
 
 
 
