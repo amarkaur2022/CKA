@@ -2270,6 +2270,57 @@ A. if u encrypt your data with your private key then
 _____________________________________________________________________________________
 TLS certificates 
 
+There are three types of certificates
+1)  Server Certificates
+2)  Client certificates
+3)  Root certificates
+
+1) Server Certificates: Configure on the servers.
+2) Root Certificates: configure on the CA servers.
+3) Client Certificates: configure on the clients. 
+
+NOTE: 
+Certificates with public keys are named .crt und .pem extension 
+eg
+Server certificates with server.crt and server.pem
+Clinet certificates are client.crt und server.pem
+
+Private keys are names with .key and -key.pem
+private keys have the word word key in them.
+When it doesnot have the word key then it is usually public key / certificate 
+eg :
+server.key OR server.-key.PEM
+
+F: How these conseptes sre related o the kubernetes
+The kunbernets cluster consistes a set of master and worker nodes and 
+communication between thgeses nodes need to be secure and must ne encrypted
+All interaction between all services and their clients  are need to be secure.
+
+eg A kubernets adminstrator need to conect with kubernetescluster  through the kubectl utility
+or accesssing the kubernetes API  directly must establic TLS(transport layer security)
+all the componenets in the kubernetes cluster also need to be secure 
+
+There are two primary requirement to checkt who they are 
+see the notes 160. Bild
+
+_______________________
+
+HOw to generate the TLS Certificates(transport layer security)
+There are three type of tools 
+1) EASYRSA
+2) OPENSSL
+3) CFSSL  and many more.....
+Now we use OPENSSL tool to generate the certificates.
+
+
+F: What is OpenSSL?
+A: OpenSSL is an open-source command line tool that is commonly used to generate 
+-  private keys, create CSRs, install your SSL/TLS certificate, 
+-  and identify certificate information.
+
+please see the notes
+
+
 
 
 
