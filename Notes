@@ -2029,7 +2029,7 @@ Authentication
 -  We have the users like the administrators that access the cluster.
 -  the developer thata access to test or deploy applications.
 -  We have end users who access the applicationsdeployed on the cluster
-- We have third party who access the cluster for integration purposes
+-  We have third party who access the cluster for integration purposes
 Now we learnHow we secure our cluster which have the communication between internal
 components through authentication and authorization mechanisms.
 
@@ -2046,11 +2046,6 @@ There are two types of uesers
 2) Robots ( such as processes or services or applications that require access to the cluster
 Kuberbets does not manage the accunts nativaly. It relies on the externak resources 
 like a file withusers details or certificates or identity(LDAP) to manges these users
-
-
-
-
-
 
 
 1) Users Administrators and Developers
@@ -2094,12 +2089,10 @@ F: HOw to request the tocken
 
 _________________________________________________
               TLS Introductions (for more information see 159)
-  What is public and 
+What is public and 
 Certificats: is used to guarantee trust betwen two parties duaring a transaction 
 eg: when a user tries to access a web server TLS certificates ensure that the communication 
 between the user and the server is encrypted and server is who it says it is.
-
-You 
 
 Symmetric Encryption: When you have a single key to encrypt  the data is known as Symetric Encryption
 
@@ -2249,7 +2242,7 @@ A: the server can send a request a certificates from the client
 -  Its all implemet by the host 
 - A normal user do not have to mange the certificates manually 
 
-not tHIS WHOLE iNFRASTRUCTURE; INCLUDING THE CA THE SERVERS THE PEOPLES AND THE PROCESS
+NOTE: THIS WHOLE I NFRASTRUCTURE; INCLUDING THE CA THE SERVERS THE PEOPLES AND THE PROCESS
 OF GENERATING; DISTRIBUTING AND MAINTAINING DIGITAL CERTIFICATES IS KNOWN AS
 PUBLICKEY INFRASTRUCTURE    OR    PKI
 
