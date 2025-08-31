@@ -2426,8 +2426,22 @@ A:      kubectl get pods ( connection to the server is refused. we have to go on
          no error will be there 
     now run again the kubectl command
         kubectl get pods
+        kubectl get nodes
 
-F: 
+F: The kube-api server stopped again! Check it out Inspect the kube-api server 
+   log and identify the root cause and fix the issue.
+
+Run docker ps -a command tio identify the kube api server container. 
+Run docker logs container-id command to view the logs.
+A:    kubectl get nodes 
+      kubectl get pods 
+      O/P will be error in the last line 
+now look the logs 
+      docker ps -a | grep kube-apiserver
+      o/ see first pods name and copy it 
+Noe see the logs 
+      docker logs namepod
+
         
 
 
