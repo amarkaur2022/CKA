@@ -2440,10 +2440,24 @@ now look the logs
       docker ps -a | grep kube-apiserver
       o/ see first pods name and copy it 
 Noe see the logs 
-      docker logs namepod
+      docker logs podname(first pod name kube api)
+      docker ps -a | grep etcd
+      docker logs Podname(etcd)
+      o/p rejected connection 
+now look at the certificate where it is cpnfigured
+      cat /etc/kubernetes/manifests/kube-apiserver.yaml 
+                  or
+      cat /etc/kubernetes/manifests/kube-apiserver.yaml | grep "\-\-etcd"
+      o/p now our file is not save on that path, thats why there is a connection problem
+now right path 
+      ls /etc/kubernetes/pki/etcd (check the file where it is )
+now go into the yaml file there u have to change it 
+      vi /etc/kubernetes/manifests/kube-apiserver.yaml
+       docker ps -a | grep etcd
+       docker logs Podname(etcd)
 
-        
-
+F: How to see the files or directories 
+A: ls /etc/kubernetes/pki/etcd....
 
 
 
