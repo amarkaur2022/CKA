@@ -2463,6 +2463,48 @@ A: ls /etc/kubernetes/pki/etcd....
 ________________________________________________________
         certificate Workflow API chapter 166
 
+-  I m a administrator and have a setup a CA server and 
+-  a bunch of certificates for various components 
+-  we then started the services using the right certificates and all r working 
+-  i m th eonly adminstrator and have uwn admin certificates and keys.
+
+NUN A new person comes in a team 
+- She needs access to the cluster 
+- We need to get her a pair of certificates and keypair for her to access the cluster 
+- she creates her own private key, generate a certificates signing requestt and send to me.
+- i take the certificate signing request to my CA server, gets signed by the CA server 
+- using private key and root certificate
+- and then certicate back to her 
+- now she has a key to access the server.
+- The certificates have a validity period it ends after a period of time 
+- Every time it expires we follow the same process of generating a new CSR and getting the sign CA server
+
+F: What is a CA Server and where it is generated?
+A:  The CA is really just a pair of keys and certificate files we have generated
+-  the person have the authority can sign any certificate for the kubernetes environment.
+-  they can create a manay user as they want.
+
+CA server where you store the certificate key files stored.(only on that server)
+- When u want to sign a certificate you can only do it by logging into that server.
+- we placed the certificates  on the kubernetes master node itself.
+- so the master node is also known as CA server 
+- Kubeadm do the same thing it creates a CA Pair of files and store that on the master nodes itself.
+- till now we did it always manually but now u have to do it Automatically because ur teams grow.
+
+Kubernets has a build in Certificate API that can do this for you 
+- with Certicate API you send a certificate signing request 
+- Directly to kubernetes through an API call.
+
+
+
+
+
+- 
+
+
+
+
+
   
         
 
