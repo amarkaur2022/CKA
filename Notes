@@ -2494,7 +2494,11 @@ CA server where you store the certificate key files stored.(only on that server)
 Kubernets has a build in Certificate API that can do this for you 
 - with Certicate API you send a certificate signing request 
 - Directly to kubernetes through an API call.
-
+- he received a certoificate and did not sign it and did not logged in on the masternodes.
+- he creates a kubernetes Api Obeject Known as CertificateSigningRequest.
+- Once the  certuficate object is created all certificate signing request can be seen by the administrator of the cluster.
+- The request can be Review and Approved requests easily using the kubectl command 
+-  certificate will be extracted and shared with the user.
 
 
 
