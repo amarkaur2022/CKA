@@ -2506,6 +2506,53 @@ Kubernets has a build in Certificate API that can do this for you
 ______________________
 KUBE CONFIG
 
+-  By default, the kube config  is stored under the users home directory.
+-  if  u store the kubeconfig there then there is no need to specify the path explicitly.
+-  Kubeconfig file is ina specific format.
+
+The Config files has three sections
+1) Clusters
+2) Contexts
+3) Users
+
+1) Clusters:
+    -  Cluster sre various cluster that you need access to.
+    -  you have multiple clusters for development environment 
+       or testing environment or prod or for different organisation
+       or on different cloud providersetc....
+    -  All those go there.
+2) Users:
+    -  are the users account with which you have access to these cluster.
+    -  eg. Admin, Dev User, Prod User etc...
+    -  These user have different privilliges on different cluster.
+
+3) Contexts: 
+    -  Context merge these together.
+    -  Contexts define which user account will be used to access which cluster.
+eg  -  you could create a context named admin at production that will used the admin account to access a production cluster.
+    -  Admin@Production 
+    -  Dev@Google
+NOTE: u are not creating any new users or configure any kind of users access
+      or authorization in the cluster with this process
+Important: we are using excisting users and existing priviligies and 
+       defining what user your going to use to access what cluster.
+    -  u do not have to specify the user certificates and server address in each and every kubectl command you run
+
+
+
+
+F: Each cluster may be configured with multiple namespaces within it 
+   Can u configure a context to switch to a particular namespace?  
+A: yes, the context section in a kubeconfig file can take additional field called namespace
+    here u can specify a particular namespace
+NOTE : u have seen the paths to certificates file mentioned in kubeconfig like this ca.crt sdmin.crt/ admin.key
+        it is better use full path like /etc/kubetnetes/pki/ca.crt OR /etc/kubetnetes/pki/user/admin.crt 
+                      OR ANOTHER WAY 
+    under cluster: certificate-authority-data:  u can copy the encoded key form of the certificate by using cat ca.crt | base64
+
+
+
+F: HOw u will do that by using the kube ctrl command 
 
   
         
