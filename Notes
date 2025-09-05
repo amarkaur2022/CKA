@@ -2653,3 +2653,56 @@ Cat
     the current-context (default cluster connection)
 ⚠️ Be careful: this file can include sensitive info (like tokens or certificates).
 
+__________________________________________________
+API Groups 
+
+F:  What is a API kunbernetes?
+A:  It is the interface through which you talk to the Kubernetes cluster.
+    You send commands (like create, update, delete pods) to the API server.
+    The API server then makes the cluster do what you asked.
+👉 Think of it as the control panel of the cluster.
+
+F: How to see the Master node version?
+A:   Curl https://kube-master:6443/version
+
+F:  How to see the list of pods on the master Node?
+A:    Curl https://kube-master:6443/api/V!/pods
+
+NOw we lern about the Version  and the API 
+
+Kubernetes API: 
+    - Api is grouped into multiple such groups based on their purpose,
+    - such as, APIsone for health, matrics and logsetc....
+Kubernetes Version API: 
+    -  is viewing the version of the cluster 
+THe Matrics and Health 
+    - are used to monitor the health of the cluster.
+The API logs:
+    - are integrating with third-party logging application 
+this video 
+
+API responsible for th cluster funcationality
+The APIS are diveided into two parts 
+  !) the Core Group 
+      - Where all core funcationally exists, 
+      - such as namespace,pods,rc,events,endpoints,nodes,bindings PV,PVC
+      - configmaps, secrets,services etc...
+            see ausdruck
+  2) the named Group
+      -  are more organised
+          see ausdruck
+F: we can also see the listed of named API throught command
+A:     curl http://localhost:6443 -k
+
+F: and how i display all the supported resources groups 
+A:    curl http://localhost:6443/apis -k | grep "name"
+
+F: How i quickly note on accessing the cluster API like that.
+A:      curl http://localhost:6443 -k
+___________________________________
+WHY Authorization 
+
+
+
+
+ 
