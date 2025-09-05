@@ -2701,8 +2701,71 @@ F: How i quickly note on accessing the cluster API like that.
 A:      curl http://localhost:6443 -k
 ___________________________________
 WHY Authorization 
+Admin:
+As admin we can peroform any tsk adding pos, nodes  deleting pods and nodes cluster , make chanes everywhere etc.....
+but soon we have another things we can do such as other administration developers, testers or other applications 
 
+Developers:
+so we create an account for them to access the cluster by creating username 
+passwords or tokens or signed  TL certificates or service accounts etc...
+but we donot want that all of them have the same levelof acces  as us 
+we do not the develeopes have acces to modify the cluster configuration 
+like adding or deleteing nodes or the storage or netwoking configuration 
+we can allow them to view but not modify but 
+they could have access to deploying the application 
 
+Service accounts (users)
+We only want to apply the external applications 
 
+NOTE:
+-  When we share our cluster between different organisations
+-  or team s, by logically partitioning it using name space,
+-  we want to restrict access to the users to their namespaces alone.
+- That is what authorization can help you within the clusters.
 
- 
+There are different types of Authorization Mechanisms
+1) Nodes
+2) ABAC
+3) RBAC
+4) Webhook
+
+1) Node: 
+-  We know that the kubi API Server is accessed by Users, for management purpose
+-  as well as kubeletes on Nodes within the cluster for managemment process.
+-  The kubelet accesses the API server
+   to read information about services and points,
+   nodes, and pods.
+Node Authorizer:
+   The kubelet also reports to the Kube API Server with information about the node,
+   such as its status. These requests are handled by a special authorizer
+   known as the Node Authorizer.
+-  we discussed that the kubelets should be part of the system nodes group
+   and have a name prefixed with system node.
+-  So any request coming from a user with the name system node
+
+2) ABAC: Attribute-based authorization
+-  is where you associate a user or a group of users with a set of permissions.
+-  In this case, we say the dev user can view, create and delete pods.
+-  You do this by creating a policy file with a set of policies defined in 
+   Json format this way you pass this file into the API server.
+-  we create a policy definition file for each user or group in this file.
+-  Now, every time you need to add or make a change in the security,
+-  you must edit this policy file manually and restart the Kube API Server.
+
+3) RBAC: Roll Based Access Control
+-  we define a role, in this case for developers We create a role with the set
+   of permissions required for developers then we associate all the developers to that role.
+-  we create a role for security users with the right set of permissions required for them then associate the user to that role.
+-  whenever a change needs to be made to the user's access we simply modify the role
+   and the changes will be done on all developers immediately.
+
+Webhook:
+-  A webhook in Kubernetes is a way for the API server to call an external service 
+  (HTTP callback) whenever certain events happen.
+
+Authorization Mode:
+    1) Always Allow : allows all requests without performing any authorization checks.
+    2) Always Deny: Always Deny, denies all requests.
+These modes are set using the Authorization Mode Option on the Kube API Server.
+if you don't specify this option, it is set to Always Allow by default.
+
