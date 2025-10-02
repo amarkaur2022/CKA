@@ -1822,10 +1822,11 @@ _______________________________________________
 👉 Think: “Stop putting new Pods here, but don’t touch the old ones.”
 
 2)  kubectl drain <node>
-      -  First cordons the node.
-      -  Then evicts (removes) all workload Pods (except DaemonSets & static Pods).
-      -  The evicted Pods get rescheduled on other healthy nodes.
-👉 Think: “Empty this node completely so I can maintain or remove it.”
+🔹 Drain
+    -  Also marks the Node as unschedulable (same as cordon).
+    -  Additionally, it evicts all existing Pods from that Node (except DaemonSet and static Pods).
+    -  Those Pods are then recreated on other Nodes (if part of a ReplicaSet/Deployment).
+The Node becomes completely empty.
 
 3)   kubectl uncordon <node>
         -  Marks the node as schedulable again.
