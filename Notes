@@ -255,8 +255,6 @@ ____________________________________________________________________
 > kubectl delete rs replicaset-1
         <-- to delete the replica 
 
-
-
 F: Create a ReplicaSet using the replicaset-definition-1.yaml file located at /root/.
    There is an issue with the file, so try to fix it.
 >   ls /root
@@ -276,10 +274,31 @@ F: Fix the issue in the replicaset-definition-2.yaml file and create a ReplicaSe
 >    run the same commands from the upper question 
       but only things is label name and the tier name must be same in the rs
       u just make the changes nad run it 
+
 F: Fix the original replica set new-replica-set to use the correct busybox image.
    Either delete and recreate the ReplicaSet or update the existing ReplicaSet and then delete all PODs, so new ones with the correct image will be created.
    If you opt to delete the ReplicaSet and recreate it, please refer to the file named new-replica-set.yaml, which is saved in the /root/ directory for your convenience and fix it.
 >   kubectl edit rs replicas-set
+		<-- make the changes in the file under spec: change the name of the image.
+		<-- if u update the rs the image name is changed 
+			but the pods are not created automatically
+NOTE u have to two ways
+	1) either u delete and recreate the replicaset
+	2) u have create all the pods with new image name
+> k get pods 
+		<-- u see all the pod are on error stage(STATUS)
+> kubectl delete pod 1 2 3 4
+		<-- now delete all the pods from the replicaset
+> k get pods 
+		<-- now it is in creating state and fetr some time 
+		    the pods are on the running stage
+> k get rs 
+		<-- u will see that all the pods are on the ready state
+
+
+> k get rs 
+
+
 
 
 Important
@@ -290,7 +309,7 @@ Important
    - Opens it in your editor (vi by default).
    - When you save and exit, it automatically applies the changes.
 
-> kubectl apply -f redis.yaml   (applies file-based config to cluster)
+> kubectl apply -f redis.yaml   (create Or Update)applies file-based config to cluster)
    - Apply a configuration from a YAML file to the cluster.
    - Reads the resource definition from a file (e.g. redis.yaml).
    - If the resource doesn’t exist → creates it.
@@ -303,9 +322,15 @@ Important
    -  save and exit
    -  then run
 
-> kubectl create 
+> kubectl create -f redis.yaml  (if pod doesnot exists it created error if exists)
    - It creates a new resource in the Kubernetes cluster from a YAML file or command.
-   - 
+   - If the resource doesn’t exist, it is created.
+   - If it already exists, it will throw an error (it will not update or modify it).
+
+> kubectl replace -f redis.yaml  (if pod exists it replaced if missing gives error)
+   - If the resource exists → it’s deleted and recreated (with a new definition).
+   - If the resource doesn’t exist → it throws an error.
+
 
 ____________________________________________________________________
 
