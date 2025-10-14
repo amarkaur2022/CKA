@@ -109,10 +109,26 @@ F: How to make the change in the pod?
       kubectl edit pod podname
 F: How to Create a new Pod with the name of the rednis and with the image rednis123?
    Note: Use the POD-Defination YaAML file. And yes the image name is wrong
-    kubectl run rednis --image=rednis123 --dry-run -o yaml
+    kubectl run rednis --image=rednis123 --dry-run -o yaml          <-- it display only in yaml format meand it did not create a yaml file
+                                                                        it display only when u u create vayaml file how it looks like 
     kubectl run rednis --image=rednis123 --dry-run=client -o yaml
-    kubectl run rednis --image=rednis123 --dry-run=client -o yaml > rednis.yaml
+    kubectl run rednis --image=rednis123 --dry-run=client -o yaml > rednis.yaml   <<-- it did not display the yaml format but it save the output in the file 
     cat rednis.yaml
+
+> kubectl get pods redis -o yaml | grep image    <-- it dsplay an image of the single pod
+
+> kubectl run redis --image=redis123 --dry-run=client  -o yaml   
+		<-- it just create a file in yaml format only client side and display on the screen
+
+> kubectl run redis --image=redis123 --dry-run=client  -o yaml > redis.yaml   
+		<-- save the output in a redis.yaml file but only client side
+
+> kubectl apply -f redis.yaml
+		<-- After that u have to create a yaml file o that the changes are save
+		    on the clust so it will be saved on the cluster
+
+> cat redis.yaml
+		<-- display the Inhalt on the screen 
 
 --dry-run: It is only used to check th command wheather it is right or wrong and this is the 
   clint side command. The request will not go to the server 
@@ -211,22 +227,86 @@ _____________________________________________________________________
 ____________________________________________________________________
                             LAB Replica Set 
 
-F: How to create the Replica Set
-    kubectl create -f replicaset-defination.yml 
-F: How to see the Replic set list 
-    kubectl get replicaset 
-F: How to create a Pod in the replicaSet?
-    kubectl describe replicaset
-F: How to delete the Replicaset Pod
-    kubectl delete replicaset myapp-replioaset
-    (Also delete all Underlying pod)
-F: How to replace and update the Replica set
-    Kubectl replace -f relicaset-defination.yml
-F: How to kube control scale command to scale the Replicaset 
-    kubectl scale -replicas=6 -f replicaset-defination.yml
-F: How to check the apiversion of replicaset 
-    kubectl api-resources | grep replicaset
-F: 
+>  kubectl get pods         
+        <-- to display the pods on the screen from default defaut namespace
+>  kubectl get rs
+>  kubectl get replicaset
+>  kubectl get ReplicaSets
+        <-- to diplay the replicas set
+> kubectl describe rs new-replica-set 
+> kubectl get pods --show-labels | grep new-replica-set
+        <- to display the pod in the particular replicaset
+> kubectl describe rs
+> kubectl describe rs <name-rs>
+> kubectl describe pod new-replias-set | grep image
+        <-- to see the image 
+> kubectl get rs 
+        <-- also displöay how many pods are ready under READY field
+> kubectl describe rs
+> kubectl describe rs <name of rs>
+> kubectl describe pod <podname>
+        <-- to wheather the pods are ready or not when NO
+            u have see the paticular rs under that u will find the pod name
+            then u have see in the pod why the pods are not ready 
+> kubectl delete pod <podname>
+        <-- to delete the pod
+> we can delete the pod from the replica set but it will create automatically 
+  because we already set the desied number of replicas (4)
+> kubectl delete rs replicaset-1
+        <-- to delete the replica 
+
+
+
+F: Create a ReplicaSet using the replicaset-definition-1.yaml file located at /root/.
+   There is an issue with the file, so try to fix it.
+>   ls /root
+        <-- it display the files on the root
+    k create -f /root/replicaset-definition-1.yaml
+        <-- the file is already created just try to save on the cluster but error
+    cat  /root/replicaset-definition-1.yaml
+        <-- display the inhalt on the screen so u can check for error 
+    kubectl explain replicasset
+        <-- whe u donot known the syntax and bot able to find the error it display the right syntax
+    vi  -f /root/replicaset-definition-1.yaml
+        <-- make the changes in the file 
+    k create -f /root/replicaset-definition-1.yaml
+        <-- save the changes on the cluster 
+F: Fix the issue in the replicaset-definition-2.yaml file and create a ReplicaSet using it.
+    This file is located at /root/.
+>    run the same commands from the upper question 
+      but only things is label name and the tier name must be same in the rs
+      u just make the changes nad run it 
+F: Fix the original replica set new-replica-set to use the correct busybox image.
+   Either delete and recreate the ReplicaSet or update the existing ReplicaSet and then delete all PODs, so new ones with the correct image will be created.
+   If you opt to delete the ReplicaSet and recreate it, please refer to the file named new-replica-set.yaml, which is saved in the /root/ directory for your convenience and fix it.
+>   kubectl edit rs replicas-set
+
+
+Important
+    
+> kubectl edit pod redis      (edits a resources live in cluster)
+   - Directly opens the resource in an editor (like vi or nano) so you can change it live.
+   - It fetches the current YAML definition from the cluster.
+   - Opens it in your editor (vi by default).
+   - When you save and exit, it automatically applies the changes.
+
+> kubectl apply -f redis.yaml   (applies file-based config to cluster)
+   - Apply a configuration from a YAML file to the cluster.
+   - Reads the resource definition from a file (e.g. redis.yaml).
+   - If the resource doesn’t exist → creates it.
+   - If it exists → updates only the changed fields.
+
+> vi redis.yaml (it edit the file locally)
+   -  vi is not a kubectl command — it’s just a Linux text editor.
+   -  You can use it to manually open a file and edit YAML before applying.
+   -  make changes
+   -  save and exit
+   -  then run
+
+> kubectl create 
+   - It creates a new resource in the Kubernetes cluster from a YAML file or command.
+   - 
+
 ____________________________________________________________________
 
                         LABELS AND SELECTORS 
