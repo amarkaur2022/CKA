@@ -1,4 +1,4 @@
-Kubernetes  is a Open-Source system for Automating the deployment, scaling and management of containerized application.
+vi Kubernetes  is a Open-Source system for Automating the deployment, scaling and management of containerized application.
 fEATURES 
   - Conatiner Orchestration:
       Manages Conatines  accross a cluster of maschine.
@@ -88,7 +88,7 @@ NOTE: if we not move a one pod from one node to another node.
 
 
 F: How to get the help for the commands 
-    kubectl run --help
+    kubectl run --help 
 F: On which image used to create the new Pods?
     kubectl describe pod newpodname 
     kubectl  get pods-o wide 
@@ -302,7 +302,14 @@ NOTE u have to two ways
 
 
 Important
-    
+
+Scale: 
+-	The kubectl scale command is used to change the number of replicas (pods) in a deployment, replica set, or stateful set.
+-	To increase or decrease the number of running instances (replicas) of your application.
+> kubectl scale deployment my-deployment --replicas= 5
+> kubectl scale replicaset my-replicaset --replicas=3
+> kubectl scale statefule my-stateful --replicas=4
+
 > kubectl edit pod redis      (edits a resources live in cluster)
    - Directly opens the resource in an editor (like vi or nano) so you can change it live.
    - It fetches the current YAML definition from the cluster.
