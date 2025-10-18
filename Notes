@@ -151,8 +151,15 @@ F: How to show the labels
     kubectl describe pod rednis
     kubectl describe pod --show-labels 
 
---dry-run: It is only used to check th command wheather it is right or wrong and this is the 
-  clint side command. The request will not go to the server 
+--dry-run:
+	- It is only used to check th command wheather it is right or wrong and this is the 
+      clint side command. The request will not go to the server 
+    - the resources will be created.
+--dry-run=client:
+	- This will not create the resource, instead, tell you whether the resource can be created and if your command is right.
+-o yaml:
+	- This will output the resource definition in YAML format on screen.
+
 
  
 
@@ -481,7 +488,7 @@ NOTE: If an application wants to connect to a Redis database, it doesn’t need 
       It just connects to redis-service:6379, and the Service routes traffic to the correct Pod(s).
 
 ________________________________________________________________
-                LAB 4 Services
+LAB 4 Services
 
 F: How many Services exist on the system?
    In the current(default) namespace
@@ -522,7 +529,20 @@ A:  ls
     vi  service-defination-1.yaml'(update the file) 
     kubectl create -f service-defination-1.yaml
     
-   _____________________________________________________________________
+Important:
+expose:
+The kubectl expose command creates a Service in Kubernetes that allows network access to a set of Pods.
+	 
+F: Create a Service named redis-service of type ClusterIP to expose pod redis on port 6379
+	kubectl expose pod redis --port=6379 --name redis-service  --dry-run=client -o yaml
+		but u have to create apod first if it is not created (pod redis)
+
+F: Create a Service named nginx of type NodePort to expose pod nginx's port 80 on port 30080 on the nodes:
+
+
+
+
+_____________________________________________________________________
 What is a Namespace in Kubernetes?
     A namespace is a way to divide a Kubernetes cluster into multiple virtual environments,(separate, logical parts)
     like creating separate compartments for different teams, projects, or applications.
@@ -548,23 +568,39 @@ F: Why use Namespaces?
 
 5) Default Namespace:
     - If you don’t specify a namespace, Kubernetes uses the default namespace.
+
+Important
+1) If i want to change the name space  so that every thing is automatically created in a new namespace not in the default namespace
+	kubectl config set-context --current --namespace=dev
+
+NOTE: Update my current kubectl context so that every command I run will now use the dev namespace by default.
+	- kubectl	       : The Kubernetes command-line tool
+	- config	       : Subcommand to work with kubeconfig (cluster connection settings)
+	- set-context	   : Lets you modify or create a context
+	- /current-context : The context you want to modify — in this case, the currently active one
+	- --namespace=dev  : Sets the default namespace for that context to dev
+
+2) kubectl config get-contexts
+Context: A context tells kubectl which cluster, which user credentials, and which namespace to use by default.
+
 ______________________________________________________________________
               LAB 5 Namespaces 
 
 F: How many Namespaces exist on the system?
       kubectl get namespaces 
       kubectl get ns
+	  kubectl get namespace --no-header|wc
 
 F: How many pods exist in the research namespace?
       kubectl get pods --namespace=research
-      kubectl get pods --n=research
+      kubectl get pods -n research
 
 F: Create a POD in the finance namepsace. Use the spec given below
-      kubectl run redis --image=redis -n=finance
+      kubectl run redis --image=redis -n finance
     
 
 F: To see wheather the pod is created in the finance
-      kubectl get pod -n=finance
+      kubectl get pod -n finance
 
 F: Which namespace has the blue POD in it?
       kubectl get ns 
@@ -578,6 +614,8 @@ F: What DNS Name should the Blue application use to access the database db-servi
 
 F: What DNS Name should the Blue application use to access the database 'db-service' in the devnamespace
    You can try it in the web application UUUI. USe port 6379
+NOTE FIrst of all u have to check the SVC in the namespace
+
       kubectl get svc -n=dev
       
 
