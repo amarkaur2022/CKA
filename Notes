@@ -654,7 +654,54 @@ F: Create a new deployment called redis-deploy in the dev-ns namespace with the 
 F: Create a pod named httpd using the image httpd:alpine in the default namespace.
 Then, create a service of type ClusterIP with the same name (httpd) that exposes the pod on port 80.
       kubectl run httpd --image=http:alpine --port 80 --expose=true 
-__________________________________________________________________
+_______________________________________________________________
+
+				Kubectl API-resources
+<-- to Display all the resources of api, if u donot know the shortname API version or where u find this in the yaml file 
+	Kubectl api-resources    
+
+<-- if u need more/detail information about the resources 
+	kubectl explain pods
+	O/P kind version,metadata,spec etc...
+
+<-- if u want to see in more detail 
+	kubectl explain pods.spec
+	o/ it display the subfields of this command 
+
+<-- to list all fields in the way that you would put them in a YAML file
+	kubectl explain pods --recursive
+
+__________________________________________________________
+Apply: 
+kubectl apply -f /path/to/config-files
+
+Kubectl apply -f nginx.yaml
+-	if the object does not already exists, the object is created.
+-	and when the obeject is created on LIVE kubernetes cluster
+-   and the YAML version of the local obeject configuration file we wrote is converted to a  JSON format
+-   and store last applied configuration 
+-	all three are compared to identify what changes are to be made on the live object.
+
+NOTE: All the three are compared with the value in the live configuration and if there is adifference, the live configurationn is updated with the new value.
+eg. Local file       (yaml file production) 
+	Kubectnetes file (Live Object Configuration)
+	Last Applied Configuration (Live version kubernetes converted into JSON format)
+if local file have made the cahnges, changes on the kubernetes live file and then on the last Applied Configuration(JSON file)
+
+NOW F: Why we need the last Applied Configuration file?
+- if the field was delete (eg label in Local file)
+- now run kubectl apply -f nginx.yaml
+- we see that the last applied configuration had a label --- but it is not present in the local configuration
+- this means the field was delete 
+- This means that the field needs to be removed from the live configuration.
+- So if a field was present in the live configuration and not present in the local or the last applied
+another case if the file prent in the Last  see ((((((chapter nr  50 2:30)))))
+
+
+
+
+
+
 
 Chapter 2 Schudeling 
 
