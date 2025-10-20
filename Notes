@@ -654,6 +654,64 @@ F: Create a new deployment called redis-deploy in the dev-ns namespace with the 
 F: Create a pod named httpd using the image httpd:alpine in the default namespace.
 Then, create a service of type ClusterIP with the same name (httpd) that exposes the pod on port 80.
       kubectl run httpd --image=http:alpine --port 80 --expose=true 
+
+All the imperative commands
+
+F:  Deploy a pod named nginx-pod using the nginx:alpine image. 
+	Kubectl run nginx-pod –image=nginx:alpine
+
+F: Deploy a redis pod using the redis:alpine image with the labels tier=db. 
+	kubectl run redis --image=redis:alpine -l tier=db
+
+F: Create a service named redis-service to expose the existing redis pod within the cluster on port 6379. 
+NOT: for service u have to first create a pod and then use expose in service
+	kubectl run redis --image=nginx
+	kubectl expose pod redis  --port=6379 --type=ClusterIP –name=redis-service
+
+F: Create a deployment named webapp using the image kodekloud/webapp-color with 3 replicas. 
+	kubectl create deployment webapp --image=kodekloud/webapp-color –replicas=3
+
+F:Create a new pod called custom-nginx using the nginx image and run it on container port 8080. 
+	kubectl run custom-nginx --image=nginx –port=8080
+
+F: Create a new namespace called dev-ns. #
+	kubectl create namespace dev-ns
+	kubectl create ns dev-ns
+F: Create a new deployment called redis-deploy in the dev-ns namespace with the redis image. It should have 2 replicas. 
+	kubectl create deployment  redis-deploy --image=redis --replicas=2 -n dev-ns
+
+F: Create a pod named httpd using the image httpd:alpine in the default namespace.
+Then, create a service of type ClusterIP with the same name (httpd) that exposes the pod on port 80. 
+	ubectl run httpd --image=httpd:alpine 
+	 kubectl expose pod  httpd --type=ClusterIP –port=80
+
+F: What is the SHORTNAME for horizontalpodautoscalers?
+    This shortname can be used instead of typing the full resource name in kubectl commands.
+	kubectl api-resources | grep horizontalpodautoscalers
+
+F: Which command would you use to get a description and details of the Pod resource? 
+	Kubectl explain pod 
+
+F: When writing a YAML manifest for a Pod, you want to understand what fields are available under containers.
+Which command would you use to explore the structure of the containers field?
+	kubectl explain pod.spec.containers
+
+
+F: You can drill down into nested fields using dot notation.  Use kubectl explain to explore   
+     the spec field of a Pod. What is the TYPE of the containers field?
+	
+
+F: Let's explore the Deployment resource.
+    What is the TYPE of the replicas field?
+	Kubectl explore deployment.spec
+
+F: Use kubectl explain with the --recursive flag to explore the service.spec.ports structure. 
+            kubectl explain service.spec.ports --recursive
+NOTE: The --recursive flag is particularly useful here because it shows you all available options for configuring a container without having to drill down field by field. 
+
+
+
+
 _______________________________________________________________
 
 				Kubectl API-resources
@@ -670,7 +728,10 @@ _______________________________________________________________
 
 <-- to list all fields in the way that you would put them in a YAML file
 	kubectl explain pods --recursive
-
+		You want to see the complete structure quickly
+		You're searching for a specific field but don't know its exact path
+		You want to understand the full scope of available options
+<-- 
 __________________________________________________________
 Apply: 
 kubectl apply -f /path/to/config-files
@@ -696,6 +757,7 @@ NOW F: Why we need the last Applied Configuration file?
 - This means that the field needs to be removed from the live configuration.
 - So if a field was present in the live configuration and not present in the local or the last applied
 another case if the file prent in the Last  see ((((((chapter nr  50 2:30)))))
+
 
 
 
