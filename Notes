@@ -936,7 +936,8 @@ F: Which node is the POD mosquito on now?
 
 
 __________________________________________________________
-Node Selector 
+Node Selector (is used to limit/tell on the pods so that they only run on particular nodes)
+		
   A node selector is a simple way to tell a Pod which nodes it can run on based on labels.
       Nodes have labels (e.g., disktype=ssd).
       Node selector in a Pod specifies these labels.
@@ -952,12 +953,19 @@ We can select the pods that the pod run only on the specific nodes: there are tw
 
 Syntax:      Kubectl label nodes <node-name> <label-key> = <label-value>
 eg:          lubectl label nodes node-1 size=Large
+			 kubectl create -f pod-defination.yaml
+
 
     - this is very simple example What is when we want to put the pod on the not small and not on the large Node
       In this case we have to use NODE AFFINITY
 ------------------------------------------------------
-NODE AFFINITY:
+It si used when our requirements are more comples eg
+	place the pod on Large or medium node
+	place the pod NOT small node  etc.....
+for this node affinity and anti-affinity were introduced:
 
+NODE AFFINITY:
+node affinity feature is to ensure that pods are hosted on particular nodes.
 Node Affinity is used to control which nodes a Pod can be scheduled on--- based on the labels assigned on the nodes.
 This is the best to tell the Kubernetes Scheduler.
 eg i want this pod run on the nodes that  matches the things(location , speicher, hardware.......)
@@ -970,20 +978,24 @@ Flexibility	        Limited	                  More flexible (AND, OR, ranges)
 Priority Support	  No	                      Supports soft rules (preferred)
 
 
-🔸 Types of Node Affinity
+There are two type of Types of Node Affinity
 1) requiredDuringSchedulingIgnoredDuringExecution(Hard rule)
         Pod will not be scheduled if node doesn't match
         Once running, the rule is ignored
+2)  preferredDuringSchedulingIgnoredDuringExecution   (Soft rule)
 
+IMPORTANT: there are two states in the lifecycle of a pod when considering node affinity
+			DuringScheduling: is aste where a pod does not exist and is created for the first time.
+			DuringExecution
+explain: 
 -------   DuringScheduling: is the state where a pod does not exist and created for the first time.
 
-F: What happend what if the nodes  with matching labels are not available or forgot it ?
+F: What happend what if the nodes with matching labels are not available or forgot it ?
 A: now i have to use the node Affinity. If i used 
     1) requiredDuringSchedulingIgnoredDuringExecution  (Hard rule)
         the Scheduler will mandate that the pod be placed on a node with the given affinity rules 
         if it cannot find one, the pod will not be scheduled.
 NOTE: this type is ued when the placement of pod is crucial. if the maching nodes does not exists the pod will not be scheduled.
-
 
 ---- if the placement of Pod is less important than running the workload itself in the t case we used
     2)  preferredDuringSchedulingIgnoredDuringExecution   (Soft rule)
