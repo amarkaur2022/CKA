@@ -1012,7 +1012,53 @@ eg. Some one remove the label, but we are not able to change the labels on the N
 
 3)  requiredDuringSchedulingRequiredDuringExecution (not stable)
         Rule is enforced both at scheduling and runtime
-___________________________________________________
+_________________________________________________________________
+
+LAB Node Affinity
+
+
+
+
+
+
+
+_________________________________________________________________
+Node Affinity  VS Taints and Tolarations
+Q:  we have 3 pods and 3 noes (red green blue) and we want to place 
+	blue pod on blue Node
+	red pod on rec Node
+	green pod on Green NOde and we do not want any other pod placed on our Node and 
+	Our pod placed anyother Node
+
+Lets try with:
+Taint and Tolarations 
+-  We apply a taint to the nodes, marking them with their colors blue, red and green, and 
+-  Set a toleration on the pods to accept only these pods with matched color.
+-  When the pods are now created, 
+-  the nodes ensure they only accept the pods with the right toleration.
+-  So the green pod ends up on the green node and the blue pod ends up on the blue node.
+IMPORTANT TO KNOW.
+tHE taints and tolerations does not guarantee that the pods will only prefer these nodes, so
+the red pods ends up on one of the other nodes that do not have a taint or toleration set.
+
+Lets try with:
+Node Affinity
+-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ____________________________________________________
 LAB 9 
