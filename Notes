@@ -814,7 +814,7 @@ F: Now schedule the same pos on the controlplane node
 
 F: We have deployed a number of PODs. They are labelled with tier, env and bu. How many PODs exist in the dev environment (env)?
    Use selectors to filter the output
-        kubectl get pods 
+        kubectl get pods --show-labels
         kubectl get pods --selector env=dev 
         kubectl get pods --selector env=dev | wc -l (it display number of lines with header)
         kubectl get pods --selector env=dev --no-headers| wc -l(it display the nummber of lines without header)
@@ -822,10 +822,10 @@ NOTE: first  label=podName
              env=dev 
 
 F: How many PODs are in the finance business unit (bu)?
-        kubectl get pods --selector bu=finance --no-header | wc -l
+        kubectl get pods --selector bu=finance --no-headers | wc -l
 
 F: How many objects are in the prod environment including PODs, ReplicaSets and any other objects?
-        kubectl get all  --selector env=prod --no-header | wc -l
+        kubectl get all  --selector env=prod --no-headers | wc -l
 NOTE all is use to see all the obejects are created in the environment prod
 
 
