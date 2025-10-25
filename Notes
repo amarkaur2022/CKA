@@ -1045,22 +1045,71 @@ Lets try with:
 Node Affinity
 -	
 
+_____________________________________________________________________
+						taint and tolaration
+NOTE 
+-	we can apply the taints with the help of imperative command but 
+	u are not able to do the tolation with the imerative command. 
+-	You have to create a pod in .yaml format and denn 
+-	copy the text from conversation
+-	paste it in the .yaml file 
 
 
 
 
+A: kubectl get nodes
 
 
+A: kubectl get taints
+
+F: Create a taint on node01 with key of spray, value of mortein and effect of NoSchedule
+A:	kubectl taint nodes node01 spray=mortein:NoSchedule
+
+F: Create a new pod with the nginx image and pod name as mosquito.
+A: 
+
+F: What is the state of the pod mosquito
+A: k get pods 
+
+F: Why do you think the pod is in a pending state?
 
 
+F: Create another pod named bee with the nginx image, which has a toleration set to the taint mortein.
+A: 		kubectl run bee --image=nginx --dry-run=client -o yaml > bee.yaml    <-- u have to create pod with yaml file
+		cat bee.yaml					<-- display the yaml format on the display 
+		vi bee.yaml						<-- make the changes in the yaml file 
+				tolerations:
+					- key: "key1"
+					  operator: "Equal"
+					  value: "value1"
+					  effect: "NoSchedule"
+		kubectl create -f bee.yaml		<-- Save the file again live 
+		k get pods 						<-- see wheather the pods is created and in running stage 
+
+F: Observe that the bee pod has been scheduled on node node01 due to the toleration that has been configured for the pod.
+A: kubectl get pods -o wide 
+
+F: Do u see that the taints are on the controlplane?
+		kubectl describe node comtrolplane
+
+F: Remove the taint on controlplane, which currently has the taint effect of NoSchedule.
+A		kubectl describe node controlplane			
+			<-- display the yaml file on the screen
+				Copy the taint 
+		kubectl taint node controlplane node-role.kubernetes.io/control-plane:NoSchedule-	
+			<-- to delete the taint fron the node controlplane 
+F: What is the state of the bee pod?
+A: 		kubectl get pods -o wide
+
+F: Which node is the POD mosquito on now?
+A: 		kubectl get pod -o wide
+_______________________________________________________
+			NOde Affinity
+F: Which node is the POD mosquito on now?
+		kubectl describe pods --show-labels 
 
 
-
-
-
-
-
-____________________________________________________
+__________________________________________________
 LAB 9 
 _____________________________________________________
 Daemon Set 
@@ -1115,6 +1164,10 @@ A: - kubectl create deployment elasticsearch -n kube-system --image=k8s.gcr.io/f
         delete the replica/delete line 13(strategy {})/ lat line status:{}
     -  kubectl create -f fluentd.yaml
     -  kubectl get ds -n kube-system
+
+
+
+
 
 
 
