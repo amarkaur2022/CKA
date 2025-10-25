@@ -1105,9 +1105,86 @@ F: Which node is the POD mosquito on now?
 A: 		kubectl get pod -o wide
 _______________________________________________________
 			NOde Affinity
-F: Which node is the POD mosquito on now?
-		kubectl describe pods --show-labels 
+Node Affinity (Kubernetes)
+-	Node affinity is a way to control which nodes your Pods can be scheduled on, based on node labels.
+-	Run this Pod only on nodes that match these conditions.
 
+Types of Node Affinity
+-	requiredDuringSchedulingIgnoredDuringExecution
+		- Hard rule — Pod must run only on matching nodes.
+		- If no node matches → Pod won’t start.
+
+-	preferredDuringSchedulingIgnoredDuringExecution
+		- Soft rule — Scheduler tries to place the Pod on matching nodes,
+		- but if none are available, it can still run elsewhere.
+
+
+
+
+
+F: How many Labels exist on node node01?
+		kubectl get node node01 --show-labels 
+		kubectl describe node node01
+F: What is the value set to the label key beta.kubernetes.io/arch on node01?
+A: 		kubectl get node node01 --show-labels 
+		kubectl describe node node01
+
+F: Apply a label color=blue to node node01
+A: 		kubectl label node node01 color=blue
+		kubectl describe node node01    OR
+		kubectl get node node01 --show-labels
+
+F: Create a new deployment named blue with the nginx image and 3 replicas.
+A: 		kubectl create deployment blue --image=nginx --replicas=3
+		k get deployments -o wide
+
+F: Which nodes can the pods for the blue deployment be placed on?  
+   Make sure to check taints on both nodes (if any) !
+A: 		k describe node node01 | grep -i taints
+		k describe node controlplane | grep -i taints
+NOTE: if there are no taint on the node thats means u can add the blue pods on both the nodes
+	  means when u have a taint restrited meand only run those pods that have the matching tolaration 
+
+
+F: Set Node Affinity to the blue deployment to place the pods on node01 only.
+	Ensure that node01 has the label color=blue.
+	Requirements:
+		Use requiredDuringSchedulingIgnoredDuringExecution node affinity
+		Key: color
+		Value: blue
+	If the label is not already set, apply it to node01 before updating the deployment.
+A:  k get deployments
+	kubectl edit deployment blue
+		 spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: color
+                operator: In
+                values:
+                - blue
+
+F: Which nodes are the pods placed on now?
+A: 		kubectl get pods -o wide
+
+
+F: Create a new deployment named red with the nginx image and 2 replicas, and ensure it gets placed on the controlplane node only.
+   Use the label key - node-role.kubernetes.io/control-plane - which is already set on the controlplane node.
+A: 		kubectl describe node controlplane
+			<--first u see that the label is aready set on the controlplane node
+		kubect create deployment red --image=nginx --replicas=2 --dry-run=2 -o yaml > red.yaml
+		vi red.yaml 		<-- copy the text from the converstaion 
+			 spec:
+     		   affinity:
+        		nodeAffinity:
+          			requiredDuringSchedulingIgnoredDuringExecution:
+            			nodeSelectorTerms:
+		     				- matchExpressions:
+        				      - key: node-role.kubernetes.io/control-plane
+                				operator: Exists
+		kubectl create -f red.yaml
 
 __________________________________________________
 LAB 9 
