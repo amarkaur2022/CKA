@@ -1185,6 +1185,43 @@ A: 		kubectl describe node controlplane
         				      - key: node-role.kubernetes.io/control-plane
                 				operator: Exists
 		kubectl create -f red.yaml
+_________________________________________________
+				Recourcers Limit
+F: Create a new deployment named red with the nginx image and 2 replicas, and ensure it gets placed on the controlplane node only.
+   Use the label key - node-role.kubernetes.io/control-plane - which is already set on the controlplane node.
+A: 			kubectl describe pods rabbit
+				<-- display the whole deital of the pods see cpu
+
+F: Delete the rabbit Pod.
+   Once deleted, wait for the pod to fully terminate.
+A: 			kubectl delete pods rabbit
+
+F: Another pod called elephant has been deployed in the default namespace. 
+   It fails to get to a running state.
+   Inspect this pod and identify the Reason why it is not running.
+A: 		kubectl decribe pods elephant
+
+F: The elephant pod runs a process that consumes 15Mi of memory. Increase the limit of the elephant pod to 20Mi.
+	Delete and recreate the pod if required. Do not modify anything other than the required fields.
+A: 		kubectl edit pod elefant
+			<-- we make the changes in the memory 20Mi but not able to save the changes 
+			NOTE:
+				we cannot make the changes on the running pods 
+		cat /tmp/kubectl-edit-1888094443.yaml
+				<-- tthe changes are saved on the temprory file 
+					
+		kubectl replace --force  -f /tmp/kubectl-edit-1888094443.yaml
+				<-- Now we have two ways either u delete the pod and then recreated it OR
+					the light ways is to replace the pods it will atomatically delete and replace it 
+		kubectl get pods 
+				<-- check wheather the pods are on the running state 
+		k describe pod elefant 
+				<-- to check wheather the changes are saved in the file 
+F: Delete the elephant Pod.
+   Once deleted, wait for the pod to fully terminate.
+		kubectl delete pod elefant 
+
+
 
 __________________________________________________
 LAB 9 
