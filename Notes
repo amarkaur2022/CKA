@@ -935,6 +935,65 @@ F: Which node is the POD mosquito on now?
           kubectl get pods -o wide
 
 
+
+						taint and tolaration
+NOTE 
+-	we can apply the taints with the help of imperative command but 
+	u are not able to do the tolation with the imerative command. 
+-	You have to create a pod in .yaml format and denn 
+-	copy the text from conversation
+-	paste it in the .yaml file 
+
+
+
+
+A: kubectl get nodes
+
+
+A: kubectl get taints
+
+F: Create a taint on node01 with key of spray, value of mortein and effect of NoSchedule
+A:	kubectl taint nodes node01 spray=mortein:NoSchedule
+
+F: Create a new pod with the nginx image and pod name as mosquito.
+A: 
+
+F: What is the state of the pod mosquito
+A: k get pods 
+
+F: Why do you think the pod is in a pending state?
+
+
+F: Create another pod named bee with the nginx image, which has a toleration set to the taint mortein.
+A: 		kubectl run bee --image=nginx --dry-run=client -o yaml > bee.yaml    <-- u have to create pod with yaml file
+		cat bee.yaml					<-- display the yaml format on the display 
+		vi bee.yaml						<-- make the changes in the yaml file 
+				tolerations:
+					- key: "key1"
+					  operator: "Equal"
+					  value: "value1"
+					  effect: "NoSchedule"
+		kubectl create -f bee.yaml		<-- Save the file again live 
+		k get pods 						<-- see wheather the pods is created and in running stage 
+
+F: Observe that the bee pod has been scheduled on node node01 due to the toleration that has been configured for the pod.
+A: kubectl get pods -o wide 
+
+F: Do u see that the taints are on the controlplane?
+		kubectl describe node comtrolplane
+
+F: Remove the taint on controlplane, which currently has the taint effect of NoSchedule.
+A		kubectl describe node controlplane			
+			<-- display the yaml file on the screen
+				Copy the taint 
+		kubectl taint node controlplane node-role.kubernetes.io/control-plane:NoSchedule-	
+			<-- to delete the taint fron the node controlplane 
+F: What is the state of the bee pod?
+A: 		kubectl get pods -o wide
+
+F: Which node is the POD mosquito on now?
+A: 		kubectl get pod -o wide
+
 __________________________________________________________
 Node Selector (is used to limit/tell on the pods so that they only run on particular nodes)
 		
@@ -1013,16 +1072,6 @@ eg. Some one remove the label, but we are not able to change the labels on the N
 3)  requiredDuringSchedulingRequiredDuringExecution (not stable)
         Rule is enforced both at scheduling and runtime
 _________________________________________________________________
-
-LAB Node Affinity
-
-
-
-
-
-
-
-_________________________________________________________________
 Node Affinity  VS Taints and Tolarations
 Q:  we have 3 pods and 3 noes (red green blue) and we want to place 
 	blue pod on blue Node
@@ -1043,66 +1092,7 @@ the red pods ends up on one of the other nodes that do not have a taint or toler
 
 Lets try with:
 Node Affinity
--	
 
-_____________________________________________________________________
-						taint and tolaration
-NOTE 
--	we can apply the taints with the help of imperative command but 
-	u are not able to do the tolation with the imerative command. 
--	You have to create a pod in .yaml format and denn 
--	copy the text from conversation
--	paste it in the .yaml file 
-
-
-
-
-A: kubectl get nodes
-
-
-A: kubectl get taints
-
-F: Create a taint on node01 with key of spray, value of mortein and effect of NoSchedule
-A:	kubectl taint nodes node01 spray=mortein:NoSchedule
-
-F: Create a new pod with the nginx image and pod name as mosquito.
-A: 
-
-F: What is the state of the pod mosquito
-A: k get pods 
-
-F: Why do you think the pod is in a pending state?
-
-
-F: Create another pod named bee with the nginx image, which has a toleration set to the taint mortein.
-A: 		kubectl run bee --image=nginx --dry-run=client -o yaml > bee.yaml    <-- u have to create pod with yaml file
-		cat bee.yaml					<-- display the yaml format on the display 
-		vi bee.yaml						<-- make the changes in the yaml file 
-				tolerations:
-					- key: "key1"
-					  operator: "Equal"
-					  value: "value1"
-					  effect: "NoSchedule"
-		kubectl create -f bee.yaml		<-- Save the file again live 
-		k get pods 						<-- see wheather the pods is created and in running stage 
-
-F: Observe that the bee pod has been scheduled on node node01 due to the toleration that has been configured for the pod.
-A: kubectl get pods -o wide 
-
-F: Do u see that the taints are on the controlplane?
-		kubectl describe node comtrolplane
-
-F: Remove the taint on controlplane, which currently has the taint effect of NoSchedule.
-A		kubectl describe node controlplane			
-			<-- display the yaml file on the screen
-				Copy the taint 
-		kubectl taint node controlplane node-role.kubernetes.io/control-plane:NoSchedule-	
-			<-- to delete the taint fron the node controlplane 
-F: What is the state of the bee pod?
-A: 		kubectl get pods -o wide
-
-F: Which node is the POD mosquito on now?
-A: 		kubectl get pod -o wide
 _______________________________________________________
 			NOde Affinity
 Node Affinity (Kubernetes)
@@ -1117,9 +1107,6 @@ Types of Node Affinity
 -	preferredDuringSchedulingIgnoredDuringExecution
 		- Soft rule — Scheduler tries to place the Pod on matching nodes,
 		- but if none are available, it can still run elsewhere.
-
-
-
 
 
 F: How many Labels exist on node node01?
@@ -1221,12 +1208,9 @@ F: Delete the elephant Pod.
    Once deleted, wait for the pod to fully terminate.
 		kubectl delete pod elefant 
 
-
-
-__________________________________________________
-LAB 9 
 _____________________________________________________
-Daemon Set 
+						Daemon Set 
+
   -  Daemon sets are like the replica sets
   -  It helps you to deploy multiple instances of pods.
   -  But it runs one copy of pod on each node in your cluster.
@@ -1262,6 +1246,7 @@ A:   kubectl get all --all-namespaces
 
 F: On how many nodes are the pods scheduled by the DaemonSet kube-proxy?
 A:   kubectl describe daemonset kube-proxy --namespace=kube-system
+	 kubectl get daemonsets -A
 
 F: What is the image used by the POD deployed by the kube-flannel-ds DaemonSet?
 A:   kubectl describe daemonset kube-flannel-ds --namespace=kube-flannel 
@@ -1271,23 +1256,19 @@ F: Deploy a DaemonSet for FluentD Logging.
    Name: elasticsearch
    Namespace: kube-system
    Image: registry.k8s.io/fluentd-elasticsearch:1.20
-A: - kubectl create deployment elasticsearch -n kube-system --image=k8s.gcr.io/fluentd-elasticsearch:1.20 --dry-run=client -o yaml 
-   - kubectl create deployment elasticsearch -n kube-system --image=k8s.gcr.io/fluentd-elasticsearch:1.20 -o yaml > fluent.yaml
-        MAKE CHANDES IN THE FILE #
+A: - kubectl create deployment elasticsearch -n kube-system --image=k8s.gcr.io/fluentd-elasticsearch:1.20 --dry-run=client -o yaml  > fluent.yaml
+         MAKE CHANDES IN THE FILE #
         kind: Daemonset 
         delete the replica/delete line 13(strategy {})/ lat line status:{}
     -  kubectl create -f fluentd.yaml
     -  kubectl get ds -n kube-system
 
-
-
-
-
-
-
-    
+   
 ______________________________________________
   Static pod (Chapter 76)
+- Static pods are those pods which are created by Kubelet on its own in a directory etc/kubernetes/manifests
+- without the intervention from the API server
+- or the rest of the Kubernetes cluster components are known as static pods.
 
 Static pods are directly managed by the kubectl on a specific node, rather than the kubernetes API server/scheduler
 All the master Nodes are the Components of the static pod 
@@ -1299,16 +1280,16 @@ All the master Nodes are the Components of the static pod
 
 F: What happend when all the above Components  in the cluster  are not there. How kubelet(Worker Node) create the Pods USW.....
 A:  -  The Kubectl can manage the Node Independently
-    -  we Installec the Kubelet and docker(Containers) Installed 
+    -  we Installed the Kubelet and docker(Containers) Installed 
     -  There is no kubernetes cluster and all the Components of the Master Nodes
     -  To create a Pod we need the detail of the Pod in a Pod defination file.
     -  Now we have to configure the Kubelet to read Directory on the server 
     -  Place the defination file in htis directorsy
     -  It checks and read the file and create the Pods on the host.
-    - If the application crasch the kubectl restart it.
+    -  If the application crasch the kubectl restart it.
     -  If changes are made the kubelet recreate the pod 
-    - If remove the file, the pod will be deleted 
-    - THESE PODS ARE KNOWN AS STATIC PODS
+    -  If remove the file, the pod will be deleted 
+    -  THESE PODS ARE KNOWN AS STATIC PODS
 NOTE : we cannot create the pods with the help of relicas, deployments usw----
 
 IMPortant 
@@ -1325,14 +1306,19 @@ _________
 
 LAB 11
 F: How many static pods exist in this cluster in all namespaces?
-A: kubectl get pods -A
-      To know that these are the static PODs
-      The Pod name is extened/append with the node name.
+A: There are two way to see wheather this is a stic pod or not
+	1)	kubectl get pods -A
+      		<--To know that these are the static PODs
+      		<--The Pod name is extened/append with the node name.
+	2)	kubectl get pods kube-apiserver-controlplane -n kube-system -o yaml
+			<-- give us a lot of information OwnerRefernce information  
+
 F: How to see the static pod in detail 
     kubectl get pod coredns-77456fff-brwnd -n kube-system -o yaml 
 
 F: Which of the below components is NOT deployed as a static pod?
 A:    kubectl get pods -A
+			<-- where the pod does not end with the node name
 
 F: Which of the below components is NOT deployed as a static POD?
 A:   kubectl get pods -A
@@ -1343,6 +1329,38 @@ A: kubectl get pods -A
 F: How to see where is the config file is srtored (I think it is falsch )
 AAAA: kubectl get configmap -n kube-system kubeadm-config -o yaml
 
+F: What is the path of the directory holding the static pod defination files?
+A: NOTE to find the path first run the command
+		sudo find / -name "config.yaml"
+			<-- This command is used to find the .yaml file in the directories 
+		ls /
+			<-- it display all the starting directories
+		cat /var/lib/kubectl/
+		cat /var/lib/kubectl/config.yaml
+			<-- when u see under the file StaticPodPath
+
+F: How many pod Defination files are present in the manifests folder?
+		the number of static pods are there so many numbers of files are created hence it is 4
+	kubectl get pods -A
+
+F: What is the docker image used to deploy the kube-api server as a static pod ?
+A: 		cat /etc/kubernetes/manifests/kube-apiserver.yaml
+			<-- look under image 
+
+F: Create a static pod named static-busybox that uses the busyboy images and the command sleep 1000
+A: NOte when we use -- command: it should be in the last like 
+		kubectl run static-busybox --image=busybox --dry-run=client -o yaml --command -- sleep 1000 > static-busybox.yaml
+		cp static-busybox.yaml /etc/kubernetes/manifests
+		kubectl get pods 
+
+F: We just created a new static pod named static-greenbox. Find it and delete it.
+   This question is a bit tricky. But if you use the knowledge you gained in the previous questions in this lab, you should be able to find the answer to it.
+A: 	kubectl delete pod static-greenbox-node01
+		NOTE: it is not possible to delete the pod like that, after delte it will  reecreate it 
+				we need to find the manifest file and then delete it 
+
+
+	
 __________________________________
 
 Priority
