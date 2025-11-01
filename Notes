@@ -2478,18 +2478,21 @@ __________________________________________
 Documentation 
 kubernetes Documentation / tasks / administer a cluster / Administration with kubecdm /upgrading kubeadm cluster
 
-______________________________________________________
-
+######################################################################
               Security is  very Important topic 
+Our focus in this lecture is more on Kubernetes related security.
 
 -  KubeApi is the center of all operations within Kubernetes.
 -  We intract with it through the kube control utility or by accessing the API directly
 -  and through that you can perform almost any operation on the cluster
 
-NOTE : So this is the first line of defense 
--   Controlling access to the API server itself
+NOTE : So this is the first line of defense OR save our cluster
+	-  Controlling access to the API server itself
 
 We need to make two types of decisions
+
+1) Who can access the cluster ?
+2) What can they do?
 
 1) Who can access the cluster ?
 A:  Who can access the API server is defined by the authentification mechanisums.
@@ -2511,11 +2514,12 @@ control
     -  Node Authorization 
     -   Webhook Mode etc......
 Nun All the communications with 
-    API server 
+    kube-apiserver 
     kube Controll Manager 
     Kube Scheduler
     Kube Proxy
     Kubelet
+	etcd Cluster
     ETCD Cluster is secured using TLS encryption 
     We learn later how to setup the certificates between the varionus components?
   
@@ -2525,7 +2529,7 @@ A:  By default, all the Pods can access all other pods  within the cluster.
     later.
 ______________________________________________
 
-Authentication 
+Authentication (156)
 
 -  Kubernetes cluster consists of multiple nodes, physical or virtual and various 
    componenets that works together.
@@ -2539,10 +2543,11 @@ components through authentication and authorization mechanisms.
 There are different user that may be accessing the cluster.
 1) Admin
 2) Developers
-3) Applicatoin End Users Security of end Users, who access the application
-   deployed on the cluster is managed  by th applications themselves, internally.
+3) End Users (Applicatoin End Users Security of end Users, who access the application
+   deployed on the cluster is managed  by th applications themselves, internally.)
 4) Bots
 
+Our focus is on users access to the Kubernetes cluster for administrative purposes.
 
 There are two types of uesers
 1) hummens/Users (Administrators and Developers)
@@ -2558,12 +2563,22 @@ like a file withusers details or certificates or identity(LDAP) to manges these 
   -  The Kube API server authenticates the request (1)
   -  before Processing it(2)
 
+NIOTE: 
+-	Kubernetes does not manage user accounts natively.
+-	It relies on an external source, like a file with user details or certificates, or a third party identity
+-	service like Ldap to manage these users.
+
+ALL THE USER ACCESS IS MANAGED BY THE API SERVER:
+All of these requests go through the kube API server.
+The kube API server authenticates the requests before processing it.
+
+
 F:  How doesthe KUBE API server authenticates?
 A:  There are different authentication mechanisums that can be configure(see figure on page 3)
     1)  Static Password File 
     2)  Static tocken File 
     3)  Certificates 
-    4)  Identity
+    4)  Identity Service
 
 Authentication  Mechanisums- Basics
 1)  Static Password File:Simplest form of Authentication
@@ -2592,6 +2607,7 @@ F: HOw to request the tocken
 
 _________________________________________________
               TLS Introductions (for more information see 159)
+
 What is public and 
 Certificats: is used to guarantee trust betwen two parties duaring a transaction 
 eg: when a user tries to access a web server TLS certificates ensure that the communication 
@@ -2607,11 +2623,15 @@ u must not share the key with other but the lock can be shared with others(publi
 NOTE in this user name and passwords are too risky thats why u have decided to use the public and private lkey pair
 we can do this by running the SSH command 
 
-eg ssh-keygeb
+eg ssh-keygebn
 It creates two file private key and public lock 
-eg car +/.ssh/authorized_keys
+eg cat ~/.ssh/authorized_keys
   to see the keys
 eg ssh -i id_rsa user1@server1
+	-- to save the privekey on the specific location 
+
+NOTE: if u have more than one webserver use u can have the use the same private key for all the webservers 
+
 
 F: if have more than one server in ur cluster u cand creatre many public locks but 
     every is lock is opend with a single privte key
@@ -2636,12 +2656,14 @@ F: What if we could somehow get the key to the sever safely?
 A: once the key safely made available to the aserver the server and the client can safely continue communication with each other using symmetric encryption 
 to sequerly trasfer the symmetric key from the client to the server, we use asymmetric encryption 
 generate a public and private key pair on the server.
+
+
 SSH key gen command was used earlier, to create a pair of keys for SSH Purposes.
 USE Opsen SSL Command:
 openssl genrsa -out my-bank.key 1024
 openssl rsa -in my-bank.key -pubot > mybank.pem
 
-When the user first accesses the web server using STTPS,
+ When the user first accesses the web server using STTPS,
 he gets the public key from the server
 If the hacker get all the things. He will also get the public key
 nun
@@ -2868,7 +2890,8 @@ ____________________________________
 LAB to views Certificates 
 
 F: Identify the certificate file used for the Kube-api server
-A:   cat /etc/kubernetes/manifests/kube-apiserver.yaml
+A:   ls /etc/kubernetes/manifests/
+	 cat /etc/kubernetes/manifests/kube-apiserver.yaml
 
 F: Identify the certificate file ussed to authenticate kube-apiserver as a client to ETCD Server.
 A:   cat /etc/kubernetes/manifests/kube-apiserver.yaml
@@ -2884,7 +2907,8 @@ F: Identify the ETCD Server CA Root Certificate used to server ETCD Server
 A:   cat /etc/kubernetes/manifests/etcd.yaml
 
 F: What is the Common Name(CN) configured on the Kube Api Server Certificate?
-A:   Openssl x509 -in /etc/kubernetes/manifests/kube-apiserver.crt -text -noout
+A: 	ls /etc/kubernetes/manifests/kube-apiserver.yaml
+	Openssl x509 -in /etc/kubernetes/manifests/kube-apiserver.crt -text -noout
 
 F:  What is the name of the CA who issued the kube API Server Certificate?
 A:   Openssl x509 -in /etc/kubernetes/manifests/kube-apiserver.crt -text -noout
@@ -2894,6 +2918,8 @@ A:     Openssl x509 -in /etc/kubernetes/manifests/kube-apiserver.crt -text -noou
 
 F:   What is the Common Name(CN) configured on the ETCD Server certificate?
 A:     now u have to go into the server file 
+		ls /etc/kubernetes/manifests/etcd.yaml
+		cat /etc/kubernetes/manifests/etcd.yaml (copy the path)
        Openssl x509 -in /etc/kubernetes/pki/etcd/server.crt -text -noout
 
 F:  How long, from the issued date, is the Kube-API Server Certificate valid for?
@@ -2906,7 +2932,8 @@ F: Kubectl suddenly stops responding to your commands. Check it out Someone rece
     /etc/kubenetes/mainfests/etcd.yaml file
     You are asked to inestingate and fix the issue. Once you fix the issue wait for sometime for kubectl to respond. 
     Check the logs of the ETCD container.
-A:      kubectl get pods ( connection to the server is refused. we have to go one step down ) 
+A:      kubectl get pods ( connection to the server is refused
+						   means not able to run kubectl command. we have to go one step down ) 
         docker ps -a | grep  kubeapi-server (look the logs for the actuall server)
         docker logs 843d43ecff24 name (in log 2379 error this is for the etcd
     Now look for the ETCD server
