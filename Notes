@@ -3393,4 +3393,151 @@ A:       kubectl --as dev-user create deployment nginx --image=nginx -n blue
 
 
 ____________________________________________________________
-Cluster Roles 
+Cluster Role are on the Namespaces
+
+What is role ?
+A Role in Kubernetes is a set of permissions that defines what actions (verbs) can 
+           be performed on which resources within a specific namespace. 
+Think of It Like This
+Imagine your Kubernetes cluster is a big office building ?:
+Resources (pods, services, secrets, etc.) = rooms in the building
+Users / service accounts = people in the building
+Roles = job roles or access cards that define what each person can do (e.g., “can enter server room”, “can read logs”, etc.)
+A Role defines what permissions someone has within one specific floor (namespace).
+
+-   We can group the the resources like pods, deployment and    services but we cannot   
+     group the nodes in the namespace 
+-   These are the cluster wide or cluster scoped resources.
+-   You can create a cluster role for namespaced resources as well. When you do that,
+    the user will have access to these resources accross all namespaces.
+-   With cluster roles, when you authorize a user to access the pods, the user gets access to   
+     all pods across the cluster.
+-   Kubernetes creates a number of cluster roles by default when the cluster is first set up
+
+NOTE:
+To create a cluster role 
+to link the user to the cluster role  known as rolebinding 
+The role binding object links the user to the role. 
+Practicle  information:
+create a cluster role
+create resources --resources=persistentvolumes
+give the permiessions through --verb= list/get
+_______________________________________________________________
+			LAB 
+
+F: To see the cluster roles?
+	kubectl get clusterroles --no-headers |wc -l
+F:  How many ClusterRoleBindings exist on the cluster? 
+A: 	kubectl get clusterrolebinding –no-headers| wc -l
+
+F: What namespace is the cluster-admin clusterrole part of? 
+A:      Cluster roles are cluster-wide and it is not a part of namespace
+
+F: What user/groups are the cluster-admin role bound to?
+   The ClusterRoleBinding for the role is with the same name.
+A:      kubectl  describe clusterrolebinding cluster-admin
+
+F: What level of permission does the cluster-admin role grant?
+    Inspect the cluster-admin role's privileges.
+A:	kubectl describe clusterrole cluster-admin
+
+F:  A new user michelle joined the team. 
+    She will be focusing on the nodes in the cluster. 
+    Create the required ClusterRoles and ClusterRoleBindings 
+    so she gets access to thenodes. 
+A: 	 Kubectl get nodes - - as michelle
+            kubectl create clusterrole michelle-role -- verb=list,create,watch 
+                                                                            --resource=nodes
+	kubectl create clusterrolebinding michelle-rolle-binding --clusterrole=michelle-role
+								               --user=michelle 
+	kubectl describe clusterrole michelle-rolle
+	kubectl describe clusterrolebinding michelle-rolle-binding
+	kubectl get nodes - -as michelle
+explain
+get nodes : Shows the list of all worker and master/control-plane nodes in the cluster.
+ - - as        : What the user michella is allowed to do (see the permissions)
+	         if doesnot (forbidden error)	
+
+
+With declartive commands 
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: node-admin
+rules:
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["get", "watch", "list", "create", "delete"]
+
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: michelle-binding
+subjects:
+- kind: User
+  name: michelle
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: node-admin
+  apiGroup: rbac.authorization.k8s.io
+
+F: A new user michelle joined the team. She will be focusing on the nodes in the cluster. 
+   Create the required ClusterRoles and ClusterRoleBindings so she gets access to the nodes. 
+A:       kubectl api-resources
+          kubectl create clusterrole storage-admin					      
+                                  --resource=persistentvolumens,storageclasses
+                                  --verb=list,create,get,watch     
+            kubectl describe clusterrole storage-aadmin        
+            kubectl get clusterrole storage-admin -o yaml  (in yaml file format)                   
+            kubectl create clusterrolebinding michelle-storage-admin
+                                    --clusterrole=storage-admin
+                                    --user=michelle
+	  kubectl describe clusterrolebindnig michelle-storage-admin
+             kubectl --as michelle get storageclass
+explain 
+--as   : Run the command as if the user is michelle (impersonation).
+get storageclass : Show all the StorageClasses in the cluster.
+
+Declarative 
+
+
+
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: storage-admin
+rules:
+- apiGroups: [""]
+  resources: ["persistentvolumes"]
+  verbs: ["get", "watch", "list", "create", "delete"]
+- apiGroups: ["storage.k8s.io"]
+  resources: ["storageclasses"]
+  verbs: ["get", "watch", "list", "create", "delete"]
+
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: michelle-storage-admin
+subjects:
+- kind: User
+  name: michelle
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: storage-admin
+  apiGroup: rbac.authorization.k8s.io
+
+________________________________________________________________________
+
+
+
+
+
+
+
+
