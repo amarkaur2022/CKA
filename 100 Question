@@ -394,27 +394,31 @@ check
 ################################################################
 Rollout:
 -------
-
-	Note: Rolling-update is the default deployment strategy. if we do not define any strategy, then it select by-default "Rolling-update" 
-      	as a strategy.
+Note: Rolling-update is the default deployment strategy. if 
+      we do not define any strategy, then it select by-default 
+      "Rolling-update" as a strategy.
 
 Rolling-update Strategy:
 ---------------
-	In Rolling-update if we have 5 pods are already their, and we want to update them with new version, then while doing
-	deployment, it delete one pod and bring one new, in this way it goes.
+	In Rolling-update if we have 5 pods are already their, and we 
+    want to update them with new version, then while doing deployment
+    it delete one pod and bring one new, in this way it goes.
 
 Recreate Strategy:
 ------------------
-	In this case it first delete all the pods and after that it create all new pods at once, this strategy can have downtime 
-	because at the time of first delete all the pods are deleted.
+	In this case it first delete all the pods and after that it 
+    create all new pods at once, this strategy can have downtime 
+    because at the time of first delete all the pods are deleted.
 
 --record: 
 -----------
-	This helped track who changed what and why, especially when using kubectl rollout history.
------------------------------------------------------------------------------------------
+	This helped track who changed what and why, especially when using 
+    kubectl rollout history.
+--------------------------------------------------------------------
 Q8:  create a deployment with 3 replicas and upgrade using rolling update?
 
-	kubectl create deployment nginx-deploy --image=1.16 --replicas=3 --dry-run=client -o yaml > deploy.yaml	
+	kubectl create deployment nginx-deploy --image=1.16 --replicas=3
+                              --dry-run=client -o yaml > deploy.yaml	
 	
 	kubectl set image deployment nginx-deploy nginx=nginx:1.17 --record
 
@@ -573,7 +577,6 @@ check
 	
 	kubectl describe pods pro-redis | grep -i node
 	kubectl describe pods pro-redis | grep  node
-
 ################################################################
 the main reason to use  SVC for better security with the 
 combination of clusterrole and clusterrolebinding  we are able to decide what we can and we cannot do.
@@ -624,8 +627,7 @@ Now we bind the cluster role
 	      serviceAccountName: nedserviceaccount    <-- save and close it strg + o and strg +x
 	kubectl create -f pod.yaml			<-- create a pod from the yaml file -f 
 	kubectl describe pod pv-pod 			<-- check wheather the pod have the changes 
-
-###################################################################################
+################################################################
 NetworkPolicy: is used to more secure the cluster 
 
 -	is a security rule in Kubernetes that controls how Pods communicate with each other and with external endpoints.
@@ -683,7 +685,7 @@ Step to do:
 	kubectl create -f mp.yaml     <-- create a networkpolicy with -f
 	kubectl describe networkpolicy tech-policy -n tech-deploy     <-- to see the networkpolicy in the namespace
 
-################################################################################
+################################################################
 In this we look at the JASON path 
 
 
@@ -699,7 +701,7 @@ wenn u donot have a directory just ceate a new one
 		ls            <-- it display the list of the files 
 	
 		vi /doc/IP_nodes.txt
-#################################################################################
+################################################################
 Sleep (3600) command means:
 	 it means the container will not exit immediately after starting —
 	 instead, it will stay running (idle) for 3600 seconds (1 hour).
@@ -731,7 +733,7 @@ Q14: Create a multipod with two containers and Add the command "sleep 3600" to c
 	k get pods -o wide
 
 	k get pods multi -o wide
-################################################################################
+################################################################
 
 Q15 A new worker has joined your team. create a new user and grant him access to the cluster.
     He should have the permission to create, list,get,update and delete pods in the tech namespace
@@ -792,8 +794,7 @@ NOTE till now we just create a user and after that we give the permissions
 > 	kubectl auth can-i delete pods -n tech --as jan
 		<-- to check wheather the pods can be deleted or not 
 
-
-##############################################################################
+################################################################
 
 Q:16 Create a servicefrom the green pod and run DNS lookup to check the service and write to file /doc/lookup.txt
 -service name: green-service
@@ -820,7 +821,7 @@ Steps:
 	After -- → kubectl stops interpreting anything as its own flags and treats it as the command to run inside the Pod:
 		nslookup green-service → this is run inside the container, not by kubectl itself
 
-####################################################################
+################################################################
 Q:17. Create a secret and mount it to the pod "yellow"?
 -  Secret name: yellow-secret
 -  Secret content: password=kube1234
@@ -829,8 +830,7 @@ Q:17. Create a secret and mount it to the pod "yellow"?
 >
 
 
-
-#############################################
+################################################################
 PV: (Persistent Volume)  PVC (Persistent Volume Claim)
 -     A Persistent Volume (PV) is a piece of storage (like a disk, NFS share, or cloud volume) that is managed by the cluster 
       and keeps data even if a Pod is deleted or restarted.
@@ -855,15 +855,14 @@ Q18:   List all the PV stored by capacity and write to the file /doc/pervol.txt
 >	cat /doc/pervol.txt
 			<-- check wheather  the list is saved in the file
 
-###################################################
+################################################################
 
 
 Q: 19 From the pod level environment =process, find all the pods running high cpu worksloads and write the name of which is consuming the most CPU to the file /doc/cpu.txt
 
 
 
-
-###################################################
+################################################################
 Q: 20 JSON Path to get all the node names and stored them in the file /doc/nameofnodes.txt
 steps : 
 	go to cheat sheet 
@@ -875,7 +874,7 @@ steps :
 
 > 	vi nameofnodes.txt
 		
-############################################################	
+################################################################
 Q21: Show thr logs ro he container and save it to /doc/nginx.log
      - Pod name:direct-pod
      - Container:nginx
@@ -894,8 +893,14 @@ steps:
 > 	nano /doc/nginx.log
 		<-- check the contents of the log file 
 
-###################################################
-Ingress: 
+################################################################
+Ingress:
+-	Ingress in Kubernetes means incoming traffic to your cluster.
+-	It’s how external users (for example, web browsers) access your services
+    inside the cluster.
+-	Usually, you define an Ingress resource to manage HTTP and 
+    HTTPS routes.
+-	The Ingress Controller (like NGINX or Traefik) listens for these rules and routes traffic to the correct Service inside your cluster.
 
 
 Q22. create a new ingress resources and expose service "hello" on path/hello by using service port 5678
