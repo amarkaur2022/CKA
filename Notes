@@ -2252,7 +2252,7 @@ What is VPA CRDs — these are part of Kubernetes Vertical Pod Autoscaler (VPA).
 SEE Lab 135/136
 
 ___________________________________________
-
+(Lab 140)
 F:   Let us explore the environment first. How many nodes do you see in the cluster?
      Including the controlplane and worker nodes.
 A:      kubectl get nodes 
@@ -2312,6 +2312,7 @@ A:       kubectl drain node01 --ignore-daemonset --force
 F:    hr-app is a critical app and we do not want it to be removed and we do not want to schedule any more pods on node01.
       Mark node01 as unschedulable so that no new pods are scheduled on this node.
       Make sure that hr-app is not affected.
+
 explain I donot wnat that any pod will be added on the node01
 A:        Kubectl get nodes
           kubectl cordon node01
