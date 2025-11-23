@@ -1799,13 +1799,16 @@ F:
 ______________________________________
 F:  What is the environment variable name set on the container in the pod?
         kubectl describe pod webapp-color
+
 F:  What is the value set on the environment variable APP_COLOR on the container in the pod?
         kubectl describe pod webapp-color (under Environment : pink
+
 F:  Update the environment variable on the POD to display a green background.
     Note: Delete and recreate the POD. Only make the necessary changes. Do not modify the name of the Pod.
-A:     kubectl edit pod  webapp-color ( used to edit the pod and give the error)
-       cat /tmp/kubectl-edit-1695555210.yaml (now make the changes but it did not save it)
-       kubectl replace --force -f /tmp/kubectl-edit-1695555210.yaml (für changes we have to create the replace and delete the pod)
+A:     kubectl edit pod  webapp-color ( make the changes save it but it eill not save this just come out from the  file)
+       cat /tmp/kubectl-edit-1695555210.yaml (ddisplay the data)
+       kubectl replace --force -f /tmp/kubectl-edit-1695555210.yaml (now it make the changes with the help of force  it delete the old pod and create a new one with the same name)
+
 F:  How many config maps are there?
 A:     kubectl get ms
 
@@ -1818,8 +1821,12 @@ A:     kubectl create configmap webapp-config-map --from-literal=APP_COLOR=darkb
 F:   Update the environment variable on the POD to use only the APP_COLOR key from the newly created ConfigMap.
     Note: Delete and recreate the POD. Only make the necessary changes. Do not modify the name of the Pod.
 A:         kubectl edit pod webapp-color 
-
-        kubectl replace --force -f /tmp/kubectl-edit-2160797237.yaml
+		       envFrom:
+      			- configMapRef:
+         		     name: special-config(make the changes in the file)
+   
+           kubectl replace --force -f /tmp/kubectl-edit-2160797237.yaml
+           kubectl describe pod web-appcolor
 
 ______________________________________
             Secrets
