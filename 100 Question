@@ -1,22 +1,70 @@
 Allegemein Information:
 
-Network Policy		: 12
-deployment    		: 1,
-PODS          		: 2
-Replica			: 4,
-Cluster: 		: 
-Cluster,role,binding	: 3,11,15
+Network Policy      : 12   	(Lab )
+deployment          : 1,8,32  	(Lab 35)
+PODS          	    : 2,7,9,14,25,26   (Lab 27)
+Static pods 	    : 2     	(Lab 78)
+Namespace     	    : 6  	(LAab 43)
+Replica	      	    : 4,    	(Lab 31)
+Cluster             : 3,15  	(Lab 96)
+Cluster,role,binding: 3,11,15,47  (Lab 175/179)
+cluster upgrade	    :	 	(Lab 146)
+Ingress             : 22,	(Lab 249)
+Egress 		    : 45,	(Lab
+Labels              : 5, 23     (Lab 60)
+images              : 1, 24
+images security	    :        	(Lab 186)
+Scheduled           : 271,   (Lab 57)
+multipleSchduler    : 		(Lab 83)
+pv                  : 18,28,	(Lab 209)
+non-PV		    : 37        (lab 209)
+Storageclasses			(Lab 214)
+taints & tolaration : 10 29,31  (Lab 63)
+logs                : 21	(Lab 99)
+Nodes               : 13,20     (Lab 67)
+Memory (pods)       : 19
+secrets             : 		(Lab 116)
+secrestes & Mount pods: 1
+service             : 16
+service role & rolebinding cluster:11
+Network policy      :12,	(Lab 193)
+Daemonset           :      	(Lab 75)
+Rolling update&rollback	:   	(Lab 104)
+Env Variables       :        	(Lab 113)
+VPA		    :         	(Lab 135)
+TLS certification   :		(Lab 164)
+API certification   :           (Lab 167)
+configmap 	    : 		(LAb 113/170)
+Corden and drain a node  :  39  (Lab 140)
+Troubleshotting(pod):
+
+difficult 	     :	35	(Lab113)
+Backup ETCD          : 30        (LAB
+CronJob 		     : 		(LAb 51)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Basic commands:
----------------
+---
 
 --dry-run=client  <-- this will not create the resource, instead, it will tell us weather the command is correct or not
 
 --dry-run=client -o yaml  <-- it will check if the command is correct and generate a .yaml file also
 
 > kubectl replace --force -f abc.yaml         <-- this command will delete the existing pod and create a new with this file
-                                              normally we need to write first "delete" then "apply" but this command do both
-                                              of the things in one time.
+                                              normally we need to write first "delete" then "apply" but this command do both
+                                              of the things in one time.
 
 
 
@@ -28,89 +76,84 @@ Basic commands:
 > kubectl run --help
 > k taint --help 
 
-> kubectl replace --force -f abc.pod          
-	<-- like this it will forcefully delete and recreate the pod
+> kubectl replace --force -f abc.pod          <-- like this it will forcefully delete and recreate the pod
 
-> kubectl replace --force -f /tmp/kubectl-edit-3434343.yaml     
-	<-- like this we can forcefully delete and recreate the pod
+> kubectl replace --force -f /tmp/kubectl-edit-3434343.yaml     <-- like this we can forcefully delete and recreate the pod
 
+################################################################
 
-##################################################
+Scale:
+-	The kubectl scale command is used to change
+ 	the number of replicas (pods) in a
+ 	deployment, replica set, or stateful set.
+-	To increase or decrease the number of running
+ 	instances (replicas) of your application.
 
-Scale: 
--	The kubectl scale command is used to change the number of replicas (pods) in a deployment, replica set, or stateful set.
--	To increase or decrease the number of running instances (replicas) of your application.
 > kubectl scale deployment my-deployment --replicas= 5
 > kubectl scale replicaset my-replicaset --replicas=3
 > kubectl scale statefule my-stateful --replicas=4
 
 > kubectl edit pod redis      (edits a resources live in cluster)
-    -  Directly opens the resource in an editor (like vi or nano) so you can change
-        it live.
-     - It fetches the current YAML definition from the cluster.
-     - Opens it in your editor (vi by default).
-     - When you save and exit, it automatically applies the changes.
+   - Directly opens the resource in an editor (like vi or nano) so you can change it live.
+   - It fetches the current YAML definition from the cluster.
+   - Opens it in your editor (vi by default).
+   - When you save and exit, it automatically applies the changes.
 
-> kubectl apply -f redis.yaml   
-	<--create Or Update applies file-based config to cluster
-   - Apply a configuration from a YAML file to the cluster.
-   - Reads the resource definition from a file (e.g. redis.yaml).
-   - If the resource doesn’t exist → creates it.
-   - If it exists → updates only the changed fields.
+> kubectl apply -f redis.yaml   (create Or Update)applies file-based config to cluster)
+   - Apply a configuration from a YAML file to the cluster.
+   - Reads the resource definition from a file (e.g. redis.yaml).
+   - If the resource doesn’t exist → creates it.
+   - If it exists → updates only the changed fields.
 
 > vi redis.yaml (it edit the file locally)
-   -  vi is not a kubectl command — it’s just a Linux text editor.
-   -  You can use it to manually open a file and edit YAML before applying.
-   -  make changes
-   -  save and exit
-   -  then run
+   -  vi is not a kubectl command — it’s just a Linux text editor.
+   -  You can use it to manually open a file and edit YAML before applying.
+   -  make changes
+   -  save and exit
+   -  then run
 
-> kubectl create -f redis.yaml  
-   - if pod doesnot exists it created error if exists
-   - It creates a new resource in the Kubernetes cluster from a YAML file or
-     command.
-   - If the resource doesn’t exist, it is created.
-   - If it already exists, it will throw an error (it will not update or modify it).
+> kubectl create -f redis.yaml  (if pod doesnot exists it created error if exists)
+   - It creates a new resource in the Kubernetes cluster from a YAML file or command.
+   - If the resource doesn’t exist, it is created.
+   - If it already exists, it will throw an error (it will not update or modify it).
 
-> kubectl replace -f redis.yaml  
-   - if pod exists it replaced if missing gives error
-   - If the resource exists → it’s deleted and recreated (with a new definition).
-   - If the resource doesn’t exist → it throws an error.
-----------------------------------------
+> kubectl replace -f redis.yaml  (if pod exists it replaced if missing gives error)
+   - If the resource exists → it’s deleted and recreated (with a new definition).
+   - If the resource doesn’t exist → it throws an error.
+
+
+################################################################
+---
 Important:
-When a pod is created how to create yaml file to make the changes 
------------------------------------------------------------------
+When a pod is created how to create yaml file to make the changes
+---
 
 > kubectl run redis --image=redis123 --dry-run=client -o yaml > redis.yaml
-	<--it create a new pod and with given image only for client not live in the 
-               cluster
+ 		it create a new pod and with given image only for client not live in the cluster
 
 > kubectl appy -f redis.yaml
-		it  create a pod on the cluster
+ 		it  create a pod on the cluster
 
-if the pod already exists  
--------------------------
+if the pod already exists
+---
 > kubectl get pod mypod -o yaml > mypod.yaml
 
 
 
 
 > kubectl get pods 
-> kubectl get pod mypod-name -o yaml > mypod-name.yaml        
-	<-- create a yaml file and if the pod does not exists 
+> kubectl get pod mypod-name -o yaml > mypod-name.yaml        <-- create a yaml file and 
+if the pod does not exists
 
 
 Pods :
-------
-> kubectl  run  mypod --image nginx -n my-namespace         
-	<-- it will directly create a pod in "my-namespace"
+---
+> kubectl  run  mypod --image nginx -n my-namespace         <-- it will directly create a pod in "my-namespace"
 > kubectl run mypod --image redis:alpine --labels="tier=db"
 > kubectl run mypod --image redis:alpine --labels env=dec,ab=bc
 > kubectl run my-pod --image nginx --port=8080
-> kubectl run my-pod --image httpd:alpine --port 80 --expose true    
-	<-- it create a "pod" and also a "Service" same time
-> kubectl run my-pod --image busy-box --command sleep 3200 –dry-   
-    run=client -oyaml      
+> kubectl run my-pod --image httpd:alpine --port 80 --expose true    <-- it create a "pod" and also a "Service" same time
+> kubectl run my-pod --image busy-box --command sleep 3200 --dry-run=client -oyaml      
 > k run mypod --image=ubuntu:18.4 --command -- sleep 1000            
 > k run mypod --image=ubuntu:18.4 --dry-run=client --command -- sleep 1000              
 
@@ -119,42 +162,38 @@ Pods :
 > kubectl get pods --no-header | wc
 > kubectl get pods --no-header | wc-1
 
-> kubectl describe pods newpods-b5znk | grep Image      
-		<-- it display only one line Image
-> kubectl get pods -o wide				 
+> kubectl describe pods newpods-b5znk | grep Image      <-- it display only one line Image
+> kubectl get pods -o wide				<-- 
 
 > kubectl get pods -o yaml | grep image
-> kubectl get pods -o wide              
-	<-- it also shows that on which node this pod is placed
-> kubectl get pods redis -o yaml | grep image    
-	<-- it dsplay an image of the single pod
+> kubectl get pods -o wide              <-- it also shows that on which node this pod is placed
+> kubectl get pods redis -o yaml | grep image    <-- it dsplay an image of the single pod
+
 
 > kubectl run redis --image=redis123 --dry-run=client  -o yaml   
-	<-- it just create a file in yaml format only client side and display on 		     the screen
+ 		<-- it just create a file in yaml format only client side and display on 								    						     the screen
 
 > kubectl run redis --image=redis123 --dry-run=client  -o yaml > redis.yaml   
-		<-- save the output in a redis.yaml file but only client side
+ 		<-- save the output in a redis.yaml file but only client side
 
 > kubectl apply -f redis.yaml
-		<-- After that u have to create a yaml file o that the changes are save
-		    on the clust so it will be saved on the cluster
+ 		<-- After that u have to create a yaml file o that the changes are save
+ 		    on the clust so it will be saved on the cluster
 
 > cat redis.yaml
-		<-- display the Inhalt on the screen 
+ 		<-- display the Inhalt on the screen
 
-> kubectl get pod -n my-ns --show-labels         
-		<-- it will show the pods with their labels also
+
+
+> kubectl get pod -n my-ns --show-labels         <-- it will show the pods with their labels also
 > kubectl describe pods 
 > kubectl get pods --all-namespaces
 > kubectl get pods -A
-> kubectl get pods --selector app-labele=myvlaue          
-	<-- like this we can search for pods that has a lable "app-labele=myvlaue"
-
-> kubectl get pods --selector env=dev | wc -
-	<-- the return the number of lines with header
-
-> kubectl get pods --selector env=dev --no-headers | wc -l     
-	<-- this will return a result with a number with header
+> kubectl get pods --selector app-labele=myvlaue          <-- like this we can search for pods that has a lable "app-labele=myvlaue"
+> kubectl get pods --selector env=dev | wc -l             <-- the return the number of lines in the result, their is a HEADER in the result also
+                                                              this is the reason we have to do -1 from the resutle, if result is 8, then 8-1= 7 is answer
+> kubectl get pods --selector env=dev --no-headers | wc -l     <-- this will return a result with a number, in the result no HEADER is included 
+                                                                  so as the last obove command we can directly get 7 as result.
 
 > kubectl get all --selector env=prod --no-headers | wc -l   <-- return all the objects that has lable "env=prod"
 
@@ -162,21 +201,19 @@ Pods :
 
 > kubectl get pods --watch
 
-> kubect set image   my-deployment my-container=nginx:1.9.1     
-	<--like this we can set a new "image" in the Deployment 
+> kubect set image   my-deployment my-container=nginx:1.9.1     <--like this we can set a new "image" in the Deployment 
 
-> k api-resources                           
-	<-- get all the resources 
-> k api-resources --namespaced=true         
-	<-- it will return a list of all the resources that we can create inside a "Namespace"
+> k api-resources                           <-- get all the resources 
 
-> k api-resources --namespaced=false        
-	<-- it will return a list of all the resources that we can not create inside a "Namespace"   those must be cluster scope 
+> k api-resources --namespaced=true         <-- it will return a list of all the resources that we can create inside a "Namespace"
 
-#######################################################################################
+> k api-resources --namespaced=false        <-- it will return a list of all the resources that we can not create inside a "Namespace"
+                                              those must be cluster scope
+
+################################################################
 
 Q: Wy we need the image in the deployments and why we update it?
--	images are where all the application(Software) code + libraries are packed 
+-	images are where all the application(Software) code + libraries are packed
 -	every where the software is installed have the same environments.
 -	make it easier to rollout and rollback fast and reliable
 
@@ -190,591 +227,564 @@ Q: What is bugs or security issues?
 
 Bug fix = making the app work correctly
 Security fix = making the app safe
-
-
-
-
+---
 
 Q1. Update the Nginx image of the deployment NGINX to 1.19.8
-	kubectl get deployments -o wide        
-		<-- to get the more information for the deployment
+ 	kubectl get deployments -o wide        <-- to get the more information for the deployment
 
-	kubectl set image deployment/<DEPLOYMENT_NAME>
-          <CONTAINER_NAME>=<NEW_IMAGE>:<TAG>		
-                       <-- syntax to update the deployments images 
-	kubectl set image deployment frontend-deployment busybox-
-          container=busybox888.1
+ 	kubectl set image deployment/<DEPLOYMENT_NAME> <CONTAINER_NAME>=<NEW_IMAGE>:<TAG>		<-- syntax to update the deployments images
+ 	kubectl set image deployment frontend-deployment busybox-container=busybox888.1
 
-	kubectl run pro-redis → creates a Pod named pro-redis
-	--image=redis:alpine → uses the Redis (Alpine) Docker image
-	--dry-run=client → doesn’t actually create the Pod, just simulates it   
-                    (no changes in the cluster)
-	-o yaml → outputs the Pod definition in YAML format
+ 	kubectl run pro-redis → creates a Pod named pro-redis
+ 		--image=redis:alpine → uses the Redis (Alpine) Docker image
+ 		--dry-run=client → doesn’t actually create the Pod, just simulates it (no changes in the cluster)
+ 		-o yaml → outputs the Pod definition in YAML format
+ 		> redis.yaml → saves that YAML output into a file named redis.yaml						<-- to update the image of deployments
 
-         redis.yaml → saves that YAML output into a file named redis.yaml		
-		<-- to update the image of deployments
+ 	kubectl describe deployment nginx | grep Image							<-- to display only the Image of the deployments
 
-	kubectl describe deployment nginx | grep Image						<-- to display only the Image of the deployments 
-
-	kubectl rollout undo deployment nginx								<-- it go back to the old version 
+ 	kubectl rollout undo deployment nginx								<-- it go back to the old version
 
 ################################################################
-Declaration 
-Q: What  are the static pods 
-	Normal Pod:
-	Kubernetes API server के जरिए चलता है।
-	आप kubectl apply या Deployment से बनाते हो।
-	Controller (Deployment, ReplicaSet) इसे manage करता है।
-	Static Pod:
-	Kubelet node पर सीधे YAML फ़ाइल देखकर चलाता है।
-	API server से नहीं बनता।
-	Controller इसे manage नहीं करता।
-	अगर Pod crash हो गया, kubelet इसे automatically restart करता है।
-	Mostly control-plane components जैसे kube-apiserver, kube-scheduler में use होता है।
+Declaration
+Q: What  are the static pods
+ 	Normal Pod:
+ 	Kubernetes API server के जरिए चलता है।
+ 	आप kubectl apply या Deployment से बनाते हो।
+ 	Controller (Deployment, ReplicaSet) इसे manage करता है।
+ 	Static Pod:
+ 	Kubelet node पर सीधे YAML फ़ाइल देखकर चलाता है।
+ 	API server से नहीं बनता।
+ 	Controller इसे manage नहीं करता।
+ 	अगर Pod crash हो गया, kubelet इसे automatically restart करता है।
+ 	Mostly control-plane components जैसे kube-apiserver, kube-scheduler में use होता है।
 
 What happend when u donot have the scheduler etcd and API server and also no Master NOde
-How u will create the pods wothout Ai server . 
+How u will create the pods wothout Ai server .
 NOw u can configure the Kubelet to read the pods defination files fron th directory /etc/kubernetes/manifests
 
 ______________________________
-Static pods 
+Static pods
 
-F: Why we need to change the static pod Path 
+F: Why we need to change the static pod Path
 -	By default, the kubelet watches the folder /etc/kubernetes/manifests/.
 -	Any YAML file placed here will automatically be started as a Static Pod by the kubelet.
-Reasons: 
+Reasons:
 
 1) Multiple clusters on the same node
-	If you are running two control-plane clusters on the same machine, you need separate static pod directories.
+ 	If you are running two control-plane clusters on the same machine, you need separate static pod directories.
 2) Cluster upgrade or migration
-	During upgrade/restore, you may want to place static pod manifests in a temporary or new path.
+ 	During upgrade/restore, you may want to place static pod manifests in a temporary or new path.
 
 F: How to find the static pods in the pods list?
-	
+ 
 - 	Static pods are created and managed directly by the kubelet on each node
 -	and Kubernetes appends the node name to the pod name.
 
-F: Commands to find the static pods 
-	kubectkl get pods -A --all-namespace    <-- see the sufix when the pod name is end with comtrolplane theses are the static pods 
-	ls /etc/kubernetes/manifests/           <-- display the list of the static pods 
----------------
+F: Commands to find the static pods
+ 	kubectkl get pods -A --all-namespace    <-- see the sufix when the pod name is end with comtrolplane theses are the static pods
+ 	ls /etc/kubernetes/manifests/           <-- display the list of the static pods
+---
 Frage:
 Q2. Change the static pod  path to /etc/kubernetes/manifests
--	first important to know----HOw to find the config file 
--	it is not possible to delete the pod like that, after delte it will  reecreate it 
--	we need to find the manifest file and then delete it 
-	
+-	first important to know----HOw to find the config file
+-	it is not possible to delete the pod like that, after delte it will  reecreate it
+-	we need to find the manifest file and then delete it
+ 
 >   ps -aux | grep kubelet         
-		<-- It display to encrupt the kubelet ((((ps -aux: ps -aux → shows all running processes on the system.))))
-		<--ps -aux shows all running processes on the system.
-		ps → shows processes
-		a → all users’ processes
-		u → show user and detailed info
-		x → include processes without a terminal
+ 		<-- It display to encrupt the kubelet ((((ps -aux: ps -aux → shows all running processes on the system.))))
+ 		<--ps -aux shows all running processes on the system.
+ 		ps → shows processes
+ 		a → all users’ processes
+ 		u → show user and detailed info
+ 		x → include processes without a terminal
 
->   nano /var/lib/kubelet/config.yaml    
-	<-- nano is a text editor used in Linux to open/ recreate the file
+>   nano /var/lib/kubelet/config.yaml    <-- nano is a text editor used in Linux to open/ recreate the file
 
 
-######################################################################################
+################################################################
 
 Q4: Create a deployment with 2 replicas
 
-	kubectl create deployment httpd-deploy --image=httpd:2.4-alpine    
-		<-- to create the deployment with image name
+ 	kubectl create deployment httpd-deploy --image=httpd:2.4-alpine    <-- to create the deployment with image name
 
-	kubectl scale deployment httpd-deploy --replicas=2
-	        <-- We use kubectl scale to increase or decrease the number of 
-		       Pods (replicas) in a Deployment, ReplicaSet,
-         	      				or StatefulSet.
-	         It changes the number of Pods in the Deployment httpd-deploy to 2
+ 	kubectl scale deployment httpd-deploy --replicas=2
+ 					  <-- We use kubectl scale to increase or decrease the number of Pods (replicas) in a Deployment, ReplicaSet,
+         	      				or StatefulSet.
+ 	          				It changes the number of Pods in the Deployment httpd-deploy to 2
 
-	kubectl describe deployment httpd-deploy                          
-		<-- to see the detail 
+ 	kubectl describe deployment httpd-deploy                          <-- to see the detail
 
-	kubectl get deploy -o wide 
-		  <-- to display the more information in one line
+ 	kubectl get deploy -o wide
+ 		  							  <-- to display the more information in one line
 
-	kubectl get deployment httpd-deploy -o yaml  | grep image:
-		  <-- to display only the images 
+ 	kubectl get deployment httpd-deploy -o yaml  | grep image:
+ 							             	  <-- to display only the images
+################################################################Declaration:
 
-######################################################################################
-Declaration:
-
-Labels with pod 
+Labels with pod
 labels : 	We use labels in Pod definitions to identify and group Pods.
-		To select Pods easily (using selectors).
-		To connect Pods with Services, Deployments, etc.
-		For organization and management (e.g. by app, env, version).
+ 		To select Pods easily (using selectors).
+ 		To connect Pods with Services, Deployments, etc.
+ 		For organization and management (e.g. by app, env, version).
 
 Frage:
 Q5 Create a pod with label tier=redis
 
-	kubectl run messagepod --image=rednis:alpine -l tier=redis	
-		<-- to create apod with image and labels 
+ 	kubectl run messagepod --image=rednis:alpine -l tier=redis	<-- to create apod with image and labels
 
 NOT if u forget to attach the labels
 
-	kubectl run messagepod --image=rednis:alpine 
+ 	kubectl run messagepod --image=rednis:alpine
 
-	kubectl label pod messagepod tier=redis
+ 	kubectl label pod messagepod tier=redis
 
-	kubectl get pods --show=labels    				
-		<-- display all the labels 
+ 	kubectl get pods --show=labels    				<-- display all the labels
 
-	kubectl describe pod messagepod					
-		<-- display the pod in detail 
+ 	kubectl describe pod messagepod					<-- display the pod in detail
 
-	kubectl get pod messagepod  -o yaml | grep image:		
-		<-- to display only the image on the screen
-
-################################################################					
+ 	kubectl get pod messagepod  -o yaml | grep image:		<-- to display only the image on the screen
+################################################################
 Q6 Create a pod in the "tech" namespace
 
-	kubectl create namespace tech					
-		<-- First create a namespace
+ 	kubectl create namespace tech					<-- First create a namespace
 
-	kubectl run temp --image=redis:alpine 				
-		<-- create pod with image
+ 	kubectl run temp --image=redis:alpine 				<-- create pod with image
 
-if u forget to create ns u add the pod in the default 
+if u forget to create ns u add the pod in the default
 
-	kubectl run temp --image=redis:alpine 				
-		<-- u create the pod in the default/falsch namespace
-	kubectl create namespace tech					
-		<--	now create the right namespace if does not exists 
-	
-	kubectl get pod temp -o yaml > temp.yaml			
-		kubectl get pod temp → fetches the Pod named temp.
-		-o yaml → outputs the Pod definition in YAML format.
-		> temp.yaml → saves that YAML to a file named temp.yaml.
-		You can inspect, edit, or recreate the Pod using this YAML.
 
-	vi temp.yaml							
-		<-- open the file make the changes (namespace)
+ 	kubectl run temp --image=redis:alpine 				<-- u create the pod in the default/falsch namespace
 
-	kubectl apply -f temp.yaml					
-		<-- Apply changes made to a resource without deleting it manually.
+ 	kubectl create namespace tech					<--	now create the right namespace if does not exists
+ 
+ 	kubectl get pod temp -o yaml > temp.yaml
+ 		kubectl get pod temp → fetches the Pod named temp.
+ 		-o yaml → outputs the Pod definition in YAML format.
+ 		> temp.yaml → saves that YAML to a file named temp.yaml.
+ 		You can inspect, edit, or recreate the Pod using this YAML.
 
-	kubectl delete pod temp -n default				
-		<-- delete the pod in  the falsche namespave
+ 	vi temp.yaml							<-- open the file make the changes (namespace)
+
+ 	kubectl apply -f temp.yaml					<-- Apply changes made to a resource without deleting it manually.
+
+ 	kubectl delete pod temp -n default				<-- delete the pod in  the falsche namespave
 
 create the all in one line
-	kubectl run temp --image=redis:alpine -n tech
+
+ 	kubectl run temp --image=redis:alpine -n tech
 
 Check wheather it is running in the righht namespace
 
-	kubectl describe pod temp -n tech				
-		<-- to see the detail in detail
+ 	kubectl describe pod temp -n tech				<-- to see the detail in detail
 
-	kubectl get pods -A						
-		<-- display all the pods in all the namespaces
+ 	kubectl get pods -A						<-- display all the pods in all the namespaces
 
 ################################################################
-Q7: Create a pod  and expose it 
-    pod name
-    image
-    servicename
-    port
-    target-port:8080
+Q7: Create a pod  and expose it
+    pod name
+    image
+    servicename
+    port
+    target-port:8080
 
-	kubectl run  connection --image=redis:alpine			
-		<-- create apod
+ 	kubectl run  connection --image=redis:alpine			<-- create apod
 
-	kubectl expose pod connection --name=connection-service --port=8080 	--target-port=8080   
-		<-- create a service with expose and connection means to 
+ 	kubectl expose pod connection --name=connection-service --port=8080 --target-port=8080   <-- create a service with expose and connection means to
+ 
+ 
 check
-	kubectl describe service/svc connection-service
+ 	kubectl describe service/svc connection-service
 
-	kubectl get svc							
-		<-- to check the services 
-	kubectl get service
-	kubectl describe svc connection-service
+ 	kubectl get svc							<-- to check the services
+ 	kubectl get service
+ 	kubectl describe svc connection-service
 
 ################################################################
 Rollout:
--------
-Note: Rolling-update is the default deployment strategy. if 
-      we do not define any strategy, then it select by-default 
-      "Rolling-update" as a strategy.
+---
+
+ 	Note: Rolling-update is the default deployment strategy. if we do not define any strategy, then it select by-default "Rolling-update"
+      	as a strategy.
 
 Rolling-update Strategy:
----------------
-	In Rolling-update if we have 5 pods are already their, and we 
-    want to update them with new version, then while doing deployment
-    it delete one pod and bring one new, in this way it goes.
+---
+ 	In Rolling-update if we have 5 pods are already their, and we want to update them with new version, then while doing
+ 	deployment, it delete one pod and bring one new, in this way it goes.
 
 Recreate Strategy:
-------------------
-	In this case it first delete all the pods and after that it 
-    create all new pods at once, this strategy can have downtime 
-    because at the time of first delete all the pods are deleted.
+---
+ 	In this case it first delete all the pods and after that it create all new pods at once, this strategy can have downtime
+ 	because at the time of first delete all the pods are deleted.
 
---record: 
------------
-	This helped track who changed what and why, especially when using 
-    kubectl rollout history.
---------------------------------------------------------------------
+--record:
+---
+ 	This helped track who changed what and why, especially when using kubectl rollout history.
+
+---
 Q8:  create a deployment with 3 replicas and upgrade using rolling update?
 
-	kubectl create deployment nginx-deploy --image=1.16 --replicas=3
-                              --dry-run=client -o yaml > deploy.yaml	
-	
-	kubectl set image deployment nginx-deploy nginx=nginx:1.17 --record
+ 	kubectl create deployment nginx-deploy --image=1.16 --replicas=3 --dry-run=client -o yaml > deploy.yaml
+ 
+ 	kubectl set image deployment nginx-deploy nginx=nginx:1.17 --record
 
-	kubectl get deployments -o wide 
+ 	kubectl get deployments -o wide
 
-	kubectl rollout history deployment/nginx-deploy
+ 	kubectl rollout history deployment/nginx-deploy
 
-	k rollout undo deployment nginx-deploy
+ 	k rollout undo deployment nginx-deploy
+
 OR
+
 if i forget to create a replicas
-	kubectl create deployment nginx-deploy --image=1.16
 
-	kubectl scale deployment nginx-deploy --replicas=3
-	
-			OR
-	
-	kubectl create -f deploy.yaml  --record          
-		<-- like this we can create a new Deployment and also recording it for the "k rollout" directly from first time.
-                              		Note: As at the creation time we put the flag "--record" now on every update of this deployment it will be automatically 
-                                              		saved versions for "k rollout" we do not need everytime to user this "--record" flag on any updation.
-                                         		Note: if we do at the time of update a Deployment "--record" , if we do update after this one then we do not 
-                                               		need to put this "--record" flag again.     
+ 	kubectl create deployment nginx-deploy --image=1.16
 
-	kubectl create -f abc.yaml       		
-		<-- with this command we can create a deployment first time
+ 	kubectl scale deployment nginx-deploy --replicas=3
+ 
+ 			OR
+ 
 
-	kubectl apply -f abc.yaml         	        
-		<-- As a deployment is already create, with this command it will 
-                         update the Deployment If their is no deployment then with this
-                         command we can also deploy it first time
 
-	kubectl set image   my-deployment my-container=nginx:1.9.1    
-	       <-- like this we can change the image of current running deployment   
-                      my-deploment is the name of the Deployment                                                 
-                      my-container is the name of the Container                                      
+ 	kubectl create -f deploy.yaml  --record          <-- like this we can create a new Deployment and also recording it for the "k rollout" directly from first time.
+                                          		Note: As at the creation time we put the flag "--record" now on every update of this deployment it will be automatically
+                                              		saved versions for "k rollout" we do not need everytime to user this "--record" flag on any updation.
+                                         		Note: if we do at the time of update a Deployment "--record" , if we do update after this one then we do not
+                                               		need to put this "--record" flag again.
 
-	 k rollout status deployment/my-deploy      			
-		<-- it will log the status of the deployment
-	 k rollout history deployment/my-deploy     			
-		<-- it will print the history of the deployemnt
-	 kubectl rollout status my-deployment     			
-		<-- with this we will get the status of the deplyoment
 
-	 kubectl rollout history my-deployment   
-	 kubectl rollout undo my-deployment          			
-		<-- with this we can rollback the changes to last deployed deployment.
- 
-	 k rollout undo deployment my-deployment --to-revision=3        <-- like this we can rollback to any version    
+
+ 	kubectl create -f abc.yaml       		<-- with this command we can create a deployment first time
+
+ 	kubectl apply -f abc.yaml         	        <-- As a deployment is already create, with this command it will update the Deployment
+                                                            If their is no deployment then with this command we can also deploy it first time
+
+ 	kubectl set image   my-deployment my-container=nginx:1.9.1    <-- like this we can change the image of current running deployment
+                                                                          my-deploment is the name of the Deployment
+                                                                          my-container is the name of the Container
+
+
+ 	 k rollout status deployment/my-deploy      			<-- it will log the status of the deployment
+
+ 	 k rollout history deployment/my-deploy     			<-- it will print the history of the deployemnt
+
+ 	 kubectl rollout status my-deployment     			<-- with this we will get the status of the deplyoment
+
+ 	 kubectl rollout history my-deployment
+
+ 	 kubectl rollout undo my-deployment          			<-- with this we can rollback the changes to last deployed deployment.
+ 
+ 	 k rollout undo deployment my-deployment --to-revision=3        <-- like this we can rollback to any version
+
+################################################################
 
 Q9: Create a static pod and use the command "sleep 1000"
 
--	first we need to find the location of the static pod path and this will be find in the config file 
+-	first we need to find the location of the static pod path and this will be find in the config file
 -	we check the name of the node
 -	go to the node
-- 	we change the root user 
--	check the static pod file in the config file 
+- 	we change the root user
+-	check the static pod file in the config file
 
-	
-	ps -aux | grep kubelet				
-		<-- to find the config file (((JUst copy the path ))))
-	
-	kubectl get nodes
-	minikube ssh					
-		<-- minikube is the name of the node
-	
-	sudo -i						
-		<-- we can change the root user 
+ 
+ 	ps -aux | grep kubelet				<-- to find the config file (((JUst copy the path ))))
+ 
+ 	kubectl get nodes
 
-	cat /var/run/cri-dockered socks			
-		<-- write the path of the file which we already copied after running 
-                        the first step ps -aux-----
-	logout
+ 	minikube ssh					<-- minikube is the name of the node
+ 
+ 	sudo -i						<-- we can change the root user
 
-	kubectl run static-box --image=busybox --command sleep 1000 –dry-   
-          run=client -o yaml  > static.yaml
-	
-	kubectl get nodes
-	
+ 	cat /var/run/cri-dockered socks			<-- write the path of the file which we already copied after running the first step ps -aux-----
+
+ 	logout
+
+ 	kubectl run static-box --image=busybox --command sleep 1000 --dry-run=client -o yaml  > static.yaml
+ 
+ 	kubectl get nodes
+ 
+
+
 ################################################################
 Taints:(Node) 		means(Only some Pods are allowed to run here)
 
-	A taint is a setting applied to a node that prevents/ask the Pods from being scheduled on it 
-	only those pods are be scheduled who have a matching toleration.
+ 	A taint is a setting applied to a node that prevents/ask the Pods from being scheduled on it
+ 	only those pods are be scheduled who have a matching toleration.
 
 Toleration:(pod)	means(it ask the pod to run on that node)
-	A toleration are applied on the pod, that tell the pod to run/scheduled on the matching taint(node).
-	
+ 	A toleration are applied on the pod, that tell the pod to run/scheduled on the matching taint(node).
+ 
 Why use them?
 
-	To control which Pods run on which Nodes
-	(for example, database Pods only on powerful nodes)
+ 	To control which Pods run on which Nodes
+ 	(for example, database Pods only on powerful nodes)
 
-	To keep special workloads isolated (like system or GPU workloads)	
+ 	To keep special workloads isolated (like system or GPU workloads)
 
------------------------------------------------------------------------------------------
+---
+ 
 Q 10: Taint a node to be unschedulable and test it b creating a pod on the node
 
-	kubectl get nodes			
-		<-- to see how many nodes are created
-	kubectl describe nodes nodes01		
-		<-- to see wheather the taint are exists on the node
+ 	kubectl get nodes			<-- to see how many nodes are created
 
-	Kubectl taint node nodename key=value:operator (SYNTAX)
-	Kubectl taint node node01 env_type=production:NoSchedule	
-		<-- used to taint the node 
-check 
-	kubectl describe node node01 | grep -i taint	
-		<-- to display only taints( -i is used so that the taints can be written 
-                        in any case.)
-	Kubectl describe node node01 | grep Taints
-Now create a pod 
-	kubectl run pod no-redis --image=redis:alpine	
-		<-- to create a pod 
-	kubectl get pods 
-	
-	kubectkl describe pods no-redis      
-		<-- to display the pod on which node it is running on.
+ 	kubectl describe nodes nodes01		<-- to see wheather the taint are exists on the node
 
-	kubectl get pods no-redis -o wide    
-		<-- to display the pod in detail in one line 
-Now create a second pod with tolerartion 
-	kubectl run pods pro-redis –image=redis:alpine --dry-run=client -o yaml | 
-          redis.yaml
-		kubectl run pro-redis → creates a Pod named pro-redis
-		--image=redis:alpine  → uses the Redis (Alpine) Docker image
-		--dry-run=client     → doesn’t actually create the Pod, just    
-                                                  simulates it (no changes in the cluster)
-		-o yaml          → outputs the Pod definition in YAML format
-		> redis.yaml → saves that YAML output into a file named redis	
-	nano redis.yaml
-		namo  -> Opens a text file for editing. 
-		      you write configuration files, scripts, YAML files (like 
-                         redis.yaml), etc.
-                         You can save changes, search, cut/copy/paste, and exit — all
-                         within the terminal.
-			 If the file exists, it opens it for editing.
-			 If it doesn’t exist, nano creates a new file with that name
-		save it strg + o
-		exit it strng + x
-copy the data from the documentation file 
-	tolerations:
-	- key: "key1"
-	  operator: "Equal"
-	  value: "value1"
-	  effect: "NoSchedule"
+ 
+ 	Kubectl taint node nodename key=value:operator		<-- SYNTAX
+ 	Kubectl taint node node01 env_type=production:NoSchedule	<-- used to taint the node
+
+check
+ 	kubectl describe node node01 | grep -i taint	<-- to display only taints( -i is used so that the taints can be written in any case.)
+ 
+ 	Kubectl describe node node01 | grep Taints
+
+Now create a pod
+
+ 	kubectl run pod no-redis --image=redis:alpine	<-- to create a pod
+ 
+ 	kubectl get pods
+ 
+ 	kubectkl describe pods no-redis      <-- to display the pod on which node it is running on.
+
+ 	kubectl get pods no-redis -o wide    <-- to display the pod in detail in one line
+
+Now create a second pod with tolerartion
+
+ 	kubectl run pods pro-redis --image=redis:alpine	--dry-run=client -o yaml | redis.yaml
+ 		kubectl run pro-redis → creates a Pod named pro-redis
+ 		--image=redis:alpine  → uses the Redis (Alpine) Docker image
+ 		--dry-run=client      → doesn’t actually create the Pod, just simulates it (no changes in the cluster)
+ 		-o yaml               → outputs the Pod definition in YAML format
+ 		> redis.yaml          → saves that YAML output into a file named redis.yaml
+ 
+ 	nano redis.yaml
+ 		namo  -> Opens a text file for editing.
+ 			 you write configuration files, scripts, YAML files (like redis.yaml), etc.
+                         You can save changes, search, cut/copy/paste, and exit — all within the terminal.
+ 			 If the file exists, it opens it for editing.
+ 			 If it doesn’t exist, nano creates a new file with that name
+ 		save it strg + o
+ 		exit it strng + x
+copy the data from the documentation file
+ 	tolerations:
+ 	- key: "key1"
+ 	  operator: "Equal"
+ 	  value: "value1"
+ 	  effect: "NoSchedule"
 save it strg + o
 exit it strng + x
 
 
-	kubectl create -f redis.yaml
-		kubectl       → the Kubernetes command-line tool.
-    		create        → tells Kubernetes to create a resource.
-		-f redis.yaml → means “use the configuration from the file redis.yaml.”
-check 
-	kubectl describe pods pro-redis 
-	
-	kubectl describe pods pro-redis | grep -i node
-	kubectl describe pods pro-redis | grep  node
+ 	kubectl create -f redis.yaml
+ 		kubectl       → the Kubernetes command-line tool.
+    		create        → tells Kubernetes to create a resource.
+ 		-f redis.yaml → means “use the configuration from the file redis.yaml.”
+check
+ 	kubectl describe pods pro-redis
+ 
+ 	kubectl describe pods pro-redis | grep -i node
+ 	kubectl describe pods pro-redis | grep  node
+
 ################################################################
-the main reason to use  SVC for better security with the 
+
+the main reason to use  SVC for better security with the
 combination of clusterrole and clusterrolebinding  we are able to decide what we can and we cannot do.
 NOTE this is the first task when u want to secure the cluster.
 
 --verb=list
-	When you create a Role or ClusterRole in Kubernetes, you specify what actions 
-       (verbs) the role is allowed to perform on certain resources.
-	
+ 	When you create a Role or ClusterRole in Kubernetes, you specify what actions
+       (verbs) the role is allowed to perform on certain resources.
+ 
 
-------------------------------------------------------------
+---
 
-Q11: create a service account, clusterroll and clusterrollbinding. 
-     Make it possible to list the persistent volumes. 
-     And createa apod with new service account
-Steps to do:  
-	create a service 
-	create clusterrole with resources and verb
-	create clusterrolebinding & attached with cluserrole and serviceaccount 
-	create a pod with yaml file 
-	add the serviceaccount in pod yaml file under spec
+Q11: create a service account, clusterroll and clusterrollbinding.
+     Make it possible to list the persistent volumes.
+     And createa apod with new service account
+Steps to do:
+ 	create a service
+ 	create clusterrole with resources and verb
+ 	create clusterrolebinding & attached with cluserrole and serviceaccount
+ 	create a pod with yaml file
+ 	add the serviceaccount in pod yaml file under spec
 
 practicle:
 
-	kubectl create serviceaccount nedserviceaccount 			<--create a service account 
+ 	kubectl create serviceaccount nedserviceaccount 			<--create a service account
 
-	kubectl	create clusterrole pv-role --resources=persistentvolumes --verb=list	<--create a clusterrole
+ 	kubectl	create clusterrole pv-role --resources=persistentvolumes --verb=list	<--create a clusterrole
 
-		--resources=persistenvolumes: --> is the recource name when u want to see the list of resources just see the print out 
-		     persistentvolumes are persistent storage resources in Kubernetes.
-		     A PersistentVolume (PV) is a cluster-wide storage resource that exists independently of any Pod or Namespace
-		     if the pod is deleted the data is in the PV is not lost 	
-	for More detail see word document PV/PVC
-		--verb=list means: verbs are actions you are allowed to perform on a resource.
-		    "Who can do what to which resource?" view types are: 
-		     eg get/list/watch/create/update/patch/delete/deletecollection/exec/proxy.portforward/Impersonate.
+ 		--resources=persistenvolumes: --> is the recource name when u want to see the list of resources just see the print out
+ 		     persistentvolumes are persistent storage resources in Kubernetes.
+ 		     A PersistentVolume (PV) is a cluster-wide storage resource that exists independently of any Pod or Namespace
+ 		     if the pod is deleted the data is in the PV is not lost
+ 	for More detail see word document PV/PVC
+ 		--verb=list means: verbs are actions you are allowed to perform on a resource.
+ 		    "Who can do what to which resource?" view types are:
+ 		     eg get/list/watch/create/update/patch/delete/deletecollection/exec/proxy.portforward/Impersonate.
 
-Now we bind the cluster role 
-	kubectl create clusterrolebinding pv-binding --clusterrole=pv-role --serviceaccount=default:nedserviceaccount
+Now we bind the cluster role
+ 	kubectl create clusterrolebinding pv-binding --clusterrole=pv-role --serviceaccount=default:nedserviceaccount
 
 
-	kubectl run pv-pod --images=redis --dry-run=client -o yaml > pod.yaml       
-		<--Now we create the pod and save O/P to the yaml File 
+ 	kubectl run pv-pod --images=redis --dry-run=client -o yaml > pod.yaml
+ 		<--Now we create the pod and save O/P to the yaml File
 
-	nano pod.yaml      <-- Edit the yaml file 
+ 	nano pod.yaml      <-- Edit the yaml file
 
-	under spec:
-	      serviceAccountName: nedserviceaccount    <-- save and close it strg + o and strg +x
-	kubectl create -f pod.yaml			<-- create a pod from the yaml file -f 
-	kubectl describe pod pv-pod 			<-- check wheather the pod have the changes 
+ 	under spec:
+ 	      serviceAccountName: nedserviceaccount    <-- save and close it strg + o and strg +x
+ 	kubectl create -f pod.yaml			<-- create a pod from the yaml file -f
+ 	kubectl describe pod pv-pod 			<-- check wheather the pod have the changes
+
 ################################################################
-NetworkPolicy: is used to more secure the cluster 
+NetworkPolicy: is used to more secure the cluster
 
 -	is a security rule in Kubernetes that controls how Pods communicate with each other and with external endpoints.
 -	NetworkPolicy acts like a firewall for Pods — it decides who can talk to whom and on which ports.vvvv
 By default, all Pods can talk to all other Pods, across all namespaces.
 -	 No restrictions → every Pod can connect to any other Pod or service.
 Once you apply a NetworkPolicy, that changes.
-	 When you apply a NetworkPolicy to a Pod, all traffic not explicitly allowed is blocked.
+ 	 When you apply a NetworkPolicy to a Pod, all traffic not explicitly allowed is blocked.
 
 Key Components of a NetworkPolicy
-	Field		Purpose
-	apiVersion	Always networking.k8s.io/v1
-	kind		Always NetworkPolicy
-	metadata	Name and namespace of the policy
-	podSelector	Selects which Pods the policy applies to (by label)
-	policyTypes	Defines if the policy controls Ingress, Egress, or both
-	ingress		Defines which inbound traffic is allowed
-	egress		Defines which outbound traffic is allowed
+ 	Field		Purpose
+ 	apiVersion	Always networking.k8s.io/v1
+ 	kind		Always NetworkPolicy
+ 	metadata	Name and namespace of the policy
+ 	podSelector	Selects which Pods the policy applies to (by label)
+ 	policyTypes	Defines if the policy controls Ingress, Egress, or both
+ 	ingress		Defines which inbound traffic is allowed
+ 	egress		Defines which outbound traffic is allowed
 
 Let’s say you have two types of Pods:
-	app: backend
-	role: frontend
+ 	app: backend
+ 	role: frontend
 You want only frontend Pods to access the backend Pods on port 80.
-Allow Internet Access (Egress Policy) 
+Allow Internet Access (Egress Policy)
 
 _______________________________
 
-Q12: create a NetworkPolicy that allows all the pods in   the "tech-deploy" namespace to have communication only on a single post 
-NOTE: it secure more our cluster.Network policy are apply only within a single namespace.	
+Q12: create a NetworkPolicy that allows all the pods in   the "tech-deploy" namespace to have communication only on a single post
+NOTE: it secure more our cluster.Network policy are apply only within a single namespace.
 Step to do:
-	adding a label to the namespace
-	open documentation for example(service network) copy it 
-	createown yaml file pate it
-	to select all namespaces that have the label app: tech-deploy(under igress) 
+ 	adding a label to the namespace
+ 	open documentation for example(service network) copy it
+ 	createown yaml file pate it
+ 	to select all namespaces that have the label app: tech-deploy(under igress)
 
-	kubectl label namespace tech-deploy app=tech-deploy
-	nano mp.yaml
-		apiVersion: networking.k8s.io/v1
-		kind: NetworkPolicy
-		metadata:
-		  name: tech-policy
-		  namespace: tech-deploy
-		spec:
-		  podSelector: {}
-		  policyTypes:
-		    - Igress
-		  igress:
-		    - from
-			-namespaceSelector: 
-		    matchLabels: 
-		       app: tech-deploy	
-	          ports:
-	          - protocol: TCP
-        	    port: 80
-	kubectl create -f mp.yaml     <-- create a networkpolicy with -f
-	kubectl describe networkpolicy tech-policy -n tech-deploy     <-- to see the networkpolicy in the namespace
+ 	kubectl label namespace tech-deploy app=tech-deploy
+ 	nano mp.yaml
+ 		apiVersion: networking.k8s.io/v1
+ 		kind: NetworkPolicy
+ 		metadata:
+ 		  name: tech-policy
+ 		  namespace: tech-deploy
+ 		spec:
+ 		  podSelector: {}
+ 		  policyTypes:
+ 		    - Igress
+ 		  igress:
+ 		    - from
+ 			-namespaceSelector:
+ 		    matchLabels:
+ 		       app: tech-deploy
+ 	          ports:
+ 	          - protocol: TCP
+        	    port: 80
+ 	kubectl create -f mp.yaml     <-- create a networkpolicy with -f
+ 	kubectl describe networkpolicy tech-policy -n tech-deploy     <-- to see the networkpolicy in the namespace
 
 ################################################################
-In this we look at the JASON path 
+In this we look at the JASON path
 
 
 Q13: List all the internal IP#s of all the nodes in the cluster and save it to /doc/ip_nodes.txt
 -    we can copy the Imperative command from """kubectl cheat sheet"""
 
-		kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].address}' > /doc/IP_nodes.txt
-		change ExternameIP to InternalIP
-	
-wenn u donot have a directory just ceate a new one 
-		mkdir -p/doc  <-- create a new directory in Unix 	
-		cd /doc	      <-- we can change the directory name	
-		ls            <-- it display the list of the files 
-	
-		vi /doc/IP_nodes.txt
+ 		kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].address}' > /doc/IP_nodes.txt
+ 		change ExternameIP to InternalIP
+ 
+wenn u donot have a directory just ceate a new one
+ 		mkdir -p/doc  <-- create a new directory in Unix
+ 		cd /doc	      <-- we can change the directory name
+ 		ls            <-- it display the list of the files
+ 
+ 		vi /doc/IP_nodes.txt
 ################################################################
 Sleep (3600) command means:
-	 it means the container will not exit immediately after starting —
-	 instead, it will stay running (idle) for 3600 seconds (1 hour).
+ 	 it means the container will not exit immediately after starting —
+ 	 instead, it will stay running (idle) for 3600 seconds (1 hour).
 NOTE:	 sleep doesn’t mean the Pod “goes to sleep” —
-	 it means the Pod stays alive but idle, doing nothing.
-	 that gives u the time to test,debug or inspect the pod while its running
+ 	 it means the Pod stays alive but idle, doing nothing.
+ 	 that gives u the time to test,debug or inspect the pod while its running
 
 Normally, a Pod stops when its main process finishes.
-	But if you use sleep, there’s no work being done — it just “waits”.
-	While it’s waiting, the Pod remains in Running state.
-	.
+ 	But if you use sleep, there’s no work being done — it just “waits”.
+ 	While it’s waiting, the Pod remains in Running state.
+ 	.
 
 eg. kubectl run test-pod --image=busybox -- sleep 3600
-	Creates a Pod named test-pod
-	Runs the sleep 3600 command (wait for 1 hour)
-	Keeps the Pod alive so you can test inside it
--------------------------------------------------------------------------------
+ 	Creates a Pod named test-pod
+ 	Runs the sleep 3600 command (wait for 1 hour)
+ 	Keeps the Pod alive so you can test inside it
+---
 
 Q14: Create a multipod with two containers and Add the command "sleep 3600" to container 2
 
-	kubectl run mega --image=busybox --command sleep 3600 --dry-run=client -o yaml > multi.yaml
+ 	kubectl run mega --image=busybox --command sleep 3600 --dry-run=client -o yaml > multi.yaml
 
-	nano multi.yaml				<-- make the changes 
-		- name:  
-		  image:	save and exit
+ 	nano multi.yaml				<-- make the changes
+ 		- name:
+ 		  image:	save and exit
 
-	k create -f multi.yaml			<-- create a pod 
+ 	k create -f multi.yaml			<-- create a pod
 
-	k get pods -o wide
+ 	k get pods -o wide
 
-	k get pods multi -o wide
+ 	k get pods multi -o wide
 ################################################################
 
 Q15 A new worker has joined your team. create a new user and grant him access to the cluster.
-    He should have the permission to create, list,get,update and delete pods in the tech namespace
+    He should have the permission to create, list,get,update and delete pods in the tech namespace
 Steps:
-	we will do this through roll and rolebinding 
-	createa namespace
-	check documentation  	
-	certificating signing request 
-	create privatekey & certificate key
-        apply it 
-	approved
-	create role and rolebinding with imperative or declarative commands
-	check the role and rolebindings are created or not 
-	checks wheather u can delete the podsor not
+ 	we will do this through roll and rolebinding
+ 	createa namespace
+ 	check documentation
+ 	certificating signing request
+ 	create privatekey & certificate key
+        apply it
+ 	approved
+ 	create role and rolebinding with imperative or declarative commands
+ 	check the role and rolebindings are created or not
+ 	checks wheather u can delete the podsor not
 
 >	kubectl create namespace tech
 >	kubectl create ns tech
-		
+ 
 >	openssl genrsa -out jan.key 3072
-		<-- tocreate a prive key and certificate signing request 
+ 		<-- tocreate a prive key and certificate signing request
 
 >	openssl req -new -key jan.key -out jan.csr 
 
 >	nano csr.yaml
-		<-- cop the context from the documentation file and change the name only
-		    save it and exit 
-> 	cat jan.csr | base64 | tr -d "\n"
-		<-- copy the text  
+ 		<-- cop the context from the documentation file and change the name only
+ 		    save it and exit
+> 	cat jan.csr | base64 | tr -d "\\\\\\\\n"
+ 		<-- copy the text
 
 > 	nano csr.yaml
-		<-- delete the text in the request: and paste the new text in the request: field
-		    save it and exit
+ 		<-- delete the text in the request: and paste the new text in the request: field
+ 		    save it and exit
 
 > 	kubectl apply -f csr.yaml 	
-		<-- we issued the certificate
+ 		<-- we issued the certificate
 > 	kubectl get csr
 
 > 	kubectl certificate approve jan 
 
 > 	kubectl get crs 
-		<<- u will see the certificate will be issued/approved 
+ 		<<- u will see the certificate will be issued/approved
 
 
 NOTE till now we just create a user and after that we give the permissions
@@ -784,42 +794,41 @@ NOTE till now we just create a user and after that we give the permissions
 >	kubectl create rolebinding jan-rolebinding --role=jan-role --user=jan -n tech
 
 >	Kubectl get role -n tech   
-		<-- to check the role wheater it is created in the  tech namespace
+ 		<-- to check the role wheater it is created in the  tech namespace
 
 > 	kubectl get rolebinding  -n tech
-		<-- to check rolebinding wheather the role bindings is created in the tech namespace
+ 		<-- to check rolebinding wheather the role bindings is created in the tech namespace
 
 >	kubectl get rolebinding.rbac.authorization.k8s.io -n tech
 
 > 	kubectl auth can-i delete pods -n tech --as jan
-		<-- to check wheather the pods can be deleted or not 
+ 		<-- to check wheather the pods can be deleted or not
 
 ################################################################
-
 Q:16 Create a servicefrom the green pod and run DNS lookup to check the service and write to file /doc/lookup.txt
 -service name: green-service
 -port:80
-Steps: 
-	- check wheather the pods is created or not
-	- create a service with expose command
-	- create nslookup 
-	
+Steps:
+ 	- check wheather the pods is created or not
+ 	- create a service with expose command
+ 	- create nslookup
+ 
 > 	kubetcl get pods 
 > 	kubectl run green --image=nginx
 > 	kubectl expose pod green --name=green-service --port=80
-		<-- to create a service
+ 		<-- to create a service
 >	kubectl run nslookup --image=busybox:1.28 --command sleep 3600
 >	kubectl exec -it nslookup -- nslookup green-service 
-		<-- kubectl exec allows you to run a command inside a running Pod.
-		    This is useful for debugging, inspecting, or testing things inside the container.
-                <-- -i → interactive (keeps stdin open)
-		    -t → allocates a pseudo-TTY
-		    -it allows you to interact with the Pod as if you’re inside its shell.
-		green-service → the service name you want to check.
-		Kubernetes automatically creates DNS entries for Services.
-		This command will return the ClusterIP of green-service, confirming the service is accessible.
-	After -- → kubectl stops interpreting anything as its own flags and treats it as the command to run inside the Pod:
-		nslookup green-service → this is run inside the container, not by kubectl itself
+ 		<-- kubectl exec allows you to run a command inside a running Pod.
+ 		    This is useful for debugging, inspecting, or testing things inside the container.
+                <-- -i → interactive (keeps stdin open)
+ 		    -t → allocates a pseudo-TTY
+ 		    -it allows you to interact with the Pod as if you’re inside its shell.
+ 		green-service → the service name you want to check.
+ 		Kubernetes automatically creates DNS entries for Services.
+ 		This command will return the ClusterIP of green-service, confirming the service is accessible.
+ 	After -- → kubectl stops interpreting anything as its own flags and treats it as the command to run inside the Pod:
+ 		nslookup green-service → this is run inside the container, not by kubectl itself
 
 ################################################################
 Q:17. Create a secret and mount it to the pod "yellow"?
@@ -832,8 +841,8 @@ Q:17. Create a secret and mount it to the pod "yellow"?
 
 ################################################################
 PV: (Persistent Volume)  PVC (Persistent Volume Claim)
--     A Persistent Volume (PV) is a piece of storage (like a disk, NFS share, or cloud volume) that is managed by the cluster 
-      and keeps data even if a Pod is deleted or restarted.
+-     A Persistent Volume (PV) is a piece of storage (like a disk, NFS share, or cloud volume) that is managed by the cluster
+      and keeps data even if a Pod is deleted or restarted.
 -     A Persistent Volume (PV) is a way for Pods to store data that doesn’t disappear when they stop or restart.
 
 Pod	<-- Runs containers — data is lost if it restarts
@@ -847,65 +856,1004 @@ Q18:   List all the PV stored by capacity and write to the file /doc/pervol.txt
 > 	check cheatsheet
 
 >	kubectl get pv --sort-by=.spec.capacity.storage
-			<-- list pv stored by the capacity
+ 			<-- list pv stored by the capacity
 
 > 	kubectl get pv --sort-by=.spec.capacity.storage > /doc/pervol.txt
-			<-- save the list in the file
+ 			<-- save the list in the file
 
 >	cat /doc/pervol.txt
-			<-- check wheather  the list is saved in the file
-
+ 			<-- check wheather  the list is saved in the file
 ################################################################
-
 
 Q: 19 From the pod level environment =process, find all the pods running high cpu worksloads and write the name of which is consuming the most CPU to the file /doc/cpu.txt
 
 
 
 ################################################################
+
 Q: 20 JSON Path to get all the node names and stored them in the file /doc/nameofnodes.txt
-steps : 
-	go to cheat sheet 
-	copy the path under externalIP of NODE
-	check the file wheather the file is there if not create it
-	make the changes and sae he data in the file 
-	
-> 	kubectl get nodes -o jsonpath='{.items[*].metadata.name}' > /nameofnodes.txt
+steps :
+ 	go to cheat sheet
+ 	copy the path under externalIP of NODE
+ 	check the file wheather the file is there if not create it
+ 	make the changes and sae he data in the file
+ 
+> 	kubectl get nodes -o jsonpath='{.items\\\\\\\[\\\\\\\*].metadata.name}' > /nameofnodes.txt
 
 > 	vi nameofnodes.txt
-		
+ 
 ################################################################
 Q21: Show thr logs ro he container and save it to /doc/nginx.log
-     - Pod name:direct-pod
-     - Container:nginx
-     - Namespace: dev-net
+     - Pod name:direct-pod
+     - Container:nginx
+     - Namespace: dev-net
 steps:
 
 >	kubectl get pods -n dev-net -o wide
-		<-- to check wheather the pod is running in the namespace
+ 		<-- to check wheather the pod is running in the namespace
 
 >	kubectl logs direct-pod -c nginx -n dev-net
-		<-- to check the logs of the pods 
+ 		<-- to check the logs of the pods
 
 > 	kubectl logs direct-pod -c nginx -n dev-net > /doc/nginx.log
-		<-- save thelogs in the file 
+ 		<-- save thelogs in the file
 
 > 	nano /doc/nginx.log
-		<-- check the contents of the log file 
+ 		<-- check the contents of the log file
 
 ################################################################
 Ingress:
--	Ingress in Kubernetes means incoming traffic to your cluster.
--	It’s how external users (for example, web browsers) access your services
-    inside the cluster.
--	Usually, you define an Ingress resource to manage HTTP and 
-    HTTPS routes.
--	The Ingress Controller (like NGINX or Traefik) listens for these rules and routes traffic to the correct Service inside your cluster.
+-   Ingres in Kubernetes means incoming traffic to
+    your cluster.
+-   It’s how external users (for example, web
+    browsers) access your services inside the
+    cluster.
+-   Usually, you define an Ingress resource to
+    manage HTTP and HTTPS routes.
+-   The Ingress Controller (like NGINX or Traefik)
+    listens for these rules and routes traffic to
+    the correct Service inside your cluster.
+Egress
+-   Egress means outgoing traffic from your cluster
+    to the outside world.
+-   eg. when a pod in your cluster connects to an
+    external API, downloads updates, or sends data
+    to a database outside the  cluster.
+-   You can control egress traffic using Network
+    Policies, firewalls, or egress gateways
+    (like in Istio).
+
+
+Ingress and Egress rules are not applied only on the namespace itself, but they work within a namespace and control traffic to/from the Pods in that namespace.
+
+✅ What this really means
+
+In Kubernetes NetworkPolicies have two types of rules:
+
+Ingress → what traffic is allowed into Pods
+
+Egress → what traffic is allowed out from Pods
+
+🚩 Important points
+
+NetworkPolicies are created inside a namespace
+
+They only affect Pods in that same namespace
+
+They do NOT block traffic at the entire namespace boundary, only at the Pod level
+
+
 
 
 Q22. create a new ingress resources and expose service "hello" on path/hello by using service port 5678
+steps:
+-  create a namespace if it is not created
+-  create a ingress yaml file
+-  copy the data from the ingress recources from documentation
+-  save it
+-  k create -f ingress.yaml  to save thze data
+-  double check it wheather it is created ina namespace or not
+
+> kubectl create namespace host-dev
+
+> nano ingress.yaml
+ 	apiVersion: networking.k8s.io/v1
+ 	kind: Ingress
+ 	metadata:
+ 	  name: ingress-connect
+ 	  namespace: host-dev
+ 	spec:
+ 	  rules:
+ 	  - http:
+ 	      paths:
+ 	      - path: /hello
+ 	        pathType: Prefix
+ 	        backend:
+ 	          service:
+ 	            name: hello
+ 	            port:
+ 	              number: 5678
+
+>  create ingress -f ingress.yaml
+
+>  kubectl get ingress -n host-dev
+ 	<-- double check it
+
+################################################################
+ 
+Q 23: Overwrite the labels of the den-nginx pod with the value env=true.
+steps:
+-  create a pod with image and labels
+-  change the labels names
+-  check whether it is changed or not
+
+> kubectl run dev-nginx --image=nginx -l env=green
+
+> k describe pod dev-nginx
+
+
+> kubectl label pod dev-nginx env=true --overwrite
+ 		OR
+> kubectl label pod/dev-nginx env=true --overwrite
 
 
 
- 
-Q:
+> kubectl get pod dev-nginx --show-labels
+ 		OR
+> kubectl describe pod dev-nginx
+ 		OR
+> kubectl describe pod dev-nginx | grep Labels
+ 		OR
+>kubectl describe pod dev-nginx | grep -i labels
+ 	<-- to see the labels whether it is changed or not
+
+
+################################################################
+Q24: Upgrade the image in the deployment "green" to
+     "busybox:1.28", check the history and roll back
+steps:
+-   create the deployment
+-   check the image name
+-   change the image name of he eployment
+-   check weather the image name is changed or not
+-   rollout the image
+-   check again it will be rollback or not
+
+> kubectl describe deployment green | grep -i image
+
+> kubectl create deployment green --image=busybox 
+
+> kubectl describe deployment green | grep -i image
+
+> kubectl set image deployment green busybox=busybox:1.28
+
+> kubectl describe deployment green | grep -i image
+
+> kubectl rollout undo deployment green
+
+> kubectl describe deployment green | grep -i image
+
+
+
+################################################################
+Q25: Find out how which pods are available with the
+     label env=green in the cluster and write them
+     to the file /doc/podsavailable.txt
+steps:
+-   check how many pods are created
+-   write the pods in the text file
+-   check the file
+
+> kubectl get pods -l env=green
+           OR
+> kubectl get pods --selector env=green --no-headers | wc -l
+
+> kubectl get pods -l env=green > /doc/podsavailable.txt
+
+> cat /doc/podsavailable.txt
+
+################################################################
+Q 26:  The pod "red is failing. Find out why and
+       fix the issue.
+
+steps:
+-  first check the pods (see crashloopBackoff)
+-  go inside the pods (describe)
+-  create/open the pod in yaml file/format
+-  correct it https://uklabs.kodekloud.com/topic/practice-test-labels-and-selectors-2/
+Now
+-  u have to first delete the pods
+-  create  a pod again(while u are not allow to make the changes while the pod is running)
+
+Practicle:
+---
+
+> kubectl get pods red -o wide
+
+> kubectl describe pod red
+ 	<-- to see which type of error message
+
+> kubectl get pod red -o yaml > red.yaml
+
+> kubectl delete pod red 
+
+> nano red.yaml
+       <-- correct it
+> kubectl apply -f  red.yaml
+
+
+> kubectl get pod red -o wide 
+ 	<-- it is in running state
+ 
+################################################################
+Q 27: create a pod that will only be scheduled on a
+      node with a specified label?
+      Pod name: blue
+      Image : nginx
+ 
+stepsToDo:
+- first create a lable on the node
+- create a pod with yaml file
+- open the yaml file and make the changes.
+- create a pod again
+
+> kubectl get nodes
+
+>  kubectl label nodes controlplane disk=green 
+
+> kubectl run blue --image=nginx --dry-run=client -o yaml > blue.yaml
+> nano blue-pod.yaml
+
+spec:
+   nodeSelector:
+      disk=green
+>  kubectl create  -f blue-pod.yaml
+
+> kubectl get pod blue -o wide
+
+> kubectl describe  node controlplane 
+
+ 
+################################################################
+Q 28:  Create pod which uses a persistent volume for storage
+- pod yellow
+- image: busybox
+- pv name
+- pv claim
+- pv size
+
+StepsToDo
+- fist create a pv
+- persisten volume claim(pv)
+- create a pod with volumes
+
+ 
+>   kubectl get pv 
+ 
+>   vi yelow-pv-volume.yaml
+ 	-- to create a pv just copy the data from the documentation
+
+>   kubectl create -f yellow-pv-volume.yaml
+ 	<-- create a pvc als yaml
+
+>   kubectl get pv
+
+>   vi pvc.yaml
+ 	<-- create a persistent volume claim and copy from the documentation
+
+>   kubectl create -f pvc.yaml
+
+
+>   kubectl run yellow-pod --image=busybox --dry-run=client -o yaml > yellow-pod.yaml
+ 	<-- create a pod with yaml file copy the text from Documentation und add mounts and volume
+ 
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: yellow
+  name: yellow
+spec:
+  volumes:
+    - name: pv-storage
+      persistentVolumeClaim:
+        claimName: pvc-yellow
+  containers:
+  - image: busybox
+    name: yellow
+    resources: {}
+    volumeMounts:
+      - mountPath: /data
+        name: pv-storage
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+>   kubectl create -f yellow-pod.yaml
+
+################################################################
+Q30:
+
+
+
+
+
+
+
+
+
+
+
+################################################################
+Q31: (Labe 63)
+Schedul a pod on the node "minikube-m2" by using tolerations
+- Pod name: blue-pod
+- image:nginx
+
+Setps to do:
+- first check the taint on the node
+- create a pod with dry-run a yaml file
+- copy the data from the documentation
+- update the pod through create -f command
+- check the pod  on which node it is running through toleration
+
+> kubectl describe node node01 | grep -i taint
+
+> kubectl run blue-pod --image=nginx  --dry-run=client -o yaml > blue-pod.yaml
+
+> vi blue-pod.yaml
+
+> kubectl create -f blue-pod.yaml
+
+> kubectl get pod blue-pod -o wide
+
+################################################################
+HPA: Lists all Horizontal Pod Autoscalers (HPA) in the current namespace.
+ 	kubectl get hpa
+ 		<-- display how many min amd max deployments are created and how many replicas are created automatically
+ 
+Q32:  (LAB 35)
+Apply autoscaling to the "green-deployment" with a
+minimum of 5 and maximum of 10 replicas and target CPU of 75%
+
+SetpsToDo:
+- firts check the deployment if it is not created then create a new one
+- apply the needs
+- check it eheather it is all there or not
+
+>   kubectl get deloyments
+
+>   kubectl create deployment green-deployment --image=nginx
+
+>   kubectl autoscale deployment gree-deployment --min=5 --max=10 --cpu=75%
+
+>   kubectl get hpa
+
+>   kubectl get pods 
+
+################################################################
+to create a directory:
+
+mkdir: Stands for "make directory".
+-p: Stands for "parents".
+    This option ensures that all necessary parent directories in the path are created automatically if they don't already exist.
+
+/doc: This is the absolute path and the name of the directory to be created.
+
+
+Q 33: LAB(67)
+Check how many nodes are in ready state and write it to the file /doc/readynodes.txt
+
+StepsToDo:
+NOTE: you have to create a directory there is no need to create a file. it will be automatically created when u run the command
+-   First create a directory
+-   check the nodes wheather it is on ready state
+-   list only the ready nodes through grep command
+-   save it in the directory and in dile
+
+>   mkdir -p /doc
+
+>   kubectl get nodes
+
+>   kubectl describe nodes | grep ready 
+
+>   kubectl describe nodes | grep ready > /doc/readynodes.txt
+
+
+################################################################
+Q34:  (difficult)
+kubectl exec -it grey --sh -c 'echo $dev' dev10
+ 	<-- This command executes a shell command inside a running Kubernetes pod named grey.
+        kubectl exec: Executes a command inside a container.
+       -it: Combines -i (interactive) and -t (terminal), which are necessary for interacting with the shell session.
+        grey: The name of the target pod where the command will run.
+        --sh -c '...': Starts a shell (sh) inside the pod to run the specific command provided (-c 'echo $dev').
+        'echo $dev': The actual command being run: it prints the value of the environment variable dev, as it is defined inside that specific pod.
+
+
+Create a pod and set the environment variable "dev=dev10"
+
+
+################################################################
+
+How to create a config map
+Confi maps are great way to store data and make it easier to organizer your data and edit when necassery
+
+What is CpnfigMap
+ 	A ConfigMap is a Kubernetes API object used to store data in key-value pairs.
+        Pods can consume this data as environment variables, command-line arguments, or mounted configuration files.
+
+kubectl create configmap my-config --from-literal=APP_MODE=production
+ 	<-- createa configMap from a literl key-value pair
+
+kubectl create configmap my-config --from-file=config.json
+ 	<-- create a configMap from a file
+
+kubectl create configmap my-config --from-file=./config-dir/
+ 	<-- create a ConfigMap from  directory
+
+Q 35:   (lab 113)
+ Create a configmap and add it to the pod
+StepsToDo:
+-    Checks the pods in default and all the pods in every namespace
+-    create a cofigmap
+-    describe the Config map
+-    displa all the pods on the efault namespace
+-    the pod is created and num create a yaml file
+-    make the changes with envFrom:
+-    delete the old pod and create a new pod
+-    check wheater all are right or not
+
+> kubectl get pods -A
+
+> kubectl create configmap data-config --from-literal=user=root --from-literal=password=pass1234
+
+> kubectl get configmap
+
+> kubectl describe configmap data-config
+
+> kubectl get pods
+
+> kubectl get pod -o yaml > web-color-config.yaml 	
+
+> kubectl exec -it webapp-color -- env
+     <-- It opens an interactive session in the webapp-color pod and shows all environment variables.
+     exec → run a command inside a running Kubernetes pod
+      -it → interactive (-i) with a terminal (-t)
+     webapp-color → the name of the pod
+     -- → separates kubectl options from the command
+     env → prints all environment variables inside the container
+
+NOTE: it display the information of the Container running inside the pod
+
+################################################################
+Q36
+List all the events stored by the timestamp and write the result to file /doc/events.log
+StepsToDo:
+-   first open the cheatsheet
+-   copy the command and paste it on the lab
+-   save the data in the given text file
+
+>   kubectl get events --sort-by=.metadata.creationTimestamp 
+
+>   kubectl get events --sort-by=.metadata.creationTimestamp > /doc/events.txt
+
+>   cat /doc/events.txt
+################################################################
+
+A non-persistent volume is storage that exists only as long as the Pod is running.
+If the Pod is deleted or recreated → the data is lost.
+
+Q37 Create a pod with a non-persistent volume
+StepsToDo:
+
+- copy the data from emptyDir:{} Documentation
+- create a yaml file open it and make the changes
+- create a yaml file
+- and check wheater it is created or not
+
+> kubectl get pods
+
+>  nano nonper-pod.yaml
+ 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nonper-pod
+spec:
+  containers:
+  - image: redis
+    name: redis
+    volumeMounts:
+    - mountPath: /data//per-redis
+      name: data-volume
+  volumes:
+  - name: data-volume
+    emptyDir: {}
+
+>  kubectl create -f nonper-pod.yaml 
+
+>  kubectl get podnonper-dod -owide
+
+> kubectl descibe po noner-pod 
+
+
+################################################################
+In this my node is not in working state and nun how to check the
+
+
+
+Q 38:
+
+The node "miniku" is in "NotReady" state. Investigate and bing the nde bac to ready state
+StepsToDo:
+- Firts check the satate of the node
+- describe the njode
+- ssh in the node
+- we change o rot
+- check the kubelet (it is aktiv)
+- lets start the kubelet again
+- check the state again  and it in running state
+
+
+################################################################
+
+Cordon a node
+     To cordon a node means to mark it as unschedulable.
+     New pods will NOT be placed on that node, but existing pods
+     stay running.
+
+Drain a node
+     To drain a node means to evict (move) all running pods from
+     that node.
+     Kubernetes reschedules the pods onto other nodes.
+     Used when you want to maintain, update, or shut down a node
+     safely.
+
+
+Cordon and drain a node
+We did it because the node is unavailable and reschedule all
+   the pods.
+The main reason is because we have to upgrade the node
+We cannot upgrade the nodes when the pods are running on it
+
+Q: 39:
+
+StepsToDo:
+- first On which pods are nodes are running on
+- how many nodes are available
+- cordon a node so that we are not able to Schedule any pods
+  anymore
+- Drain the nodes so that we schedule all the pods on the another
+  nodes
+- check wheather all the pods are running on another node
+
+> kubectl get pods -o wide
+
+> kubectl get nodes
+
+> kubectl cordon mininkube
+
+> kubectl drain minikube --ignore-daemonsets --force
+
+> kubectl get pods -o wide
+
+> kubectl get nodes
+
+################################################################
+
+
+Q 40:
+ Create a pod that echo go to tech-educator.com and then exists.
+ The pod should be deleted automatically when it is completed?
+
+
+> kubectl run tech-pod --image=busybox  -it --rm --restart=Never 
+                 -- /bin/sh -c 'echo go to the tech-educator.com'
+ 
+        -it --- Runs the container in interactive mode with a TTY
+                (like opening a terminal).
+ 	--rm ---Delete the pod automatically when it finishes.
+        --restart=Never ---- Runs it as a one-time pod, not a
+                             Deployment or ReplicaSet.
+        -- /bin/sh --- this starts the shell inside the container
+        - c ------Run the command that comes next as a string.”
+
+################################################################
+
+Q41: Annotate the existing pod "yellow" and use the value
+     "name=yellow-pod"
+
+>  kubectl get pods 
+ 	if it is not created just create it
+
+>  kubectl run pod yellow --image=nginx
+
+>  kubectl annotation pod yellow name=yellow-pod
+ 	to write the annotation for more information
+
+> kubectl describe pod yellow
+ 	OR
+> kubectl describe pod yellow | grep -i annotation 
+################################################################
+Q42 Get a list of all the pod s in all the namespaces  and write
+    it to the file/doc/podsnamespace.txt
+
+> kubectl get pods 
+
+> kubectl get pods --all-namespaces
+
+> kubectl get pods --all-namespaces > /doc/podsnamespaces.txt
+################################################################
+Q43:
+
+
+>   kubectl describe configmap config-green
+
+>   kubectl describe confimap config-green -o wide > 
+    config-green.yaml
+
+>   vi config-green.yaml
+
+>   kubectl replace -f config-green.yaml
+
+>   kubectrl describe configmap config-green 
+
+>   kubectl get pods 
+
+>   kubectl describe pod green 
+
+>   kubectl  exec - it green -- env
+ 	<-- hier u see that the password is not be changed
+
+>   kubectl get pod green -o yaml | kubectl replace --force -f-
+ 	<-- the pod will be deleted and it replace the pod in
+            one command explain it
+
+       --- kubectl get pod green -o yaml
+            <-- Gets the Pod named green and outputs its full
+                 YAML.
+       --  |
+            <-- Sends that YAML to the next command.
+       --  kubectl replace --force -f -
+            <-- Deletes and recreates the pod using the YAML
+                from the first command.
+            (--force makes it do a delete + create instead of an
+               update. -f - means read from stdin
+################################################################
+Q44: you just create the pod "blue" bit it is not scheduling on
+      the node. Troubleshoot and fix the issue
+
+StepsToDo:
+-  First check the status of the pod
+-  check that may be he type error
+-  before we do anything first check the lables of the nnodes
+- kubectl get nodes
+
+
+
+
+> kubectl get pod blue -o wide
+
+> kubectl describe pod blue
+
+> kubectl describe node minikube | grep Labels 
+
+> kubcetl get pod blue -o wide yaml > bluenoschedule.yaml
+
+> vi blueschedule.yaml
+ 	<<--make the changes
+
+> kubectl replace --force -f bluenoschedule.yaml
+
+> kubectl get pods blue -o wide 
+
+> kubectl describe pod blue 
+
+################################################################
+
+Q 45: Create a network policy and allow the traffic from the
+      "green " pod to the finance-service and the data service
+- policy name : internalpolicy
+- policy type : egress
+- Label pod: role=post
+- Egress Allow: finance
+- Finance Port: 8080
+- Egress Allow: data
+- Data Port: 5432
+
+SetpsToDo:
+NOTE he did not copy the thng he wrote it
+
+################################################################
+Q46:Create a pod and set "SET_TIME" + sleep 3600 secons
+-podname : grey
+- image: busybox
+
+SetpsToDo:
+- create a pod with sleep yaml file
+- copy the data from the kubernets documentation
+-
+
+>   kubectl run grey --image=busybox --command sleep 3600 
+    --dry-run=client > greypod.yaml
+
+>   nano greypod.yaml   
+      <--- paste the data from dokumentaion (SYS\_TIME)
+       securityContext:
+         capabilities:
+           add:
+            - SYS_TIME
+
+
+>  kubectl create -f greypod.yaml
+
+>  kubectl get greypod.yaml
+
+>  kubectl get pod grey -o wide
+ 	<-- to see wheater the pod is running or not
+
+>  kubectl get pod grey -o yaml    
+
+################################################################
+Q 47:  (Lab 175/
+Create a clusterroll and clusterrolebinding which "get "watch"
+and list access to the pod
+- Clusterrole name: cluster-administrator
+- Clusterrolebinding name: Clusterrolebinding-administrator
+- serviceaccount: admin-sa
+
+
+StepsToDo:
+-  Create a cluster role
+- create role binding
+- check whether it is created or not
+
+>  kubectl create  clusterrole cluster-administrator 
+   --verb=get,watch,list --resource=pods
+
+> kubectl create clusterrolebinding clusterbindingadministrator 
+  --clusterrole=cluster-administrator
+  --serviceaccount=default:admin.sa
+
+> kubectl auth can-i list pods --as 
+  system:srviceaccount:default:amin-sa
+
+   2. auth can-i
+ 	Asks the API server “Can this identity perform this
+        action?”
+ 	It checks RBAC permissions.
+ 
+   3. list pods
+ 	The action (list) and the resource (pods).
+ 	This asks: Is listing pods allowed?
+
+   4. --as system:serviceaccount:default:admin-sa
+ 	Runs the check as if you were this identity.
+ 	system:serviceaccount: = prefix for all service accounts
+ 	default = namespace of the service account
+ 	admin-sa = name of the service account
+
+   5. What it actually checks
+ 	It evaluates the RBAC rules of that service account.
+ 	It does not switch namespace unless you specify
+        --namespace.
+
+   6. Possible output
+ 	yes → the service account can list pods
+ 	no → it cannot
+ 	Add --verbose for explanation.
+ 
+   7. Common pitfalls
+ 	Spelling must be correct: serviceaccount, not
+        srviceaccount or amin-sa.
+ 	Impersonation must be allowed on the cluster for --as
+        to work.
+ 	If checking in a specific namespace, add --namespace <ns>.
+
+################################################################
+Q 48:
+Get the ipAddress of the blue podand write tit to the
+ file/doc/ip.txt
+
+StepsToDo:
+First check the pods and labels
+dispay the ip address
+
+>   Kubectl get pods 
+
+>   kubetl decribe pod blue | grep labels
+
+>   kubectl get pods -l run=blue -A -o jsonpath=
+    '{range.items\[\*]}{@.status.odIP}{""}{"\\n}{end}'
+ 		<--  to get the ip address
+
+>  kubectl get pods -l run=blue -A -o jsonpath=
+   '{range.items\[\*]}{@.status.odIP}{""}{"\\n}{end}'
+   > '/doc/ip.txt
+ 	<-- it is used to save the ip address in the file
+
+
+################################################################
+Q 49: find out the version of the cluster and write it to the
+       file  /doc/versioncluster.txt
+
+> kubectl get nodes 
+ 	<-- it display the version of the cluster
+
+> kubectl get nodes > /doc/versioncluster.txt
+        <-- save the data in the file
+
+################################################################
+Satefulset:
+    A StatefulSet is a Kubernetes controller that runs stateful
+    applications — apps that need:
+    - fixed pod names
+    - fixed network addresses
+    - their own persistent storage
+Unlike Deployments, StatefulSet pods are not identical. Each pod
+has its own identity (like app-0, app-1, app-2) and keeps it even
+after restarting.
+
+Mountpath:
+  In Kubernetes, mountPath is the path inside a container where
+  a volume is mounted.
+  mountPath is the folder inside a container where Kubernetes
+  puts a volume.
+
+Why do  we need a volume?
+  A volume gives a container a place to store files that do NOT disappear when the container restarts.
+  - Containers normally lose their data when they stop.
+  - Volumes solve this by keeping the data safe.
+
+Q 50:  Change the mountpath of the nginx container in the "online " staeful to 2/usr/share/nginx/updateed-html
+
+SetpsToDo:
+ firts check the steful
+
+> kubectl get statefulset -o wide
+
+> kubectl get statefulset online -o yaml > stateful.yaml
+
+> nano stateful.yaml
+ 	<-- just change the path in th mountpath field
+
+> kubectl replace -f stateful.yaml
+
+>
+
+> kubectl get stateful 
+ 	<-- to check the stateful
+
+> kubectl describe stateful online 
+
+
+################################################################
+
+A Cron Job is an automatic(scheduled) task in Linux/Unix systems that runs by itself at a specific time, date, or interval.
+  It works in the background, so you don’t need to run the command manually every time.
+Examples:
+Taking a backup every night at 12 AM
+Updating a file every hour
+Generating a report every month
+
+Where are Cron Jobs defined?
+   Cron jobs are defined in a file called crontab.
+
+Q 51:
+Create a cronjob which printsthe date and "Running" every minute
+
+StepsT Do:
+- go to he dokmentation 
+-  lookfor the cronjob example copy it and psste (every minute)
+- create a new yaml file 
+- change the o/p to running and pod name
+- run create -f
+- check the cron file with get/ describe .
+
+>   nano cronjob.yaml
+
+>   kubectl create -f cronjob.yaml
+
+>   kubectl get cronjob
+
+>   kubectl describe cronjob show-date-job
+
+
+################################################################
+
+Q 53:(lab (193)
+Create a networkpolicy and allow traffic from all the pods in the dev-tech namespace and 
+from pods with he label "type=rewiew to the pods matching the label "app=postgres"
+
+StepsToDo:
+- first check the namespace whether it is created or not create it 
+- create a label on the namespace 
+- create a yaml file (nano)
+- copy the data from the documentation network policy till matchlabels
+- after copy the data from ingress
+- create a file .yaml -f 
+
+> kubectl create namespace dev-tech
+
+> nano dev-tech-tc.yaml
+
+  apiVersion: networking.k8s.io/v1
+  kind: NetworkPolicy
+  metadata:
+    name: allow-dev-tech
+    namespace: default
+  spec:
+    podSelector:
+      matchLabels:
+        app: postgress
+    ingress:
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            app: dev-tech 
+        podSelector:
+          matchLabels:
+            type: review
+
+> kubectl create -f dev-tech-tc.yaml
+
+
+################################################################
+Q 54: 
+
+Create a pod with container port 80. It  should check the pod running at endpoint/healthz on port 80 + verify +delete the pod 
+
+pod name: health-pod
+image: nginx
+
+StepsToDo: 
+- firs create apod with image ...
+- create a yaml file 
+- create a file -f (live update ) 
+- check whether its work or not 
+- verify it 
+
+> kubectl run health-pod --image=nginx  --port=80 restart=Always --dry-run=client -o yaml > healthcheck.yaml
+
+> vi healthcheck.yaml
+
+	livenessProbe: 
+	httpGet: 
+	path:/healthz
+	Port:80 
+	initialDelaySeconds: 30
+
+> kubectl create -f healthcheck.yaml
+
+> kubectl describe pod health-pod  | grep -i liveness
+
+> kubectl delete pod health-pod 
+
+################################################################
+
+Q55:  Monitors the logs of the pod "yellow" extract all the log lines matching with "not found" and write to the file/doc/failed.log
+
+StepsToDo: 
+
+
+
+
+
+
+
+
+
+
+___________________________________________________________________________________________
+
+All the Definations
+
+Satefulset:
+    A StatefulSet is a Kubernetes controller that runs stateful applications — apps that need:
+    - fixed pod names
+    - fixed network addresses
+    - their own persistent storage
+Unlike Deployments, StatefulSet pods are not identical. Each pod has its own identity (like app-0, app-1, app-2) and keeps it even after restarting.
+
+Mountpath:
