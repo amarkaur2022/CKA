@@ -1256,6 +1256,12 @@ F: Deploy a DaemonSet for FluentD Logging.
    Name: elasticsearch
    Namespace: kube-system
    Image: registry.k8s.io/fluentd-elasticsearch:1.20
+A:
+StepsToDo:
+- First, to  create a DaemonSet u have to create  a Deployment and also create a yaml file 
+- go into the yaml file and make the changes given under below 
+- make the changes online 
+
 A: - kubectl create deployment elasticsearch -n kube-system --image=k8s.gcr.io/fluentd-elasticsearch:1.20 --dry-run=client -o yaml  > fluent.yaml
          MAKE CHANDES IN THE FILE #
         kind: Daemonset 
