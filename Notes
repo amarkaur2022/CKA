@@ -1210,6 +1210,11 @@ F: Delete the elephant Pod.
 
 _____________________________________________________
 						Daemon Set 
+NOTE: Daemonsets are same as a Replicaset  code in a yaml file 
+
+
+
+
 
   -  Daemon sets are like the replica sets
   -  It helps you to deploy multiple instances of pods.
