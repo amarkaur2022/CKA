@@ -1400,8 +1400,31 @@ OR
 __________________________________
 
 Priority
+-	we need a way to make sure that higher priority workloads always get scheduled without being interrupted
+-	by lower priority workloads. This is where priority classes come in.
 
 
+LAB
+
+A:  Kubectl get priorityClasses
+>	kubectl get pc
+		<-- it will display the priority class in numbers
+
+F: What is the value of preemptionPolicy in system-node-critical?
+A: 	kubectl get pc
+
+F: Create a PriorityClass named high-priority, a value of 100000, and a preemption policy of PreemptLowerPriority. Do not set this class as a global default.
+A: kubectl create priorityclass high-priority --value=100000 --preemption-policy=PreemptLowerPriority
+
+F: 
+A:  kubectl create priorityclass low-priority --value=1000 --dry-run=client -o yaml |kubectl apply -f -
+👉 The pipe | sends the generated YAML directly to kubectl apply.
+👉 -f - means “read YAML from standard input”.
+
+F: In the default namespace, create a pod named low-prio-pod that runs an nginx image and uses the low-priority PriorityClass.
+
+F: 
+A: ku
 _______
 LAB 12
 ______
