@@ -1341,6 +1341,12 @@ F: How to see where is the config file is srtored (I think it is falsch )
 AAAA: kubectl get configmap -n kube-system kubeadm-config -o yaml
 
 F: What is the path of the directory holding the static pod defination files?
+			OR
+A  ps -ef | grep kubelet
+		<-- to find the path of the confisgfiles 
+   cat /var/lib/kubelet/config.yaml
+		<-- look under the staticpodpath: the path name
+
 A: NOTE to find the path first run the command
 		sudo find / -name "config.yaml"
 			<-- This command is used to find the .yaml file in the directories 
