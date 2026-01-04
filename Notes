@@ -1366,7 +1366,9 @@ A: 		cat /etc/kubernetes/manifests/kube-apiserver.yaml
 
 F: Create a static pod named static-busybox that uses the busyboy images and the command sleep 1000
 A: NOte when we use -- command: it should be in the last like 
-		kubectl run static-busybox --image=busybox --dry-run=client -o yaml --command -- sleep 1000 > static-busybox.yaml
+		kubectl run static-busybox --image=busybox --dry-run=client -o yaml --command -- sleep 1000 > /etc/kubernetes/manifests/static-busybox.yaml
+				OR
+        kubectl run static-busybox --image=busybox --dry-run=client -o yaml --command -- sleep 1000 > static-busybox.yaml
 		cp static-busybox.yaml /etc/kubernetes/manifests
 		kubectl get pods 
 
@@ -1375,6 +1377,23 @@ F: We just created a new static pod named static-greenbox. Find it and delete it
 A: 	kubectl delete pod static-greenbox-node01
 		NOTE: it is not possible to delete the pod like that, after delte it will  reecreate it 
 				we need to find the manifest file and then delete it 
+OR 
+
+>  kubectl get pods --all-namespace | grep static-greenbox
+		<-- it will display the pods where/in which node it is created 
+>  ssh node01
+		<-  it is used to gi in another node 
+>  ps -ef |  grep /usr/bin/kubelet 
+> grep -i staticpod /var/lib/kubelet/config.yaml
+> cd  /etc/just-to-mess-with-you
+> ls
+	<-- u will see the list of the file in it 
+> rm -rf greenbox.yaml 
+	<-- nun delete the file 
+> ctrl+d
+	<-- to come out from the node (go into the root node)
+>  kubectl get pods --all-namespace | grep static-greenbox
+	<-- run this command to check whether the file is nun available or nit 
 
 
 	
