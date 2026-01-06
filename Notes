@@ -1399,12 +1399,67 @@ OR
 	
 __________________________________
 
-Priority
+Priority  (Chapter  76)
 -	we need a way to make sure that higher priority workloads always get scheduled without being interrupted
 -	by lower priority workloads. This is where priority classes come in.
+They are not attached to a specific namespace.
+-	So once they're created, they're available to be configured on any port in any namespace.
 
+F: So how do you define priorities?
+-	We define priorities using a range of numbers.
+-	So a priority can be defined as high as 1 billion and as low as -2 billion or around that number.
+-	A larger number indicates higher priority.
+Now this range that I've just mentioned is for the applications and workloads that are deployed on the cluster.
+-	the highest priority.
+-	and they have priorities up to 2 billion.
 
-LAB
+Important:
+steps to create priority and give the high/low priority to the pod 
+
+1) So to create a new priority class, we create an object with the API version set to scheduling v1 kind
+	apiVersion: scheduling.k8s.io/v1
+    kind: PriorityClass
+    metadata:
+  		name: high-priority
+    value: 1000000
+    description: "This priority class should be used for XYZ service pods only."
+
+2) nun create a pod with its yaml file and see the last line of the yaml File under Spec: 
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: nginx
+      labels:
+		name: nginx
+    spec:
+		containers:
+        - name: nginx
+          image: nginx
+          ports: 
+            - containerPorts:8080
+         PriorityClassNaem: high-priority
+
+NOTE:
+Now let us look at the effect of pod priority.
+- First u have a critical app with higher priority (7)
+- and have a job app with priority (5)
+it will add on the cluster because it has a space.... 
+Now u have an another high priority job app with priority(6) and u have no space in the cluster what should u do 
+You have two things to do
+1) u can evict(delete) existing workload 
+2) it can wait 
+
+1) 
+-	Now that behavior is defined by the preemption policy defined in the priority class assigned to the new workload.
+-	If the preemption policy is not set, its default value is set to preempt(delete) a lower priority.
+-	This means that it would kill the existing lower priority job and take its place.
+
+2) 
+-	But if you do not want it to kill or evict the existing workload, and instead wait for the cluster resources to free up, 
+-	then you must set this preemption policy to never.
+
+______________________________________________________________________________
+				LAB		
 
 A:  Kubectl get priorityClasses
 >	kubectl get pc
@@ -1422,9 +1477,37 @@ A:  kubectl create priorityclass low-priority --value=1000 --dry-run=client -o y
 👉 -f - means “read YAML from standard input”.
 
 F: In the default namespace, create a pod named low-prio-pod that runs an nginx image and uses the low-priority PriorityClass.
-
+ 
 F: 
 A: ku
+
+F:7  Now, create another pod in the default namespace named high-prio-pod that runs an nginx image and uses the high-priority PriorityClass.
+
+F: 8: You can compare the priority classes on both pods using the following command:
+
+F: 9 The following assets have been provisioned on the environment:
+   A pod named low-app
+   A pod named critical-app
+   View the pod status using the following command:
+   kubectl get pods
+   Which of the following is true?
+
+
+
+
+F: The pod critical-app is stuck in Pending state due to the low-app pod getting scheduled and requesting high resources.
+Check the status of the critical-app pod using the following command:
+
+
+
+
+F: To resolve this situation and get the critical-app to a running state, you should:
+        Assign the high-priority class to the critical-app
+        Delete and recreate the pod with the new priority
+   Make sure the pod is in running state after applying the actions.
+A: 
+
+
 _______
 LAB 12
 ______
