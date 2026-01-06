@@ -1467,6 +1467,7 @@ A:  Kubectl get priorityClasses
 
 F: What is the value of preemptionPolicy in system-node-critical?
 A: 	kubectl get pc
+	kubectl describe pc system-node-critical
 
 F: Create a PriorityClass named high-priority, a value of 100000, and a preemption policy of PreemptLowerPriority. Do not set this class as a global default.
 A: kubectl create priorityclass high-priority --value=100000 --preemption-policy=PreemptLowerPriority
