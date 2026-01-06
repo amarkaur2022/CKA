@@ -1472,17 +1472,41 @@ A: 	kubectl get pc
 F: Create a PriorityClass named high-priority, a value of 100000, and a preemption policy of PreemptLowerPriority. Do not set this class as a global default.
 A: kubectl create priorityclass high-priority --value=100000 --preemption-policy=PreemptLowerPriority
 
+
 F: 
 A:  kubectl create priorityclass low-priority --value=1000 --dry-run=client -o yaml |kubectl apply -f -
 👉 The pipe | sends the generated YAML directly to kubectl apply.
 👉 -f - means “read YAML from standard input”.
 
+Nun if u make any mistake and u have to make the changes like value etc.....
+-	kubectl edit pc low-priority
+-	cat /tmp/kubectl-edit-243113175.yaml
+		<-- you will see the change have been done temprorary file 
+-	kubectl replace --force -f /tmp/kubectl-edit-243113175.yaml
+
+
 F: In the default namespace, create a pod named low-prio-pod that runs an nginx image and uses the low-priority PriorityClass.
- 
-F: 
-A: ku
+A:  -	kubectl run low-prio-pod --image=nginx --dry-run=client -o yaml > lowpriopod.yaml
+	-	ls
+	-	vi lowpriopod.yaml
+    -   apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: low-prio-pod
+  name: low-prio-pod
+spec:
+  containers:
+  - image: nginx
+    name: low-prio-pod
+  priorityClassName: low-priority
+
+    -    kubectl create -f lowpriopod.yaml 
 
 F:7  Now, create another pod in the default namespace named high-prio-pod that runs an nginx image and uses the high-priority PriorityClass.
+A:  -	kubectl run high-prio-pod --image=nginx --dry-run=client -o yaml >  highprio.yaml
+	-	vi highprio.yaml
+	-	kubectl create -f highprio.yaml
 
 F: 8: You can compare the priority classes on both pods using the following command:
 
