@@ -1509,6 +1509,8 @@ A:  -	kubectl run high-prio-pod --image=nginx --dry-run=client -o yaml >  highpr
 	-	kubectl create -f highprio.yaml
 
 F: 8: You can compare the priority classes on both pods using the following command:
+A: 
+
 
 F: 9 The following assets have been provisioned on the environment:
    A pod named low-app
@@ -1516,8 +1518,7 @@ F: 9 The following assets have been provisioned on the environment:
    View the pod status using the following command:
    kubectl get pods
    Which of the following is true?
-
-
+A:
 
 
 F: The pod critical-app is stuck in Pending state due to the low-app pod getting scheduled and requesting high resources.
@@ -1533,9 +1534,9 @@ F: To resolve this situation and get the critical-app to a running state, you sh
 A: 
 
 
-_______
-LAB 12
-______
+__________________________________________________
+						LAB 12
+
 Multiple schedular 
 
 We use more than one Schedular in a Cluster.
